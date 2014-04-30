@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="200.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <!-- TODO Add Nodes -->
+  <children>
+    <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <bottom>
+        <AnchorPane prefHeight="67.0" prefWidth="500.0">
+          <children>
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="187.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                <Image url="@../../../../../../../images/error.png" />
+              </image>
+            </ImageView>
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="251.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                <Image url="@../../../../../../../images/save.png" />
+              </image>
+            </ImageView>
+          </children>
+        </AnchorPane>
+      </bottom>
+      <center>
+        <AnchorPane prefHeight="181.0" prefWidth="500.0">
+          <children>
+            <TitledPane animated="false" layoutX="14.0" layoutY="13.0" prefHeight="133.0" prefWidth="472.0" text="Rechnungszeile">
+              <content>
+                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="150.0" prefWidth="467.0">
+                  <children>
+                    <Label layoutX="14.0" layoutY="14.0" text="Bezeichnung:" textFill="BLACK">
+                      <font>
+                        <Font name="Arial Bold" size="14.0" fx:id="x1" />
+                      </font>
+                    </Label>
+                    <TextField layoutX="125.0" layoutY="14.0" prefWidth="330.0" promptText="Bitte geben Sie die Bezeichnung an" />
+                    <Label font="$x1" layoutX="14.0" layoutY="38.0" text="Stückpreis:" textFill="BLACK" />
+                    <TextField layoutX="125.0" layoutY="37.0" prefWidth="328.0" promptText="Bitte geben Sie den Stückpreis an" />
+                    <Label font="$x1" layoutX="14.0" layoutY="63.0" text="Menge:" textFill="BLACK" />
+                    <TextField layoutX="125.0" layoutY="63.0" prefWidth="187.99990000000253" promptText="Bitte geben Sie die Menge an" />
+                    <Label font="$x1" layoutX="324.0" layoutY="63.0" text="Ust:" textFill="BLACK" />
+                    <ChoiceBox layoutX="363.0" layoutY="62.0" prefWidth="92.0">
+                      <items>
+                        <FXCollections fx:factory="observableArrayList">
+                          <String fx:value="Item 1" />
+                          <String fx:value="Item 2" />
+                          <String fx:value="Item 3" />
+                        </FXCollections>
+                      </items>
+                    </ChoiceBox>
+                  </children>
+                </AnchorPane>
+              </content>
+              <font>
+                <Font name="System Bold" size="15.0" />
+              </font>
+            </TitledPane>
+          </children>
+        </AnchorPane>
+      </center>
+    </BorderPane>
+  </children>
+</AnchorPane>
