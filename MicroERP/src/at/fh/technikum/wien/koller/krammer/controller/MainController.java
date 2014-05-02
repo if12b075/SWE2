@@ -8,16 +8,20 @@ import java.util.ResourceBundle;
 
 import at.fh.technikum.wien.koller.krammer.filter.KontaktFilter;
 import at.fh.technikum.wien.koller.krammer.models.Kontakt;
+import at.fh.technikum.wien.koller.krammer.models.Person;
 import at.fh.technikum.wien.koller.krammer.presentationmodel.KontaktModel;
 import at.fh.technikum.wien.koller.krammer.proxy.MERPProxyFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class MainController extends AbstractController {
 	@FXML
@@ -51,7 +55,19 @@ public class MainController extends AbstractController {
 	
 	public void onKontaktBearbeitenClick() throws IOException {
 		if(kontaktlist.getSelectionModel().getSelectedItem() != null) {
-			//Kontakt k = kl.get(kontaktlist.getSelectionModel().getSelectedIndex());
+			Kontakt k = kl.get(kontaktlist.getSelectionModel().getSelectedIndex());
+			if(k.isFirma()) {
+				
+			} else {
+				Person p = MERPProxyFactory.getPersonById(k.getId());
+				
+				km.setVorname(p.getVorname());
+				km.setNachname(p.getNachname());
+				System.out.println(km.getNachname());
+			}
+			
+			
+			
 		}
 		
 		showDialog(
@@ -99,6 +115,19 @@ public class MainController extends AbstractController {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
+		km = new KontaktModel();
+		kontaktname.setOnKeyPressed(new EventHandler<KeyEvent>()
+				{
+					@Override
+			        public void handle(KeyEvent ke)
+			        {
+			            if (ke.getCode().equals(KeyCode.ENTER))
+			            {
+			            	onKontaktSearch();
+			            }
+			        }
+			
+				});
 		/*
 		 * List<Kontakt> kl = MERPProxy.getAlleKontakte(); List<Rechnung> rl =
 		 * MERPProxy.getAlleRechnungen();

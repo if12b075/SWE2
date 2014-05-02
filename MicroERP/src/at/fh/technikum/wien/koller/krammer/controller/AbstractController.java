@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 public class AbstractController implements Initializable {
 	private Stage stage;
+	private Object model;
 
 	public Stage getStage() {
 		return stage;
@@ -38,8 +39,9 @@ public class AbstractController implements Initializable {
 		Scene scene = new Scene(root);
 
 		AbstractController controller = (AbstractController) fl.getController();
-		controller.setStage(newStage);
 		controller.setModel(model);
+		controller.setStage(newStage);
+		
 
 		newStage.setScene(scene);
 		newStage.show();
@@ -64,7 +66,11 @@ public class AbstractController implements Initializable {
 	}
 
 	public void setModel(Object model) {
-		// optional
+		this.model = model;
+	}
+	
+	public Object getModel() {
+		return this.model;
 	}
 
 }
