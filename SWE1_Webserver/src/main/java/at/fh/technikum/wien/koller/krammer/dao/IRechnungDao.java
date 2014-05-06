@@ -9,4 +9,5 @@ public interface IRechnungDao {
 	public void update(Rechnung r);
 	public void delete(long id);
 	public List<Rechnung> getAlleRechnungen();
+	public Rechnung getRechnungById(long id);
 }

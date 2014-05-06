@@ -6,4 +6,5 @@ public interface IPersonDao {
 	public void create(Person p);
 	public void update(Person p);
 	public void delete(long id);
+	public Person getPersonById(long id);
 }
