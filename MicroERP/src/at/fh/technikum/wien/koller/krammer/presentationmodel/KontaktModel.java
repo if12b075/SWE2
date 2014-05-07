@@ -1,5 +1,6 @@
 package at.fh.technikum.wien.koller.krammer.presentationmodel;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import at.fh.technikum.wien.koller.krammer.commons.Helper;
@@ -14,6 +15,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
 public class KontaktModel {
+	private long id;
 	private StringProperty vorname = new SimpleStringProperty();
 	private StringProperty nachname = new SimpleStringProperty();
 	private StringProperty firmenname = new SimpleStringProperty();
@@ -327,7 +329,16 @@ public class KontaktModel {
 		this.rechnungort.set(rechnungort);
 	}
 	
+	public long getId() {
+		return this.id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
+	}
+	
 	public void setModel(Kontakt k) {
+		this.setId(k.getId());
 		if(k.isFirma()) {
 			Firma f = MERPProxyFactory.getFirmaById(k.getId());
 			
@@ -386,6 +397,7 @@ public class KontaktModel {
 	}
 	
 	public void setModel(KontaktModel km) {
+		this.setId(km.getId());
 		this.setFirmenname(km.getFirmenname());
 		this.setUID(km.getUID());
 		this.setVorname(km.getVorname());
@@ -409,6 +421,70 @@ public class KontaktModel {
 		this.setLieferort(km.getLieferort());
 		this.setLieferplz(km.getLieferplz());
 
+	}
+	
+	public Person getPersonToSave() {
+
+		Person p = new Person();
+		p.setId(this.getId());
+		p.setVorname(this.getVorname());
+		p.setNachname(this.getNachname());
+		p.setSuffix(this.getSuffix());
+		p.setTitel(this.getTitel());
+		if(!Helper.isNullOrEmpty(getGeburtstag())) {
+			try {
+				SimpleDateFormat sdfToDate = new SimpleDateFormat( "dd/MM/yyyy" ); 
+				p.setGeburtstag(sdfToDate.parse(this.getGeburtstag()));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			p.setGeburtstag(null);
+		}
+		
+		
+		p.getWohnadresse().setAdrrow1(this.getWohnadress1());
+		p.getWohnadresse().setAdrrow2(this.getWohnadress2());
+		p.getWohnadresse().setOrt(this.getWohnort());
+		p.getWohnadresse().setPlz(Integer.parseInt(this.getWohnplz()));
+		
+		p.getRechnungsadresse().setAdrrow1(this.getRechnungadress1());
+		p.getRechnungsadresse().setAdrrow2(this.getRechnungadress2());
+		p.getRechnungsadresse().setOrt(this.getRechnungort());
+		p.getRechnungsadresse().setPlz(Integer.parseInt(this.getRechnungplz()));
+		
+		p.getLieferadresse().setAdrrow1(this.getLieferadress1());
+		p.getLieferadresse().setAdrrow2(this.getLieferadress2());
+		p.getLieferadresse().setOrt(this.getLieferort());
+		p.getLieferadresse().setPlz(Integer.parseInt(this.getLieferplz()));
+		
+		return p;
+	}
+	
+	public Firma getFirmaToSave() {
+		Firma f = new Firma();
+		f.setId(this.getId());
+		
+		f.setName(this.getFirmenname());
+		f.setUid(this.getUID());
+		
+		f.getWohnadresse().setAdrrow1(this.getWohnadress1());
+		f.getWohnadresse().setAdrrow2(this.getWohnadress2());
+		f.getWohnadresse().setOrt(this.getWohnort());
+		f.getWohnadresse().setPlz(Integer.parseInt(this.getWohnplz()));
+		
+		f.getRechnungsadresse().setAdrrow1(this.getRechnungadress1());
+		f.getRechnungsadresse().setAdrrow2(this.getRechnungadress2());
+		f.getRechnungsadresse().setOrt(this.getRechnungort());
+		f.getRechnungsadresse().setPlz(Integer.parseInt(this.getRechnungplz()));
+		
+		f.getLieferadresse().setAdrrow1(this.getLieferadress1());
+		f.getLieferadresse().setAdrrow2(this.getLieferadress2());
+		f.getLieferadresse().setOrt(this.getLieferort());
+		f.getLieferadresse().setPlz(Integer.parseInt(this.getLieferplz()));
+		
+		return f;
 	}
 	
 	

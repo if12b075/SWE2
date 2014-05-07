@@ -11,7 +11,7 @@ public class Helper {
 	public static String excutePost(String targetURL, String urlParameters) {
 		URL url;
 		HttpURLConnection connection = null;
-		System.out.println(urlParameters);
+
 		try {
 			// Create connection
 			url = new URL(targetURL);

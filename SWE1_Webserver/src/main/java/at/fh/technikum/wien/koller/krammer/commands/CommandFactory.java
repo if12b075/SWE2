@@ -21,6 +21,9 @@ public class CommandFactory {
 		case commons.CommandRequestTitel.GET_PERSON_BY_ID:
 			c = new GetPersonByIdCommand();
 			break;
+		case commons.CommandRequestTitel.GET_FIRMA_BY_ID:
+			c = new GetFirmaByIdCommand();
+			break;
 		case commons.CommandRequestTitel.GET_RECHNUNG_BY_ID:
 			c = new GetRechnungByIdCommand();
 			break;
