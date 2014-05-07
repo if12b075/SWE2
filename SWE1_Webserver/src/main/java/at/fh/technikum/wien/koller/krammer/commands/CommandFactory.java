@@ -18,7 +18,6 @@ public class CommandFactory {
 			default:
 				break;
 		}
-		;
 		
 		return c;	
 	}
