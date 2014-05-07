@@ -11,4 +11,5 @@ public class CommandRequestTitel {
 	public static final String UPDATE_RECHNUNG = "UpdateRechnung";
 	public static final String UPDATE_PERSON = "UpdatePerson";
 	public static final String UPDATE_FIRMA = "UpdateFirma";
+
 }
