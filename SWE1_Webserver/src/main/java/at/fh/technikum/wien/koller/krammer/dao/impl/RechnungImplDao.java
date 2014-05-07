@@ -1,6 +1,7 @@
 package at.fh.technikum.wien.koller.krammer.dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import at.fh.technikum.wien.koller.krammer.dao.IRechnungDao;
 import at.fh.technikum.wien.koller.krammer.database.DatabaseConnection;
 import at.fh.technikum.wien.koller.krammer.merp.constants.MicroERPConstants;
 import at.fh.technikum.wien.koller.krammer.models.Rechnung;
+import at.fh.technikum.wien.koller.krammer.models.Rechnungszeile;
 
 public class RechnungImplDao implements IRechnungDao {
 	private static Connection c = DatabaseConnection.getConnection(MicroERPConstants.DB_CON);
@@ -23,7 +25,34 @@ public class RechnungImplDao implements IRechnungDao {
 
 	@Override
 	public void update(Rechnung r) {
-		// TODO Auto-generated method stub
+		String updateRechnung = "UPDATE TB_RECHNUNG SET TB_KONTAKT_ID = ?, KOMMENTAR = ?, "
+				+ "BEZAHLT = ?, FAELLIGKEIT = ?, NACHRICHT = ? WHERE ID_RECHNUNG = ?";
+		
+		try {
+			// Rechnungsdaten
+			PreparedStatement updateRechnungStatement = c.prepareStatement(updateRechnung);
+			
+			updateRechnungStatement.setLong(1, r.getKontaktid());
+			updateRechnungStatement.setString(2, r.getKommentar());
+			updateRechnungStatement.setDate(3, (Date) r.getBezahltAm());
+			updateRechnungStatement.setDate(4, (Date) r.getFaelligkeitsdatum());
+			updateRechnungStatement.setString(5, r.getNachricht());
+			updateRechnungStatement.setLong(6, r.getId());
+			
+			updateRechnungStatement.executeUpdate();
+			updateRechnungStatement.close();
+			
+			// Rechnungszeilen
+			RechnungszeileImplDao rid = new RechnungszeileImplDao();
+			
+			for(int i = 0; i < r.getRechnungszeilen().size(); i++) {
+				rid.update(r.getRechnungszeilen().get(i));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 
@@ -42,7 +71,6 @@ public class RechnungImplDao implements IRechnungDao {
 			try {
 				PreparedStatement selectRechnungStatement = c.prepareStatement(selectRechnung);
 
-				
 				ResultSet rs = selectRechnungStatement.executeQuery();
 				
 				while(rs.next()) {
@@ -66,6 +94,46 @@ public class RechnungImplDao implements IRechnungDao {
 			}
 			
 		return rechnungsListe;
+	}
+
+	@Override
+	public Rechnung getRechnungById(long id) {
+		Rechnung rg = new Rechnung();
+				
+		String selectRechnungById = "SELECT * FROM TB_RECHNUNG WHERE ID_RECHNUNG = ?";
+		
+		try {
+			// Rechnungsdaten
+			PreparedStatement selectRechnungByIdStatement = c.prepareStatement(selectRechnungById);
+			selectRechnungByIdStatement.setLong(1, id);
+			
+			ResultSet rs = selectRechnungByIdStatement.executeQuery();
+			
+			if(rs.next()) {				
+				rg.setId(rs.getLong("ID_RECHNUNG"));
+				rg.setKontaktid(rs.getLong("TB_KONTAKT_ID"));
+				rg.setKommentar(rs.getString("KOMMENTAR"));
+				rg.setBezahltAm(rs.getDate("BEZAHLT"));
+				rg.setDatum(rs.getDate("DATUM"));
+				rg.setFaelligkeitsdatum(rs.getDate("FAELLIGKEIT"));
+				rg.setNachricht(rs.getString("NACHRICHT"));
+				rg.setRechnungsnummer(rs.getLong("RG_NUMMER"));
+			}
+			
+			selectRechnungByIdStatement.close();
+			
+			// Rechnungszeilen
+			RechnungszeileImplDao rid = new RechnungszeileImplDao();
+			ArrayList<Rechnungszeile> rgRowList = new ArrayList<Rechnungszeile>();
+			
+			rgRowList = rid.getAlleRechnungszeilenZuRechnung(id); 
+			rg.setRechnungszeilen(rgRowList);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return rg;
 	}
 
 }

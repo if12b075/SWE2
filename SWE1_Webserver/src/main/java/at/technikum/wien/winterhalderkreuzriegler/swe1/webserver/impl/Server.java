@@ -50,7 +50,7 @@ public class Server {
 	 * @param args
 	 */
 	public static void main(String[] args) throws IOException {
-
+		
 		// Plugins das erste mal laden und Starten
 		Cache.refreshCache();
 

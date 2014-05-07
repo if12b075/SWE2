@@ -6,4 +6,5 @@ public interface IFirmaDao {
 	public void create(Firma f);
 	public void update(Firma f);
 	public void delete(long id);
+	public Firma getFirmaById(long id);
 }
