@@ -3,6 +3,7 @@ package at.fh.technikum.wien.koller.krammer.proxy;
 import java.util.List;
 
 import at.fh.technikum.wien.koller.krammer.filter.KontaktFilter;
+import at.fh.technikum.wien.koller.krammer.models.Firma;
 import at.fh.technikum.wien.koller.krammer.models.Kontakt;
 import at.fh.technikum.wien.koller.krammer.models.Person;
 import at.fh.technikum.wien.koller.krammer.models.Rechnung;
@@ -10,13 +11,16 @@ import at.fh.technikum.wien.koller.krammer.proxy.mock.GetAlleKontakteMock;
 import at.fh.technikum.wien.koller.krammer.proxy.mock.GetPersonByIdMock;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetAlleKontakteRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetAlleRechnungenRequest;
+import at.fh.technikum.wien.koller.krammer.proxy.request.GetFirmaByIdRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetKontaktFilterRequest;
+import at.fh.technikum.wien.koller.krammer.proxy.request.GetPersonByIdRequest;
 
 public class MERPProxyFactory {
 	private static final boolean MOCK_ALLE_KONTAKTE = false;
 	private static final boolean MOCK_ALLE_RECHNUNGEN = false;
 	private static final boolean MOCK_KONTAKTFILTER = false;
-	private static final boolean MOCK_GET_PERSON_BY_ID = true;
+	private static final boolean MOCK_GET_PERSON_BY_ID = false;
+	private static final boolean MOCK_GET_FIRMA_BY_ID = false;
 
 	@SuppressWarnings("static-access")
 	public static List<Kontakt> getAlleKontakte() {
@@ -41,10 +45,19 @@ public class MERPProxyFactory {
 			return (new GetKontaktFilterRequest()).getResponse(kf);
 	}
 	
+	@SuppressWarnings("static-access")
 	public static Person getPersonById(long id) {
 		if (MOCK_GET_PERSON_BY_ID)
 			return GetPersonByIdMock.getPersonById(id);
 		else
+			return (new GetPersonByIdRequest().getPersonById(id));
+	}
+	
+	@SuppressWarnings("static-access")
+	public static Firma getFirmaById(long id) {
+		if (MOCK_GET_FIRMA_BY_ID)
 			return null;
+		else
+			return (new GetFirmaByIdRequest().getFirmaById(id));
 	}
 }

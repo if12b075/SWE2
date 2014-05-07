@@ -21,18 +21,18 @@
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="126.0" prefWidth="764.0">
                   <children>
-                    <TextField id="pvorname" layoutX="128.0" layoutY="5.0" prefWidth="597.0" promptText="Bitte geben Sie die 1. Adresszeile ein" />
+                    <TextField id="pvorname" fx:id="wohnaddr1" layoutX="128.0" layoutY="5.0" prefWidth="597.0" promptText="Bitte geben Sie die 1. Adresszeile ein" />
                     <Label layoutX="15.0" layoutY="6.0" text="Adresszeile 1:" textFill="BLACK">
                       <font>
                         <Font name="Arial Bold" size="14.0" fx:id="x1" />
                       </font>
                     </Label>
-                    <TextField id="pvorname" layoutX="128.0" layoutY="31.0" prefWidth="597.0" promptText="Bitte geben Sie die 2. Adresszeile ein" />
+                    <TextField id="pvorname" fx:id="wohnaddr2" layoutX="128.0" layoutY="31.0" prefWidth="597.0" promptText="Bitte geben Sie die 2. Adresszeile ein" />
                     <Label font="$x1" layoutX="15.0" layoutY="32.0" text="Adresszeile 2:" textFill="BLACK" />
                     <Label font="$x1" layoutX="15.0" layoutY="59.0" text="Ort:" textFill="BLACK" />
-                    <TextField id="pvorname" layoutX="128.0" layoutY="59.0" prefWidth="307.0" promptText="Bitte geben Sie den Ort ein" />
+                    <TextField id="pvorname" fx:id="wohnort" layoutX="128.0" layoutY="59.0" prefWidth="307.0" promptText="Bitte geben Sie den Ort ein" />
                     <Label font="$x1" layoutX="451.0" layoutY="59.0" text="PLZ:" textFill="BLACK" />
-                    <TextField id="pvorname" layoutX="491.0" layoutY="59.0" prefWidth="234.00009999999747" promptText="Bitte geben Sie die PLZ ein" />
+                    <TextField id="pvorname" fx:id="wohnplz" layoutX="491.0" layoutY="59.0" prefWidth="234.00009999999747" promptText="Bitte geben Sie die PLZ ein" />
                   </children>
                 </AnchorPane>
               </content>
@@ -44,14 +44,14 @@
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="126.0" prefWidth="764.0">
                   <children>
-                    <TextField id="pvorname" layoutX="128.0" layoutY="5.0" prefWidth="597.0" promptText="Bitte geben Sie die 1. Adresszeile ein" />
+                    <TextField id="pvorname" fx:id="rechnungaddr1" layoutX="128.0" layoutY="5.0" prefWidth="597.0" promptText="Bitte geben Sie die 1. Adresszeile ein" />
                     <Label font="$x1" layoutX="15.0" layoutY="6.0" text="Adresszeile 1:" textFill="BLACK" />
-                    <TextField id="pvorname" layoutX="128.0" layoutY="31.0" prefWidth="597.0" promptText="Bitte geben Sie die 2. Adresszeile ein" />
+                    <TextField id="pvorname" fx:id="rechnungaddr2" layoutX="128.0" layoutY="31.0" prefWidth="597.0" promptText="Bitte geben Sie die 2. Adresszeile ein" />
                     <Label font="$x1" layoutX="15.0" layoutY="32.0" text="Adresszeile 2:" textFill="BLACK" />
                     <Label font="$x1" layoutX="15.0" layoutY="59.0" text="Ort:" textFill="BLACK" />
-                    <TextField id="pvorname" layoutX="128.0" layoutY="59.0" prefWidth="307.0" promptText="Bitte geben Sie den Ort ein" />
+                    <TextField id="pvorname" fx:id="rechnungort" layoutX="128.0" layoutY="59.0" prefWidth="307.0" promptText="Bitte geben Sie den Ort ein" />
                     <Label font="$x1" layoutX="451.0" layoutY="59.0" text="PLZ:" textFill="BLACK" />
-                    <TextField id="pvorname" layoutX="491.0" layoutY="59.0" prefWidth="234.00009999999747" promptText="Bitte geben Sie die PLZ ein" />
+                    <TextField id="pvorname" fx:id="rechnungplz" layoutX="491.0" layoutY="59.0" prefWidth="234.00009999999747" promptText="Bitte geben Sie die PLZ ein" />
                   </children>
                 </AnchorPane>
               </content>
@@ -60,14 +60,14 @@
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="126.0" prefWidth="764.0">
                   <children>
-                    <TextField id="pvorname" layoutX="128.0" layoutY="5.0" prefWidth="597.0" promptText="Bitte geben Sie die 1. Adresszeile ein" />
+                    <TextField id="pvorname" fx:id="lieferaddr1" layoutX="128.0" layoutY="5.0" prefWidth="597.0" promptText="Bitte geben Sie die 1. Adresszeile ein" />
                     <Label font="$x1" layoutX="15.0" layoutY="6.0" text="Adresszeile 1:" textFill="BLACK" />
-                    <TextField id="pvorname" layoutX="128.0" layoutY="31.0" prefWidth="597.0" promptText="Bitte geben Sie die 2. Adresszeile ein" />
+                    <TextField id="pvorname" fx:id="lieferaddr2" layoutX="128.0" layoutY="31.0" prefWidth="597.0" promptText="Bitte geben Sie die 2. Adresszeile ein" />
                     <Label font="$x1" layoutX="15.0" layoutY="32.0" text="Adresszeile 2:" textFill="BLACK" />
                     <Label font="$x1" layoutX="15.0" layoutY="59.0" text="Ort:" textFill="BLACK" />
-                    <TextField id="pvorname" layoutX="128.0" layoutY="59.0" prefWidth="307.0" promptText="Bitte geben Sie den Ort ein" />
+                    <TextField id="pvorname" fx:id="lieferort" layoutX="128.0" layoutY="59.0" prefWidth="307.0" promptText="Bitte geben Sie den Ort ein" />
                     <Label font="$x1" layoutX="451.0" layoutY="59.0" text="PLZ:" textFill="BLACK" />
-                    <TextField id="pvorname" layoutX="491.0" layoutY="59.0" prefWidth="234.00009999999747" promptText="Bitte geben Sie die PLZ ein" />
+                    <TextField id="pvorname" fx:id="lieferplz" layoutX="491.0" layoutY="59.0" prefWidth="234.00009999999747" promptText="Bitte geben Sie die PLZ ein" />
                   </children>
                 </AnchorPane>
               </content>
@@ -82,42 +82,7 @@
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="139.0" prefWidth="764.0">
                   <children>
-                    <Label font="$x1" layoutX="14.0" layoutY="70.0" text="Firma:" textFill="BLACK" />
-                    <Label font="$x1" layoutX="388.0" layoutY="100.0" text="Monat:" textFill="BLACK" />
-                    <ComboBox id="pmonat" layoutX="469.0" layoutY="100.0" minHeight="17.0" prefHeight="17.0">
-                      <items>
-                        <FXCollections fx:factory="observableArrayList">
-                          <String fx:value="Item 1" />
-                          <String fx:value="Item 2" />
-                          <String fx:value="Item 3" />
-                        </FXCollections>
-                      </items>
-                    </ComboBox>
-                    <Label font="$x1" layoutX="559.0" layoutY="102.0" text="Jahr:" textFill="BLACK" />
-                    <ComboBox id="pjahr" layoutX="630.0" layoutY="100.0" prefHeight="19.0" prefWidth="97.0">
-                      <items>
-                        <FXCollections fx:factory="observableArrayList">
-                          <String fx:value="Item 1" />
-                          <String fx:value="Item 2" />
-                          <String fx:value="Item 3" />
-                        </FXCollections>
-                      </items>
-                    </ComboBox>
-                    <ComboBox id="ptag" layoutX="289.0" layoutY="100.0" minHeight="17.0" prefHeight="17.0">
-                      <items>
-                        <FXCollections fx:factory="observableArrayList">
-                          <String fx:value="Item 1" />
-                          <String fx:value="Item 2" />
-                          <String fx:value="Item 3" />
-                        </FXCollections>
-                      </items>
-                    </ComboBox>
-                    <Label font="$x1" layoutX="243.0" layoutY="100.0" text="Tag:" textFill="BLACK" />
-                    <Label layoutX="116.0" layoutY="104.0" text="Geburtstag ist optional" textFill="#bfbfbf">
-                      <font>
-                        <Font name="Arial Bold" size="10.0" />
-                      </font>
-                    </Label>
+                    <Label font="$x1" layoutX="14.0" layoutY="72.0" text="Firma:" textFill="BLACK" />
                     <Label font="$x1" layoutX="14.0" layoutY="100.0" text="Geburtstag:" textFill="BLACK" />
                     <ImageView id="ploeschfirma" fitHeight="20.0" fitWidth="20.0" layoutX="704.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
                       <image>
@@ -125,21 +90,26 @@
                       </image>
                     </ImageView>
                     <Button id="psuche" cancelButton="false" defaultButton="false" font="$x2" layoutX="603.0" layoutY="70.0" minHeight="17.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="84.0" rotate="0.0" text="Suche" textFill="BLACK" underline="false" />
-                    <TextField id="pfirma" layoutX="138.0" layoutY="70.0" prefWidth="448.0" promptText="Verknüpfung zu einer Firma" />
+                    <TextField id="pfirma" layoutX="153.0" layoutY="70.0" prefWidth="433.0" promptText="Verknüpfung zu einer Firma" />
                     <ImageView fitHeight="20.000099999997474" fitWidth="20.000099999997474" layoutX="566.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
                       <image>
                         <Image url="@../../../../../../../images/search.png" />
                       </image>
                     </ImageView>
-                    <ImageView id="pattention" fitHeight="20.0" fitWidth="20.0" layoutX="113.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView id="pattention" fitHeight="20.0" fitWidth="20.0" layoutX="117.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
                       <image>
                         <Image url="@../../../../../../../images/attention.png" />
                       </image>
                     </ImageView>
-                    <TextField id="pnachname" fx:id="personnachname" layoutX="113.0" layoutY="36.0" prefWidth="614.0" promptText="Bitte geben Sie den Nachnamen ein" />
-                    <Label font="$x1" layoutX="14.0" layoutY="36.0" text="Nachname:" textFill="BLACK" />
-                    <TextField id="pvorname" fx:id="personvorname" layoutX="113.0" layoutY="3.0" prefWidth="614.0" promptText="Bitte geben Sie den Vornamen ein" />
-                    <Label font="$x1" layoutX="14.0" layoutY="3.0" text="Vorname:" textFill="BLACK" />
+                    <TextField id="pnachname" fx:id="personnachname" layoutX="115.0" layoutY="45.0" prefWidth="614.0" promptText="Bitte geben Sie den Nachnamen ein" />
+                    <Label font="$x1" layoutX="14.0" layoutY="45.0" text="Nachname:" textFill="BLACK" />
+                    <TextField id="pvorname" fx:id="personvorname" layoutX="115.0" layoutY="23.0" prefWidth="614.0" promptText="Bitte geben Sie den Vornamen ein" />
+                    <Label font="$x1" layoutX="14.0" layoutY="23.0" text="Vorname:" textFill="BLACK" />
+                    <TextField id="pnachname" fx:id="personsuffix" layoutX="115.0" layoutY="1.0" prefWidth="224.0" promptText="Bitte geben Sie denSuffix ein" />
+                    <Label font="$x1" layoutX="14.0" layoutY="1.0" text="Suffix:" textFill="BLACK" />
+                    <TextField id="pnachname" fx:id="persontitel" layoutX="450.0" layoutY="1.0" prefWidth="279.0" promptText="Bitte geben Sie den Titel ein" />
+                    <Label font="$x1" layoutX="375.0" layoutY="1.0" text="Titel:" textFill="BLACK" />
+                    <TextField id="pnachname" fx:id="persongeburtstag" layoutX="115.0" layoutY="98.0" prefWidth="614.0" promptText="Geburtstag ist optional format dd/mm/yyyy" />
                   </children>
                 </AnchorPane>
               </content>
@@ -166,14 +136,14 @@
         </AnchorPane>
       </top>
     </BorderPane>
-    <AnchorPane layoutX="0.0" layoutY="586.0" prefHeight="83.0" prefWidth="800.0">
+    <AnchorPane layoutX="0.0" layoutY="621.0" minHeight="48.0" prefHeight="48.0" prefWidth="800.0">
       <children>
-        <ImageView id="abbruch" fitHeight="32.0" fitWidth="32.0" layoutX="337.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView id="abbruch" fitHeight="32.0" fitWidth="32.0" layoutX="337.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
           <image>
             <Image url="@../../../../../../../images/error.png" />
           </image>
         </ImageView>
-        <ImageView id="speichern" fitHeight="32.0" fitWidth="32.0" layoutX="420.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView id="speichern" fitHeight="32.0" fitWidth="32.0" layoutX="420.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
           <image>
             <Image url="@../../../../../../../images/save.png" />
           </image>

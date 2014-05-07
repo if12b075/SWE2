@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 
 import at.fh.technikum.wien.koller.krammer.filter.KontaktFilter;
 import at.fh.technikum.wien.koller.krammer.models.Kontakt;
-import at.fh.technikum.wien.koller.krammer.models.Person;
 import at.fh.technikum.wien.koller.krammer.presentationmodel.KontaktModel;
 import at.fh.technikum.wien.koller.krammer.proxy.MERPProxyFactory;
 import javafx.collections.FXCollections;
@@ -56,18 +55,7 @@ public class MainController extends AbstractController {
 	public void onKontaktBearbeitenClick() throws IOException {
 		if(kontaktlist.getSelectionModel().getSelectedItem() != null) {
 			Kontakt k = kl.get(kontaktlist.getSelectionModel().getSelectedIndex());
-			if(k.isFirma()) {
-				
-			} else {
-				Person p = MERPProxyFactory.getPersonById(k.getId());
-				
-				km.setVorname(p.getVorname());
-				km.setNachname(p.getNachname());
-				System.out.println(km.getNachname());
-			}
-			
-			
-			
+			km.setModel(k);
 		}
 		
 		showDialog(

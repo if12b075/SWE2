@@ -21,6 +21,36 @@ public class KontaktController extends AbstractController{
 	private TextField personvorname;
 	@FXML
 	private TextField personnachname;
+	@FXML
+	private TextField personsuffix;
+	@FXML
+	private TextField persontitel;
+	@FXML
+	private TextField persongeburtstag;
+	@FXML
+	private TextField wohnaddr1;
+	@FXML
+	private TextField wohnaddr2;
+	@FXML
+	private TextField wohnort;
+	@FXML
+	private TextField wohnplz;
+	@FXML
+	private TextField rechnungaddr1;
+	@FXML
+	private TextField rechnungaddr2;
+	@FXML
+	private TextField rechnungort;
+	@FXML
+	private TextField rechnungplz;
+	@FXML
+	private TextField lieferaddr1;
+	@FXML
+	private TextField lieferaddr2;
+	@FXML
+	private TextField lieferort;
+	@FXML
+	private TextField lieferplz;
 	
 	private KontaktModel kontaktModel;
 	
@@ -34,20 +64,32 @@ public class KontaktController extends AbstractController{
 		
 		personvorname.textProperty().bindBidirectional(kontaktModel.vornameProperty());
 		personnachname.textProperty().bindBidirectional(kontaktModel.nachnameProperty());
-	    firmaname.textProperty().bindBidirectional(kontaktModel.firmennameProperty());
+		personsuffix.textProperty().bindBidirectional(kontaktModel.suffixProperty());
+		persontitel.textProperty().bindBidirectional(kontaktModel.titelProperty());
+		persongeburtstag.textProperty().bindBidirectional(kontaktModel.geburtstagProperty());
+		
+		firmaname.textProperty().bindBidirectional(kontaktModel.firmennameProperty());
 	    firmauid.textProperty().bindBidirectional(kontaktModel.UIDProperty());
+		
+		wohnaddr1.textProperty().bindBidirectional(kontaktModel.wohnadress1Property());
+		wohnaddr2.textProperty().bindBidirectional(kontaktModel.wohnadress2Property());
+		wohnort.textProperty().bindBidirectional(kontaktModel.wohnortProperty());
+		wohnplz.textProperty().bindBidirectional(kontaktModel.wohnplzProperty());
+		
+		rechnungaddr1.textProperty().bindBidirectional(kontaktModel.rechnungadress1Property());
+		rechnungaddr2.textProperty().bindBidirectional(kontaktModel.rechnungadress2Property());
+		rechnungort.textProperty().bindBidirectional(kontaktModel.rechnungortProperty());
+	    rechnungplz.textProperty().bindBidirectional(kontaktModel.rechnungplzProperty());
+	    
+	    lieferaddr1.textProperty().bindBidirectional(kontaktModel.lieferadress1Property());
+	    lieferaddr2.textProperty().bindBidirectional(kontaktModel.lieferadress2Property());
+	    lieferort.textProperty().bindBidirectional(kontaktModel.lieferortProperty());
+	    lieferplz.textProperty().bindBidirectional(kontaktModel.lieferplzProperty());
 	}
-
 
 	@Override
 	public void setModel(Object model) {
-		KontaktModel km = (KontaktModel)model;
-		kontaktModel.setNachname(km.getNachname());
-		kontaktModel.setVorname(km.getVorname());
+		kontaktModel.setModel((KontaktModel) model);
 	}
-	
-	
-	
-	
-	
+
 }
