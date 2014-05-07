@@ -26,7 +26,7 @@ public class GetFirmaByIdCommand implements ICommand {
 	@Override
 	public Response handleRequest(Uri uri, Request request) {	
 		Response r = ResponseBuilder.buildResponse(StatusCode.STATUS_200);
-		IFirmaDao fd = DaoFactory.createFirmaDao();
+		IFirmaDao fd = DaoFactory.createFirmaDao(); 
 		ByteOutputStream temp = new ByteOutputStream();
 		String requestData = "failed";
 
