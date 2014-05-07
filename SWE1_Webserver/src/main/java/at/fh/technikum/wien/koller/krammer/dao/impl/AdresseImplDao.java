@@ -1,7 +1,6 @@
 package at.fh.technikum.wien.koller.krammer.dao.impl;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,14 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.fh.technikum.wien.koller.krammer.dao.IAdresseDao;
-import at.fh.technikum.wien.koller.krammer.dao.IRechnungDao;
-import at.fh.technikum.wien.koller.krammer.dao.IRechnungszeileDao;
 import at.fh.technikum.wien.koller.krammer.database.DatabaseConnection;
 import at.fh.technikum.wien.koller.krammer.merp.constants.MicroERPConstants;
 import at.fh.technikum.wien.koller.krammer.models.Adresse;
 import at.fh.technikum.wien.koller.krammer.models.AdresseEnums;
-import at.fh.technikum.wien.koller.krammer.models.Rechnung;
-import at.fh.technikum.wien.koller.krammer.models.Rechnungszeile;
 
 public class AdresseImplDao implements IAdresseDao {
 	private static Connection c = DatabaseConnection.getConnection(MicroERPConstants.DB_CON);

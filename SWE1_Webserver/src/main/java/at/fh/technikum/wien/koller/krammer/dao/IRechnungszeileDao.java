@@ -1,7 +1,6 @@
 package at.fh.technikum.wien.koller.krammer.dao;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import at.fh.technikum.wien.koller.krammer.models.Rechnungszeile;
 

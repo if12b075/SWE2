@@ -6,17 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import at.fh.technikum.wien.koller.krammer.dao.IPersonDao;
 import at.fh.technikum.wien.koller.krammer.database.DatabaseConnection;
 import at.fh.technikum.wien.koller.krammer.merp.constants.MicroERPConstants;
 import at.fh.technikum.wien.koller.krammer.models.Adresse;
-import at.fh.technikum.wien.koller.krammer.models.AdresseEnums;
 import at.fh.technikum.wien.koller.krammer.models.Person;
-import at.fh.technikum.wien.koller.krammer.models.Rechnungszeile;
 
 public class PersonImplDao implements IPersonDao {
 	private static Connection c = DatabaseConnection.getConnection(MicroERPConstants.DB_CON);
@@ -53,8 +49,6 @@ public class PersonImplDao implements IPersonDao {
 			aid.update(p.getWohnadresse());
 			aid.update(p.getRechnungsadresse());
 			aid.update(p.getLieferadresse());
-						
-			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
