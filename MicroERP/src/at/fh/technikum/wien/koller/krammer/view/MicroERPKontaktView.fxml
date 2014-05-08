@@ -143,7 +143,7 @@
             <Image url="@../../../../../../../images/error.png" />
           </image>
         </ImageView>
-        <ImageView id="speichern" fitHeight="32.0" fitWidth="32.0" layoutX="420.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView id="speichern" fitHeight="32.0" fitWidth="32.0" layoutX="420.0" layoutY="8.0" onMouseClicked="#onKontaktSaveClick" pickOnBounds="true" preserveRatio="true">
           <image>
             <Image url="@../../../../../../../images/save.png" />
           </image>

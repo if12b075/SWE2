@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import at.fh.technikum.wien.koller.krammer.presentationmodel.KontaktModel;
+import at.fh.technikum.wien.koller.krammer.proxy.MERPProxyFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
@@ -90,6 +91,16 @@ public class KontaktController extends AbstractController{
 	@Override
 	public void setModel(Object model) {
 		kontaktModel.setModel((KontaktModel) model);
+	}
+	
+	@FXML
+	public void onKontaktSaveClick() {
+		if(kontaktModel.isFirma()) {
+			
+		} else {
+			if(MERPProxyFactory.updatePerson(kontaktModel.getPersonToSave()))
+				System.out.println("Erfolgreich");
+		}
 	}
 
 }

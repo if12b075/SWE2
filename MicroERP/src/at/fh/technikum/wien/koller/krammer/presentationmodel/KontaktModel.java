@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import at.fh.technikum.wien.koller.krammer.commons.Helper;
+import at.fh.technikum.wien.koller.krammer.models.Adresse;
+import at.fh.technikum.wien.koller.krammer.models.AdresseEnums;
 import at.fh.technikum.wien.koller.krammer.models.Firma;
 import at.fh.technikum.wien.koller.krammer.models.Kontakt;
 import at.fh.technikum.wien.koller.krammer.models.Person;
@@ -16,6 +18,10 @@ import javafx.beans.value.ObservableValue;
 
 public class KontaktModel {
 	private long id;
+	private long wohnadrid;
+	private long rechadrid;
+	private long lieferadrid;
+	private long firmaid; //Testhalber umaendern
 	private StringProperty vorname = new SimpleStringProperty();
 	private StringProperty nachname = new SimpleStringProperty();
 	private StringProperty firmenname = new SimpleStringProperty();
@@ -337,12 +343,40 @@ public class KontaktModel {
 		this.id = id;
 	}
 	
+	public long getWohnadrid() {
+		return wohnadrid;
+	}
+
+	public void setWohnadrid(long wohnadrid) {
+		this.wohnadrid = wohnadrid;
+	}
+
+	public long getRechadrid() {
+		return rechadrid;
+	}
+
+	public void setRechadrid(long rechadrid) {
+		this.rechadrid = rechadrid;
+	}
+
+	public long getLieferadrid() {
+		return lieferadrid;
+	}
+
+	public void setLieferadrid(long lieferadrid) {
+		this.lieferadrid = lieferadrid;
+	}
+
 	public void setModel(Kontakt k) {
 		this.setId(k.getId());
 		if(k.isFirma()) {
 			Firma f = MERPProxyFactory.getFirmaById(k.getId());
 			
 			if(f!=null) {
+				this.setLieferadrid(f.getLieferadresse().getId());
+				this.setRechadrid(f.getRechnungsadresse().getId());
+				this.setWohnadrid(f.getWohnadresse().getId());
+				
 				this.setFirmenname(f.getName());
 				this.setUID(f.getUid());
 				
@@ -367,6 +401,11 @@ public class KontaktModel {
 			Person p = MERPProxyFactory.getPersonById(k.getId());
 			
 			if(p!=null) {
+				firmaid = p.getFirmaid();
+				this.setLieferadrid(p.getLieferadresse().getId());
+				this.setRechadrid(p.getRechnungsadresse().getId());
+				this.setWohnadrid(p.getWohnadresse().getId());
+				
 				this.setVorname(p.getVorname());
 				this.setNachname(p.getNachname());
 				this.setSuffix(p.getSuffix());
@@ -398,6 +437,11 @@ public class KontaktModel {
 	
 	public void setModel(KontaktModel km) {
 		this.setId(km.getId());
+		firmaid = 1;
+		this.setLieferadrid(km.getLieferadrid());
+		this.setRechadrid(km.getRechadrid());
+		this.setWohnadrid(km.getWohnadrid());
+		
 		this.setFirmenname(km.getFirmenname());
 		this.setUID(km.getUID());
 		this.setVorname(km.getVorname());
@@ -427,6 +471,7 @@ public class KontaktModel {
 
 		Person p = new Person();
 		p.setId(this.getId());
+		p.setFirmaid(firmaid);
 		p.setVorname(this.getVorname());
 		p.setNachname(this.getNachname());
 		p.setSuffix(this.getSuffix());
@@ -443,22 +488,13 @@ public class KontaktModel {
 			p.setGeburtstag(null);
 		}
 		
+		p.setWohnadresse(new Adresse(AdresseEnums.WOHNADRESSE, this.getWohnadress1(), this.getWohnadress2(), Integer.parseInt(this.getWohnplz()),this.getWohnort(),this.getWohnadrid()));
 		
-		p.getWohnadresse().setAdrrow1(this.getWohnadress1());
-		p.getWohnadresse().setAdrrow2(this.getWohnadress2());
-		p.getWohnadresse().setOrt(this.getWohnort());
-		p.getWohnadresse().setPlz(Integer.parseInt(this.getWohnplz()));
-		
-		p.getRechnungsadresse().setAdrrow1(this.getRechnungadress1());
-		p.getRechnungsadresse().setAdrrow2(this.getRechnungadress2());
-		p.getRechnungsadresse().setOrt(this.getRechnungort());
-		p.getRechnungsadresse().setPlz(Integer.parseInt(this.getRechnungplz()));
-		
-		p.getLieferadresse().setAdrrow1(this.getLieferadress1());
-		p.getLieferadresse().setAdrrow2(this.getLieferadress2());
-		p.getLieferadresse().setOrt(this.getLieferort());
-		p.getLieferadresse().setPlz(Integer.parseInt(this.getLieferplz()));
-		
+		p.setRechnungsadresse(new Adresse(AdresseEnums.RECHNUNGSADRESSE,this.getRechnungadress1(),this.getRechnungadress2(),Integer.parseInt(this.getRechnungplz()),this.getRechnungort(),this.getRechadrid()));
+
+		p.setLieferadresse(new Adresse(AdresseEnums.LIEFERADRESSE, this.getLieferadress1(), this.getLieferadress2(), Integer.parseInt(this.getLieferplz()),this.getLieferort(),this.getLieferadrid()));
+		System.out.println(p.toString());
+		System.out.println(firmaid);
 		return p;
 	}
 	

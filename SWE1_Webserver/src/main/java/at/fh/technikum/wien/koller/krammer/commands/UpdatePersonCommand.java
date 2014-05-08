@@ -56,10 +56,10 @@ public class UpdatePersonCommand implements ICommand {
 			encoder.writeObject(pd.update(per));
 			encoder.close();
 			*/
-			
-			r.setContentLength(temp.size());
+			requestData = "ok";
+			r.setContentLength(requestData.length());
 			r.setContentType(Globals.XML_MIME);
-			r.setBody(new ByteArrayInputStream(temp.getBytes()));
+			r.setBody(new ByteArrayInputStream(requestData.getBytes()));
 			
 			if(temp != null)
 				temp.close();

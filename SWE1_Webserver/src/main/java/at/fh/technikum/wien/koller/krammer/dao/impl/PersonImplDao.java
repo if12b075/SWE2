@@ -25,7 +25,7 @@ public class PersonImplDao implements IPersonDao {
 
 	@Override
 	public void update(Person p) {		
-		String udpatePerson = "UPDATE TB_PERSON SET TB_FRIMA_ID = ?, TITEL = ?, VORNAME = ?, "
+		String udpatePerson = "UPDATE TB_PERSON SET TB_FIRMA_ID = ?, TITEL = ?, VORNAME = ?, "
 				+ "NACHNAME = ?, SUFFIX = ?, GEB_DATUM = ? WHERE ID_PERSON = ?";
 		
 		try {
@@ -37,7 +37,7 @@ public class PersonImplDao implements IPersonDao {
 			updatePersonStatement.setString(3, p.getVorname());
 			updatePersonStatement.setString(4, p.getNachname());
 			updatePersonStatement.setString(5, p.getSuffix());
-			updatePersonStatement.setDate(6, (Date) p.getGeburtstag());
+			updatePersonStatement.setDate(6, new Date( p.getGeburtstag().getTime()));
 			updatePersonStatement.setLong(7, p.getId());
 			
 			updatePersonStatement.executeUpdate();

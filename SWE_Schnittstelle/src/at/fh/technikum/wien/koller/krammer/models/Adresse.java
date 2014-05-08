@@ -17,6 +17,15 @@ public class Adresse extends AbstractDatabaseObject {
 		this.plz = plz;
 		this.ort = ort;
 	}
+	public Adresse(AdresseEnums adrart, String adrrow1, String adrrow2,
+			int plz, String ort) {
+		super();
+		this.adressart = adrart;
+		this.adrrow1 = adrrow1;
+		this.adrrow2 = adrrow2;
+		this.plz = plz;
+		this.ort = ort;
+	}
 
 	public Adresse() {
 		super();
