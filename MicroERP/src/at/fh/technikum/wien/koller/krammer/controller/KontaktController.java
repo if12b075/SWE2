@@ -3,11 +3,14 @@ package at.fh.technikum.wien.koller.krammer.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import at.fh.technikum.wien.koller.krammer.presentationmodel.CustomControlModel;
 import at.fh.technikum.wien.koller.krammer.presentationmodel.KontaktModel;
 import at.fh.technikum.wien.koller.krammer.proxy.MERPProxyFactory;
+import at.fh.technikum.wien.koller.krammer.view.CustomControl;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
 
 public class KontaktController extends AbstractController{
 	@FXML
@@ -52,13 +55,22 @@ public class KontaktController extends AbstractController{
 	private TextField lieferort;
 	@FXML
 	private TextField lieferplz;
+	@FXML
+	private CustomControl customcontrol;
 	
 	private KontaktModel kontaktModel;
+	private CustomControlModel ccm;
 	
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
 		kontaktModel = new KontaktModel();
+		ccm = new CustomControlModel();
+		
+		ccm.setLabelText("Penis:");
+		ccm.setTextField("penis");
+		ccm.setSuccessImage(new Image("/images/attention.png"));
+		customcontrol.setModel(ccm);
 		
 		personpane.disableProperty().bind(kontaktModel.disableEditPersonBinding());
 		firmapane.disableProperty().bind(kontaktModel.disableEditFirmaBinding());

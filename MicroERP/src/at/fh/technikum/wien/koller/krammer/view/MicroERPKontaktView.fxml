@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import at.fh.technikum.wien.koller.krammer.view.CustomControl?>
 <?import java.lang.*?>
 <?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
@@ -82,13 +83,14 @@
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="139.0" prefWidth="764.0">
                   <children>
-                    <Label font="$x1" layoutX="14.0" layoutY="72.0" text="Firma:" textFill="BLACK" />
+                  <CustomControl fx:id="customcontrol" layoutX="14.0" layoutY="65.0" />
+                 <!--    <Label font="$x1" layoutX="14.0" layoutY="72.0" text="Firma:" textFill="BLACK" /> -->
                     <Label font="$x1" layoutX="14.0" layoutY="100.0" text="Geburtstag:" textFill="BLACK" />
-                    <ImageView id="ploeschfirma" fitHeight="20.0" fitWidth="20.0" layoutX="704.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
+                 <!--    <ImageView id="ploeschfirma" fitHeight="20.0" fitWidth="20.0" layoutX="704.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
                       <image>
                         <Image url="@../../../../../../../images/trash.png" />
                       </image>
-                    </ImageView>
+                    </ImageView> 
                     <Button id="psuche" cancelButton="false" defaultButton="false" font="$x2" layoutX="603.0" layoutY="70.0" minHeight="17.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="84.0" rotate="0.0" text="Suche" textFill="BLACK" underline="false" />
                     <TextField id="pfirma" layoutX="153.0" layoutY="70.0" prefWidth="433.0" promptText="Verknüpfung zu einer Firma" />
                     <ImageView fitHeight="20.000099999997474" fitWidth="20.000099999997474" layoutX="566.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
@@ -100,7 +102,7 @@
                       <image>
                         <Image url="@../../../../../../../images/attention.png" />
                       </image>
-                    </ImageView>
+                    </ImageView> -->
                     <TextField id="pnachname" fx:id="personnachname" layoutX="115.0" layoutY="45.0" prefWidth="614.0" promptText="Bitte geben Sie den Nachnamen ein" />
                     <Label font="$x1" layoutX="14.0" layoutY="45.0" text="Nachname:" textFill="BLACK" />
                     <TextField id="pvorname" fx:id="personvorname" layoutX="115.0" layoutY="23.0" prefWidth="614.0" promptText="Bitte geben Sie den Vornamen ein" />
