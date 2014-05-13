@@ -16,7 +16,25 @@ public class RechnungszeileImplDao implements IRechnungszeileDao {
 
 	@Override
 	public void create(Rechnungszeile r) {
-		// TODO Auto-generated method stub
+		String createRechnungszeile = "INSERT INTO TB_RECHNUNGSZEILE (ID_RECHNUNGSZEILE, "
+				+ "TB_RECHNUNG_ID, BEZEICHNUNG, STUECKPREIS, UST, MENGE)"
+				+ "VALUES (seq_rechnungszeile.NEXTVAL, ?, ?, ?, ?, ?)";
+		try {
+			
+			PreparedStatement createRechnungszeileStatement = c.prepareStatement(createRechnungszeile);
+			
+			createRechnungszeileStatement.setLong(1, r.getRechnungid()); 
+			createRechnungszeileStatement.setString(2, r.getBezeichnung());
+			createRechnungszeileStatement.setFloat(3, r.getStueckpreis());
+			createRechnungszeileStatement.setInt(4, r.getUst());
+			createRechnungszeileStatement.setInt(5, r.getMenge());
+			
+			createRechnungszeileStatement.executeUpdate();
+			createRechnungszeileStatement.close();
+		
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -51,10 +69,9 @@ public class RechnungszeileImplDao implements IRechnungszeileDao {
 
 	@Override
 	public ArrayList<Rechnungszeile> getAlleRechnungszeilenZuRechnung(long rechnungsid) {
-		ArrayList<Rechnungszeile> rgRowList = new ArrayList<Rechnungszeile>();
+		ArrayList<Rechnungszeile> rechnungszeilenListe = new ArrayList<Rechnungszeile>();
 		
 		String selectRechnungszeileById = "SELECT * FROM TB_RECHNUNGSZEILE WHERE TB_RECHNUNG_ID = ?";
-		
 		
 		try {
 			PreparedStatement selectRechnungszeilenByIdStatement;
@@ -67,12 +84,13 @@ public class RechnungszeileImplDao implements IRechnungszeileDao {
 			while(rs.next()) {
 				Rechnungszeile rz = new Rechnungszeile();
 				rz.setId(rs.getLong("ID_RECHNUNGSZEILE"));
+				rz.setRechnungid(rs.getLong("TB_RECHNUNG_ID"));
 				rz.setBezeichnung(rs.getString("BEZEICHNUNG"));
 				rz.setMenge(rs.getInt("MENGE"));
 				rz.setStueckpreis(rs.getFloat("STUECKPREIS"));
 				rz.setUst(rs.getInt("UST"));
 				
-				rgRowList.add(rz);
+				rechnungszeilenListe.add(rz);
 			}
 			
 			selectRechnungszeilenByIdStatement.close();
@@ -81,7 +99,7 @@ public class RechnungszeileImplDao implements IRechnungszeileDao {
 			e.printStackTrace();
 		}
 		
-		return rgRowList;
+		return rechnungszeilenListe;
 	}
 	
 	

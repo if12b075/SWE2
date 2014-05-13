@@ -19,8 +19,27 @@ public class RechnungImplDao implements IRechnungDao {
 	
 	@Override
 	public void create(Rechnung r) {
-		// TODO Auto-generated method stub
+		String createRechnung = "INSERT INTO TB_RECHNUNG (ID_RECHNUNG, TB_KONTAKT_ID, "
+				+ "RG_NUMMER, DATUM, FAELLIGKEIT, BEZAHLT, KOMMENTAR, NACHRICHT) "
+				+ "VALUES (seq_rechnung.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
 		
+		try {
+			PreparedStatement createRechnungStatement = c.prepareStatement(createRechnung);
+			
+			createRechnungStatement.setLong(1, r.getKontaktid());
+			createRechnungStatement.setLong(2, r.getRechnungsnummer());
+			createRechnungStatement.setDate(3, (Date) r.getDatum());
+			createRechnungStatement.setDate(4, (Date) r.getFaelligkeitsdatum());
+			createRechnungStatement.setDate(5, (Date) r.getBezahltAm());
+			createRechnungStatement.setString(6, r.getKommentar());
+			createRechnungStatement.setString(7, r.getNachricht());
+			
+			createRechnungStatement.executeUpdate();
+			createRechnungStatement.close();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

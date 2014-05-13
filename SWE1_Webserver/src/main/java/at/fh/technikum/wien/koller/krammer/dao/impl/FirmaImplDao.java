@@ -18,7 +18,20 @@ public class FirmaImplDao implements IFirmaDao {
 
 	@Override
 	public void create(Firma f) {
-		// TODO Auto-generated method stub
+		String createFirma = "INSERT INTO TB_FIRMA (ID_FIRMA, NAME, UID_NR) VALUES (seq_firma.NEXTVAL, ?, ?)";
+		
+		try {
+			PreparedStatement createFirmaStatement = c.prepareStatement(createFirma);
+			
+			createFirmaStatement.setString(1, f.getName());
+			createFirmaStatement.setString(2, f.getUid());
+			
+			createFirmaStatement.executeUpdate();
+			createFirmaStatement.close();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

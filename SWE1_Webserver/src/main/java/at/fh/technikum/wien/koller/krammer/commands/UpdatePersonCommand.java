@@ -1,8 +1,6 @@
 package at.fh.technikum.wien.koller.krammer.commands;
 
 import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -50,12 +48,6 @@ public class UpdatePersonCommand implements ICommand {
 			pd.update(per);
 			decoder.close();
 			
-			/*
-			final XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(
-					temp));
-			encoder.writeObject(pd.update(per));
-			encoder.close();
-			*/
 			requestData = "ok";
 			r.setContentLength(requestData.length());
 			r.setContentType(Globals.XML_MIME);

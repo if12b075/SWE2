@@ -1,8 +1,6 @@
 package at.fh.technikum.wien.koller.krammer.commands;
 
 import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -50,13 +48,7 @@ public class UpdateRechnungCommand implements ICommand {
 			rd.update(rg);
 			decoder.close();
 			
-			/*
-			final XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(
-					temp));
-			encoder.writeObject(rd.update(rg));
-			encoder.close();
-			*/
-			
+			requestData = "ok";
 			r.setContentLength(temp.size());
 			r.setContentType(Globals.XML_MIME);
 			r.setBody(new ByteArrayInputStream(temp.getBytes()));

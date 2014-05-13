@@ -19,7 +19,26 @@ public class PersonImplDao implements IPersonDao {
 
 	@Override
 	public void create(Person p) {
-		// TODO Auto-generated method stub
+		String createPerson = "INSERT INTO TB_PERSON (ID_PERSON, TB_FIRMA_ID, "
+				+ "TITEL, VORNAME, NACHNAME, SUFFIX, GEB_DATUM) "
+				+ "VALUES (seq_person.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+		
+		try {
+			PreparedStatement createPersonStatement = c.prepareStatement(createPerson);
+			
+			createPersonStatement.setLong(1, p.getFirmaid());
+			createPersonStatement.setString(2, p.getTitel());
+			createPersonStatement.setString(3, p.getVorname());
+			createPersonStatement.setString(4, p.getNachname());
+			createPersonStatement.setString(5, p.getSuffix());
+			createPersonStatement.setDate(6, (Date) p.getGeburtstag());
+			
+			createPersonStatement.executeUpdate();
+			createPersonStatement.close();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

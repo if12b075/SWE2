@@ -1,6 +1,7 @@
 package at.fh.technikum.wien.koller.krammer.models;
 
 public class Rechnungszeile extends AbstractDatabaseObject {
+	private long rechnungid;
 	private String bezeichnung;
 	private float stueckpreis;
 	private int menge;
@@ -20,6 +21,14 @@ public class Rechnungszeile extends AbstractDatabaseObject {
 		this.ust = ust;
 	}
 
+	public long getRechnungid() {
+		return rechnungid;
+	}
+
+	public void setRechnungid(long rechnungid) {
+		this.rechnungid = rechnungid;
+	}
+	
 	public String getBezeichnung() {
 		return bezeichnung;
 	}

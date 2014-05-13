@@ -18,8 +18,23 @@ public class AdresseImplDao implements IAdresseDao {
 
 	@Override
 	public void create(Adresse a) {
-		// TODO Auto-generated method stub
+		String createAdresse = "INSERT INTO TB_ADRESSE (ID_ADRESSE, ADRESSE_Z1, "
+				+ "ADRESSE_Z2, PLZ, ORT) VALUES (seq_adresse.NEXTVAL, ?, ?, ?, ?)";
 		
+		try {
+			PreparedStatement createAdresseStatement = c.prepareStatement(createAdresse);
+			
+			createAdresseStatement.setString(1, a.getAdrrow1());
+			createAdresseStatement.setString(2, a.getAdrrow2());
+			createAdresseStatement.setInt(3, a.getPlz());
+			createAdresseStatement.setString(4, a.getOrt());
+			
+			createAdresseStatement.executeUpdate();
+			createAdresseStatement.close();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
