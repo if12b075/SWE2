@@ -30,8 +30,17 @@ public class CommandFactory {
 		case commons.CommandRequestTitel.UPDATE_PERSON:
 			c = new UpdatePersonCommand();
 			break;
+		case commons.CommandRequestTitel.UPDATE_FIRMA:
+			c = new UpdateFirmaCommand();
+			break;
 		case commons.CommandRequestTitel.UPDATE_RECHNUNG:
 			c = new UpdateRechnungCommand();
+			break;
+		case commons.CommandRequestTitel.CREATE_PERSON:
+			c = new CreatePersonCommand();
+			break;
+		case commons.CommandRequestTitel.CREATE_FIRMA:
+			c = new CreateFirmaCommand();
 			break;
 		}
 		

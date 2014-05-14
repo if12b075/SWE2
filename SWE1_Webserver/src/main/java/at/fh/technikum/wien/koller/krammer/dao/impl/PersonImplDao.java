@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.fh.technikum.wien.koller.krammer.dao.DaoFactory;
+import at.fh.technikum.wien.koller.krammer.dao.IAdresseDao;
+import at.fh.technikum.wien.koller.krammer.dao.IKontaktDao;
 import at.fh.technikum.wien.koller.krammer.dao.IPersonDao;
 import at.fh.technikum.wien.koller.krammer.database.DatabaseConnection;
 import at.fh.technikum.wien.koller.krammer.merp.constants.MicroERPConstants;
@@ -19,26 +22,56 @@ public class PersonImplDao implements IPersonDao {
 
 	@Override
 	public void create(Person p) {
+		long wohnadresseId = 0;
+		long rechnungsadresseId = 0;
+		long lieferadresseId = 0;
+		
 		String createPerson = "INSERT INTO TB_PERSON (ID_PERSON, TB_FIRMA_ID, "
 				+ "TITEL, VORNAME, NACHNAME, SUFFIX, GEB_DATUM) "
-				+ "VALUES (seq_person.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 		
 		try {
+			// Kontakt anlegen
+			IKontaktDao ikd = DaoFactory.createKontaktDao();
+			p.setId(ikd.create());
+		
+			// Person anlegen
 			PreparedStatement createPersonStatement = c.prepareStatement(createPerson);
 			
-			createPersonStatement.setLong(1, p.getFirmaid());
-			createPersonStatement.setString(2, p.getTitel());
-			createPersonStatement.setString(3, p.getVorname());
-			createPersonStatement.setString(4, p.getNachname());
-			createPersonStatement.setString(5, p.getSuffix());
-			createPersonStatement.setDate(6, (Date) p.getGeburtstag());
+			createPersonStatement.setLong(1, p.getId());
+			createPersonStatement.setLong(2, p.getFirmaid());
+			createPersonStatement.setString(3, p.getTitel());
+			createPersonStatement.setString(4, p.getVorname());
+			createPersonStatement.setString(5, p.getNachname());
+			createPersonStatement.setString(6, p.getSuffix());
+			createPersonStatement.setDate(7, new Date(p.getGeburtstag().getTime()));  
 			
 			createPersonStatement.executeUpdate();
 			createPersonStatement.close();
 			
+			// Adressen anlegen
+			IAdresseDao aid = DaoFactory.createAdresseDao();
+			
+			if(p.getWohnadresse() != null) {
+				wohnadresseId = aid.create(p.getWohnadresse());
+			}
+			
+			if(p.getRechnungsadresse() != null) {
+				rechnungsadresseId = aid.create(p.getRechnungsadresse());
+			}
+			
+			if(p.getLieferadresse() != null) {
+				lieferadresseId = aid.create(p.getLieferadresse());
+			}
+			
+			// Kontakt mit Adressen updaten
+			ikd.update(p.getId(), wohnadresseId, rechnungsadresseId, lieferadresseId);
+			
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
+		
+		
 		
 	}
 
@@ -56,14 +89,14 @@ public class PersonImplDao implements IPersonDao {
 			updatePersonStatement.setString(3, p.getVorname());
 			updatePersonStatement.setString(4, p.getNachname());
 			updatePersonStatement.setString(5, p.getSuffix());
-			updatePersonStatement.setDate(6, new Date( p.getGeburtstag().getTime()));
+			updatePersonStatement.setDate(6, new Date(p.getGeburtstag().getTime()));
 			updatePersonStatement.setLong(7, p.getId());
 			
 			updatePersonStatement.executeUpdate();
 			updatePersonStatement.close();
 			
 			// Adressen
-			AdresseImplDao aid = new AdresseImplDao();
+			IAdresseDao aid = DaoFactory.createAdresseDao();
 			
 			aid.update(p.getWohnadresse());
 			aid.update(p.getRechnungsadresse());
@@ -108,7 +141,7 @@ public class PersonImplDao implements IPersonDao {
 			selectPersonByIdStatement.close();
 			
 			// Adressen
-			AdresseImplDao aid = new AdresseImplDao();
+			IAdresseDao aid = DaoFactory.createAdresseDao();
 			List<Adresse> addressList = new ArrayList<Adresse>();
 			
 			addressList = aid.getAlleAdressenVonKontakt(id);

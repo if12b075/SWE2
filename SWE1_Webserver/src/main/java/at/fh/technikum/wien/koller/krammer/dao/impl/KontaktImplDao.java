@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import at.fh.technikum.wien.koller.krammer.dao.IKontaktDao;
 import at.fh.technikum.wien.koller.krammer.database.DatabaseConnection;
@@ -18,6 +19,69 @@ import at.fh.technikum.wien.koller.krammer.models.Person;
 public class KontaktImplDao implements IKontaktDao {
 	private static Connection c = DatabaseConnection.getConnection(MicroERPConstants.DB_CON);
 	
+	@Override
+	public long create() {
+		String createKontakt = "INSERT INTO TB_KONTAKT (ID_KONTAKT) "
+				+ "VALUES (seq_kontakt.NEXTVAL)";
+		
+		try {
+			PreparedStatement createKontaktStatement = c.prepareStatement(createKontakt);
+			
+			createKontaktStatement.executeUpdate();
+			createKontaktStatement.close();
+			
+			// Kontakt ID ermitteln
+			Statement getKontaktIdStatement = c.createStatement();
+			ResultSet rsGetKontaktId = getKontaktIdStatement.executeQuery("SELECT seq_kontakt.CURRVAL FROM TB_KONTAKT");
+			rsGetKontaktId.next();
+			
+			long kontaktId = rsGetKontaktId.getLong(1);
+			getKontaktIdStatement.close();
+			
+			return kontaktId;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+	
+	@Override
+	public void update(long kontaktId, long wAdresse, long rAdresse, long lAdresse) {
+		
+		String updateKontakt = "UPDATE TB_KONTAKT SET ADRESSE = ?, "
+				+ "RG_ADRESSE = ?, LF_ADRESSE = ? WHERE ID_KONTAKT = ?";
+		
+		try {
+			PreparedStatement updateKontaktStatement = c.prepareStatement(updateKontakt);
+			
+			if(wAdresse != 0) {
+				updateKontaktStatement.setLong(1, wAdresse);
+			} else {
+				updateKontaktStatement.setString(1, null);
+			}
+			
+			if(rAdresse != 0) {
+				updateKontaktStatement.setLong(2, rAdresse);
+			} else {
+				updateKontaktStatement.setString(2, null);
+			}
+			
+			if(lAdresse != 0) {
+				updateKontaktStatement.setLong(3, lAdresse);
+			} else {
+				updateKontaktStatement.setString(3, null);
+			}
+			
+			updateKontaktStatement.setLong(4, kontaktId);
+			
+			updateKontaktStatement.executeUpdate();
+			updateKontaktStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 	@Override
 	public List<Kontakt> getAlleKontakte() {

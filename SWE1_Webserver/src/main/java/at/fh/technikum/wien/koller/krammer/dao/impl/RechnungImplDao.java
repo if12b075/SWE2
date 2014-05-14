@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.fh.technikum.wien.koller.krammer.dao.DaoFactory;
 import at.fh.technikum.wien.koller.krammer.dao.IRechnungDao;
+import at.fh.technikum.wien.koller.krammer.dao.IRechnungszeileDao;
 import at.fh.technikum.wien.koller.krammer.database.DatabaseConnection;
 import at.fh.technikum.wien.koller.krammer.merp.constants.MicroERPConstants;
 import at.fh.technikum.wien.koller.krammer.models.Rechnung;
@@ -25,12 +27,12 @@ public class RechnungImplDao implements IRechnungDao {
 		
 		try {
 			PreparedStatement createRechnungStatement = c.prepareStatement(createRechnung);
-			
+					
 			createRechnungStatement.setLong(1, r.getKontaktid());
 			createRechnungStatement.setLong(2, r.getRechnungsnummer());
-			createRechnungStatement.setDate(3, (Date) r.getDatum());
-			createRechnungStatement.setDate(4, (Date) r.getFaelligkeitsdatum());
-			createRechnungStatement.setDate(5, (Date) r.getBezahltAm());
+			createRechnungStatement.setDate(3, new Date (r.getDatum().getTime()));
+			createRechnungStatement.setDate(4, new Date (r.getFaelligkeitsdatum().getTime()));
+			createRechnungStatement.setDate(5, new Date (r.getBezahltAm().getTime()));
 			createRechnungStatement.setString(6, r.getKommentar());
 			createRechnungStatement.setString(7, r.getNachricht());
 			
@@ -53,8 +55,8 @@ public class RechnungImplDao implements IRechnungDao {
 			
 			updateRechnungStatement.setLong(1, r.getKontaktid());
 			updateRechnungStatement.setString(2, r.getKommentar());
-			updateRechnungStatement.setDate(3, (Date) r.getBezahltAm());
-			updateRechnungStatement.setDate(4, (Date) r.getFaelligkeitsdatum());
+			updateRechnungStatement.setDate(3, new Date (r.getBezahltAm().getTime()));
+			updateRechnungStatement.setDate(4, new Date (r.getFaelligkeitsdatum().getTime()));
 			updateRechnungStatement.setString(5, r.getNachricht());
 			updateRechnungStatement.setLong(6, r.getId());
 			
@@ -62,7 +64,7 @@ public class RechnungImplDao implements IRechnungDao {
 			updateRechnungStatement.close();
 			
 			// Rechnungszeilen
-			RechnungszeileImplDao rid = new RechnungszeileImplDao();
+			IRechnungszeileDao rid = DaoFactory.createRechnungszeileDao();
 			
 			for(int i = 0; i < r.getRechnungszeilen().size(); i++) {
 				rid.update(r.getRechnungszeilen().get(i));
@@ -142,7 +144,7 @@ public class RechnungImplDao implements IRechnungDao {
 			selectRechnungByIdStatement.close();
 			
 			// Rechnungszeilen
-			RechnungszeileImplDao rid = new RechnungszeileImplDao();
+			IRechnungszeileDao rid = DaoFactory.createRechnungszeileDao();
 			ArrayList<Rechnungszeile> rgRowList = new ArrayList<Rechnungszeile>();
 			
 			rgRowList = rid.getAlleRechnungszeilenZuRechnung(id); 

@@ -32,4 +32,17 @@ public class KontaktMockDao implements IKontaktDao{
 		return null;
 	}
 
+	@Override
+	public long create() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void update(long kontaktId, long wAdresse, long rAdresse,
+			long lAdresse) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

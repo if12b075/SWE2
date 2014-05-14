@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class AdresseImplDao implements IAdresseDao {
 	private static Connection c = DatabaseConnection.getConnection(MicroERPConstants.DB_CON);
 
 	@Override
-	public void create(Adresse a) {
+	public long create(Adresse a) {
 		String createAdresse = "INSERT INTO TB_ADRESSE (ID_ADRESSE, ADRESSE_Z1, "
 				+ "ADRESSE_Z2, PLZ, ORT) VALUES (seq_adresse.NEXTVAL, ?, ?, ?, ?)";
 		
@@ -32,8 +33,18 @@ public class AdresseImplDao implements IAdresseDao {
 			createAdresseStatement.executeUpdate();
 			createAdresseStatement.close();
 			
+			// Adresse ID ermitteln
+			Statement getAdresseIdStatement = c.createStatement();
+			ResultSet rsGetAdresseIdStatement = getAdresseIdStatement.executeQuery("SELECT seq_adresse.CURRVAL FROM TB_ADRESSE");
+			rsGetAdresseIdStatement.next();
+			
+			long adresseId = rsGetAdresseIdStatement.getLong(1);
+			getAdresseIdStatement.close();
+			
+			return adresseId; 
 		} catch(SQLException e) {
 			e.printStackTrace();
+			return 0;
 		}
 	}
 
