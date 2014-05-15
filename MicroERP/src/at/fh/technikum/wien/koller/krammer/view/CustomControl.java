@@ -2,56 +2,33 @@ package at.fh.technikum.wien.koller.krammer.view;
 
 import java.io.IOException;
 
-import at.fh.technikum.wien.koller.krammer.presentationmodel.CustomControlModel;
-import javafx.fxml.FXML;
+import at.fh.technikum.wien.koller.krammer.controller.AbstractController;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 public class CustomControl extends HBox{
-	@FXML
-	private Label labeltext;
-	@FXML
-	private ImageView successpicture;
-	@FXML
-	private TextField searchtextfield;
-	
-	private CustomControlModel ccm;
+	private AbstractController ac;
 	
 	public CustomControl() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("CustomFieldKontaktKnuepfen.fxml"));
         fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
+        fxmlLoader.setController(fxmlLoader.getController());
         
         try {
-            fxmlLoader.load();
-            ccm = new CustomControlModel();
-            labeltext.textProperty().bindBidirectional(ccm.labelTextProperty());
-            searchtextfield.textProperty().bindBidirectional(ccm.textFieldProperty());
-            successpicture.imageProperty().bindBidirectional(ccm.successImageProperty());
-            
-            
+            fxmlLoader.load();           
+            ac = fxmlLoader.getController();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
     }
-	
-	public void setModel(CustomControlModel cm) {
-		ccm.setModel(cm);
+
+	public AbstractController getAc() {
+		return ac;
 	}
 
-	@FXML
-	public void onSearchClick() {
-		System.out.println("Suche");
-		ccm.setOk(true);
-		
+	public void setAc(AbstractController ac) {
+		this.ac = ac;
 	}
 	
-	@FXML
-	public void onDeleteClick() {
-		System.out.println("delete");
-		ccm.setOk(false);
-	}
+	
 }

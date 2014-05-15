@@ -59,18 +59,11 @@ public class KontaktController extends AbstractController{
 	private CustomControl customcontrol;
 	
 	private KontaktModel kontaktModel;
-	private CustomControlModel ccm;
-	
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
 		kontaktModel = new KontaktModel();
-		ccm = new CustomControlModel();
 		
-		ccm.setLabelText("Penis:");
-		ccm.setTextField("penis");
-		ccm.setSuccessImage(new Image("/images/attention.png"));
-		customcontrol.setModel(ccm);
 		
 		personpane.disableProperty().bind(kontaktModel.disableEditPersonBinding());
 		firmapane.disableProperty().bind(kontaktModel.disableEditFirmaBinding());
@@ -103,16 +96,25 @@ public class KontaktController extends AbstractController{
 	@Override
 	public void setModel(Object model) {
 		kontaktModel.setModel((KontaktModel) model);
+		
+		customcontrol.getAc().setModel(kontaktModel.getCcm());
 	}
 	
 	@FXML
 	public void onKontaktSaveClick() {
 		if(kontaktModel.isFirma()) {
-			
+			if(MERPProxyFactory.updateFirma(kontaktModel.getFirmaToSave()))
+				System.out.println("Erfolgreich");
 		} else {
 			if(MERPProxyFactory.updatePerson(kontaktModel.getPersonToSave()))
 				System.out.println("Erfolgreich");
 		}
+		this.close();
+	}
+	
+	@FXML
+	public void onKontaktCancelClick() {
+		this.close();
 	}
 
 }

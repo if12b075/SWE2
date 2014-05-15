@@ -72,5 +72,9 @@ public class AbstractController implements Initializable {
 	public Object getModel() {
 		return this.model;
 	}
+	
+	public void close() {
+		stage.close();
+	}
 
 }

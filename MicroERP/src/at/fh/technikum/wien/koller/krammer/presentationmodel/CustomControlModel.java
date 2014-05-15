@@ -13,7 +13,9 @@ public class CustomControlModel {
 	private StringProperty labeltext = new SimpleStringProperty();
 	private StringProperty searchtext = new SimpleStringProperty();
 	private ObjectProperty<Image> success = new SimpleObjectProperty<>();
-
+	private Boolean isChangeable;
+	private long kontaktid;
+	
 	private BooleanBinding isOk = new BooleanBinding() {
 		@Override
 		protected boolean computeValue() {
@@ -37,8 +39,10 @@ public class CustomControlModel {
 			}
 		
 		};
-		
+		labeltext.set("Firma: ");
+		success.set(new Image("/images/attention.png"));
 		isOk.addListener(canEditListener);
+		isChangeable = false;
 	}
 
 	public final BooleanBinding isOkBinding() {
@@ -94,11 +98,43 @@ public class CustomControlModel {
 		success.set(new Image("/images/ok.png"));
 	}
 	
+	public Boolean getIsChangeable() {
+		return isChangeable;
+	}
+
+	public void setIsChangeable(Boolean isChangeable) {
+		this.isChangeable = isChangeable;
+	}
+	
+	public long getKontaktid() {
+		return kontaktid;
+	}
+
+	public void setKontaktid(long kontaktid) {
+		this.kontaktid = kontaktid;
+	}
+
 	public void setModel(CustomControlModel cm) {
 		this.setLabelText(cm.getLabelText());
 		this.setOk(cm.isOk());
 		this.setSuccessImage(cm.getSuccessImage());
 		this.setTextField(cm.getTextField());
+		this.isChangeable = cm.getIsChangeable();
+		this.kontaktid = cm.getKontaktid();
+	}
+	
+	public SearchModel getSearchModel() {
+		SearchModel sm = new SearchModel();
+		
+		sm.setSearchname(getTextField());
+		sm.setIsChangeable(isChangeable);
+		sm.setKontaktid(this.kontaktid);
+		if(isChangeable)
+			sm.setIsFirma(null);
+		else
+			sm.setIsFirma(true);
+		
+		return sm;
 	}
 
 }

@@ -9,19 +9,19 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="550.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<AnchorPane prefHeight="550.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.fh.technikum.wien.koller.krammer.controller.SearchController">
   <!-- TODO Add Nodes -->
   <children>
     <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <bottom>
         <AnchorPane prefHeight="54.0" prefWidth="400.0">
           <children>
-            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="146.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="146.0" layoutY="7.0" onMouseClicked="#onCancelClick" pickOnBounds="true" preserveRatio="true">
               <image>
                 <Image url="@../../../../../../../images/error.png" />
               </image>
             </ImageView>
-            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="204.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="savesearch" fitHeight="32.0" fitWidth="32.0" layoutX="204.0" layoutY="7.0" onMouseClicked="#onSaveClick" pickOnBounds="true" preserveRatio="true" visible="false">
               <image>
                 <Image url="@../../../../../../../images/save.png" />
               </image>
@@ -37,7 +37,7 @@
                 <Image url="@../../../../../../../images/info.png" />
               </image>
             </ImageView>
-            <ListView layoutX="9.0" layoutY="23.0" orientation="VERTICAL" pickOnBounds="false" prefHeight="306.0" prefWidth="380.0" />
+            <ListView fx:id="searchlist" layoutX="9.0" layoutY="23.0" onMouseClicked="#onSearchListClick" orientation="VERTICAL" pickOnBounds="false" prefHeight="306.0" prefWidth="380.0" />
             <Label layoutX="23.0" layoutY="0.0" text="Auswahl:" textFill="BLACK">
               <font>
                 <Font name="Arial Bold" size="20.0" />
@@ -53,24 +53,24 @@
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
-                    <TextField layoutX="71.0" layoutY="13.0" prefWidth="292.0" />
+                    <TextField id="search" fx:id="searchname" layoutX="71.0" layoutY="13.0" prefWidth="292.0" />
                     <Label layoutX="14.0" layoutY="14.0" text="Name:" textFill="BLACK">
                       <font>
                         <Font name="Arial Bold" size="14.0" />
                       </font>
                     </Label>
-                    <RadioButton layoutX="71.0" layoutY="40.0" mnemonicParsing="false" text="Firma" textFill="BLACK">
+                    <RadioButton fx:id="searchfirmaradio" layoutX="71.0" layoutY="40.0" mnemonicParsing="false" text="Firma" textFill="BLACK">
                       <font>
                         <Font name="Arial Bold" size="12.0" fx:id="x1" />
                       </font>
                     </RadioButton>
-                    <RadioButton font="$x1" layoutX="136.0" layoutY="40.0" mnemonicParsing="false" text="Person" textFill="BLACK" />
+                    <RadioButton id="person" fx:id="searchpersonradio" font="$x1" layoutX="136.0" layoutY="40.0" mnemonicParsing="false" text="Person" textFill="BLACK" />
                     <ImageView fitHeight="20.000099999997474" fitWidth="20.000099999997474" layoutX="343.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                       <image>
                         <Image url="@../../../../../../../images/search.png" />
                       </image>
                     </ImageView>
-                    <Button cancelButton="false" defaultButton="false" layoutX="277.0" layoutY="48.0" mnemonicParsing="false" prefWidth="84.0" rotate="0.0" text="Suche" textFill="BLACK" underline="false">
+                    <Button cancelButton="false" defaultButton="false" layoutX="277.0" layoutY="48.0" mnemonicParsing="false" onMouseClicked="#onSearchClick" prefWidth="84.0" rotate="0.0" text="Suche" textFill="BLACK" underline="false">
                       <font>
                         <Font name="Arial Bold" size="15.0" fx:id="x2" />
                       </font>
