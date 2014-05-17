@@ -15,6 +15,7 @@ public class CustomControlModel {
 	private ObjectProperty<Image> success = new SimpleObjectProperty<>();
 	private Boolean isChangeable;
 	private long kontaktid;
+	private SearchModel sm;
 	
 	private BooleanBinding isOk = new BooleanBinding() {
 		@Override
@@ -124,7 +125,7 @@ public class CustomControlModel {
 	}
 	
 	public SearchModel getSearchModel() {
-		SearchModel sm = new SearchModel();
+		sm = new SearchModel();
 		
 		sm.setSearchname(getTextField());
 		sm.setIsChangeable(isChangeable);
@@ -133,6 +134,8 @@ public class CustomControlModel {
 			sm.setIsFirma(null);
 		else
 			sm.setIsFirma(true);
+		
+		sm.setCcm(this);
 		
 		return sm;
 	}

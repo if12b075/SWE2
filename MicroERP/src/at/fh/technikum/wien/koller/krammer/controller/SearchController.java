@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import at.fh.technikum.wien.koller.krammer.filter.KontaktFilter;
+import at.fh.technikum.wien.koller.krammer.models.Firma;
 import at.fh.technikum.wien.koller.krammer.models.Kontakt;
-import at.fh.technikum.wien.koller.krammer.presentationmodel.CustomControlModel;
+import at.fh.technikum.wien.koller.krammer.models.Person;
 import at.fh.technikum.wien.koller.krammer.presentationmodel.SearchModel;
 import at.fh.technikum.wien.koller.krammer.proxy.MERPProxyFactory;
 import javafx.collections.FXCollections;
@@ -32,30 +33,24 @@ public class SearchController extends AbstractController {
 
 	private SearchModel sm;
 	private List<Kontakt> kl;
-	private CustomControlModel ccm;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
 		sm = new SearchModel();
-
-		searchname.textProperty().bindBidirectional(sm.searchnameProperty());
 	}
 
 	@Override
 	public void setModel(Object model) {
-		SearchModel search = (SearchModel) model;
-		sm.setSearchname(search.getSearchname());
-		sm.setIsFirma(search.getIsFirma());
-
+		sm = (SearchModel) model;
 		if (sm.getIsFirma() != null) {
 			if (sm.getIsFirma())
 				searchfirmaradio.setSelected(true);
 			else
 				searchpersonradio.setSelected(true);
 		}
-		System.out.println(sm.getIsChangeable());
-		this.searchpersonradio.setDisable(true);
 
+		this.searchpersonradio.setDisable(true);
+		searchname.textProperty().bindBidirectional(sm.searchnameProperty());
 		onSearchClick();
 	}
 
@@ -79,9 +74,18 @@ public class SearchController extends AbstractController {
 
 			if (kl.size() == 1) {
 				Kontakt k = kl.get(0);
-				this.ccm.setKontaktid(k.getId());
-				this.ccm.setTextField(kl.get(0).toString());
-				this.ccm.setOk(true);
+
+				sm.getCcm().setKontaktid(k.getId());
+				if (k.isFirma()) {
+					Firma f = MERPProxyFactory.getFirmaById(k.getId());
+					sm.getCcm().setTextField(f.getName());
+				} else {
+					Person p = MERPProxyFactory.getPersonById(k.getId());
+					sm.getCcm().setTextField(
+							p.getNachname() + " " + p.getVorname());
+				}
+
+				sm.getCcm().setOk(true);
 				this.close();
 			} else {
 				for (int i = 0; i < kl.size(); i++) {
@@ -104,10 +108,17 @@ public class SearchController extends AbstractController {
 		if (searchlist.getSelectionModel().getSelectedItem() != null) {
 			Kontakt k = kl.get(searchlist.getSelectionModel()
 					.getSelectedIndex());
-			this.ccm.setKontaktid(k.getId());
-			this.ccm.setTextField(searchlist.getSelectionModel()
-					.getSelectedItem());
-			this.ccm.setOk(true);
+
+			sm.getCcm().setKontaktid(k.getId());
+			if (k.isFirma()) {
+				Firma f = MERPProxyFactory.getFirmaById(k.getId());
+				sm.getCcm().setTextField(f.getName());
+			} else {
+				Person p = MERPProxyFactory.getPersonById(k.getId());
+				sm.getCcm()
+						.setTextField(p.getNachname() + " " + p.getVorname());
+			}
+			sm.getCcm().setOk(true);
 		}
 		this.close();
 
@@ -116,14 +127,6 @@ public class SearchController extends AbstractController {
 	@FXML
 	public void onCancelClick() {
 		this.close();
-	}
-
-	public CustomControlModel getCcm() {
-		return ccm;
-	}
-
-	public void setCcm(CustomControlModel ccm) {
-		this.ccm = ccm;
 	}
 
 }

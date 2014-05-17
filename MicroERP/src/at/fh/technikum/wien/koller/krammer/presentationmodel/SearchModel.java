@@ -9,6 +9,7 @@ public class SearchModel {
 	private Boolean isFirma = null;
 	private Boolean isChangeable;
 	private long kontaktid;
+	private CustomControlModel ccm;
 	
 	public SearchModel() {
 		
@@ -73,4 +74,14 @@ public class SearchModel {
 		
 		return kf;
 	}
+
+	public CustomControlModel getCcm() {
+		return ccm;
+	}
+
+	public void setCcm(CustomControlModel ccm) {
+		this.ccm = ccm;
+	}
+	
+	
 }

@@ -10,7 +10,6 @@ import at.fh.technikum.wien.koller.krammer.view.CustomControl;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.image.Image;
 
 public class KontaktController extends AbstractController{
 	@FXML
@@ -106,6 +105,7 @@ public class KontaktController extends AbstractController{
 			if(MERPProxyFactory.updateFirma(kontaktModel.getFirmaToSave()))
 				System.out.println("Erfolgreich");
 		} else {
+			kontaktModel.setCcm((CustomControlModel)customcontrol.getAc().getModel());
 			if(MERPProxyFactory.updatePerson(kontaktModel.getPersonToSave()))
 				System.out.println("Erfolgreich");
 		}

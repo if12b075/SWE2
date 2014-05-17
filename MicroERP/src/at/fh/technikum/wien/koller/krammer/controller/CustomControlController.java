@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
-import at.fh.technikum.wien.koller.krammer.models.Kontakt;
 import at.fh.technikum.wien.koller.krammer.presentationmodel.CustomControlModel;
 
 public class CustomControlController extends AbstractController {
@@ -22,7 +21,6 @@ public class CustomControlController extends AbstractController {
 	private TextField searchtextfield;
 	
 	private CustomControlModel ccm;
-	private Kontakt k;
 	
 	
 	@Override
@@ -37,6 +35,10 @@ public class CustomControlController extends AbstractController {
 	public void setModel(Object model) {
 		ccm.setModel((CustomControlModel)model);
 	}
+	
+	public CustomControlModel getModel() {
+		return this.ccm;
+	}
 
 	@FXML
 	public void onSearchClick() {
@@ -49,14 +51,6 @@ public class CustomControlController extends AbstractController {
 			e.printStackTrace();
 		}
 		
-	}
-	
-	public Kontakt getKontakt() {
-		return k;
-	}
-	
-	public void setKontakt(Kontakt k) {
-		this.k = k;
 	}
 	
 	@FXML

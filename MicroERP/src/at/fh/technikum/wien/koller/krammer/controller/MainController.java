@@ -56,6 +56,7 @@ public class MainController extends AbstractController {
 		if(kontaktlist.getSelectionModel().getSelectedItem() != null) {
 			Kontakt k = kl.get(kontaktlist.getSelectionModel().getSelectedIndex());
 			km.setModel(k);
+			km.setUpdate(true);
 		}
 		
 		showDialog(

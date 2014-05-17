@@ -22,6 +22,7 @@ public class KontaktModel {
 	private long rechadrid;
 	private long lieferadrid;
 	private long firmaid;
+	private boolean isUpdate = false;
 
 	private CustomControlModel ccm;
 
@@ -379,6 +380,14 @@ public class KontaktModel {
 		this.ccm.setModel(ccm);
 	}
 
+	public boolean isUpdate() {
+		return isUpdate;
+	}
+
+	public void setUpdate(boolean isUpdate) {
+		this.isUpdate = isUpdate;
+	}
+
 	public void setModel(Kontakt k) {
 		this.setId(k.getId());
 		if (k.isFirma()) {
@@ -460,6 +469,7 @@ public class KontaktModel {
 
 	public void setModel(KontaktModel km) {
 		if (km != null) {
+			this.setUpdate(km.isUpdate());
 			this.setId(km.getId());
 			this.ccm.setModel(km.getCcm());
 			this.setLieferadrid(km.getLieferadrid());
@@ -496,7 +506,8 @@ public class KontaktModel {
 
 		Person p = new Person();
 		p.setId(this.getId());
-		p.setFirmaid(firmaid);
+		System.out.println(this.getCcm().getKontaktid());
+		p.setFirmaid(this.getCcm().getKontaktid());
 		p.setVorname(this.getVorname());
 		p.setNachname(this.getNachname());
 		p.setSuffix(this.getSuffix());
@@ -553,5 +564,91 @@ public class KontaktModel {
 
 		return f;
 	}
+	
+	public boolean validate() {
+		boolean valid = true;
+		if(this.isFirma()) {
+			if(Helper.isNullOrEmpty(this.getFirmenname())) {
+				valid = false;
+				this.setFirmenname("Bitte geben Sie einen Firmennamen ein");
+			}
+			if(Helper.isNullOrEmpty(this.getUID())) {
+				valid = false;
+				this.setUID("Bitte geben Sie eine UID ein");
+			} 
+			
+				
+		} else {
+			
+		}
+		
+		if(Helper.isNullOrEmpty(this.getWohnadress1())) {
+			valid = false;
+			this.setWohnadress1("Bitte geben Sie eine wohnadresse ein");
+		}
+		if(Helper.isNullOrEmpty(this.getWohnadress2())) {
+			this.setWohnadress2("");
+		}
+		if(Helper.isNullOrEmpty(this.getWohnort())) {
+			valid = false;
+			this.setWohnort("Bitte geben Sie den Ort ein");
+		}
+		if(Helper.isNullOrEmpty(this.getWohnplz())) {
+			valid = false;
+			this.setWohnplz("Bitte geben Sie die Wohnplz an");
+			
+		} else {
+			try {
+				Integer.parseInt(this.getWohnplz());
+			} catch(Exception ex) {
+				valid = false;
+				this.setWohnplz("Bitte geben Sie eine gueltige PLZ ein");
+			}
+		}
+		if(Helper.isNullOrEmpty(this.getRechnungadress1())) {
+			this.setRechnungadress1("");
+		}
+		if(Helper.isNullOrEmpty(this.getRechnungadress2())) {
+			this.setRechnungadress2("");
+		}
+		if(Helper.isNullOrEmpty(this.getRechnungort())) {
+			this.setRechnungort("");
+		}
+		if(Helper.isNullOrEmpty(this.getRechnungplz())) {
+			this.setRechnungplz("");
+			
+		} else {
+			try {
+				Integer.parseInt(this.getRechnungplz());
+			} catch(Exception ex) {
+				valid = false;
+				this.setRechnungplz("Bitte geben Sie eine gueltige PLZ ein");
+			}
+		}
+		if(Helper.isNullOrEmpty(this.getLieferadress1())) {
+			this.setLieferadress1("");
+		}
+		if(Helper.isNullOrEmpty(this.getLieferadress2())) {
+			this.setLieferadress2("");
+		}
+		if(Helper.isNullOrEmpty(this.getLieferort())) {
+			this.setLieferort("");
+		}
+		if(Helper.isNullOrEmpty(this.getLieferplz())) {
+			this.setLieferplz("");
+			
+		} else {
+			try {
+				Integer.parseInt(this.getLieferplz());
+			} catch(Exception ex) {
+				valid = false;
+				this.setLieferplz("Bitte geben Sie eine gueltige PLZ ein");
+			}
+		}
+		
+		return valid;
+	}
+	
+	
 
 }
