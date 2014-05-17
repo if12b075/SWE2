@@ -13,11 +13,14 @@ import at.fh.technikum.wien.koller.krammer.presentationmodel.SearchModel;
 import at.fh.technikum.wien.koller.krammer.proxy.MERPProxyFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class SearchController extends AbstractController {
 	@FXML
@@ -37,6 +40,19 @@ public class SearchController extends AbstractController {
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
 		sm = new SearchModel();
+		
+		searchname.setOnKeyPressed(new EventHandler<KeyEvent>()
+				{
+					@Override
+			        public void handle(KeyEvent ke)
+			        {
+			            if (ke.getCode().equals(KeyCode.ENTER))
+			            {
+			            	onSearchClick();
+			            }
+			        }
+			
+				});
 	}
 
 	@Override

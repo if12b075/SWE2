@@ -101,15 +101,32 @@ public class KontaktController extends AbstractController{
 	
 	@FXML
 	public void onKontaktSaveClick() {
-		if(kontaktModel.isFirma()) {
-			if(MERPProxyFactory.updateFirma(kontaktModel.getFirmaToSave()))
-				System.out.println("Erfolgreich");
+		if(kontaktModel.validate()) {
+			if(kontaktModel.isUpdate()) {
+				if(kontaktModel.isFirma()) {
+					if(MERPProxyFactory.updateFirma(kontaktModel.getFirmaToSave()))
+						System.out.println("Erfolgreich");
+				} else {
+					kontaktModel.setCcm((CustomControlModel)customcontrol.getAc().getModel());
+					if(MERPProxyFactory.updatePerson(kontaktModel.getPersonToSave()))
+						System.out.println("Erfolgreich");
+				}
+			} else {
+				if(kontaktModel.isFirma()) {
+					if(MERPProxyFactory.createFirma(kontaktModel.getFirmaToSave()))
+						System.out.println("Erfolgreich");
+				} else {
+					kontaktModel.setCcm((CustomControlModel)customcontrol.getAc().getModel());
+					if(MERPProxyFactory.createPerson(kontaktModel.getPersonToSave()))
+						System.out.println("Erfolgreich");
+				}
+			}
+			
+			this.close();
 		} else {
-			kontaktModel.setCcm((CustomControlModel)customcontrol.getAc().getModel());
-			if(MERPProxyFactory.updatePerson(kontaktModel.getPersonToSave()))
-				System.out.println("Erfolgreich");
+			System.out.println("Bitte alle Felder korrekt ausfuellen!");
 		}
-		this.close();
+		
 	}
 	
 	@FXML

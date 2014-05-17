@@ -26,10 +26,11 @@ public class GetKontaktFilterRequest {
 			String charset = "UTF-8";
 			String url = MERPConstants.HTTP_PLUGIN_URL
 					+ CommandRequestTitel.GET_FILTER_KONTAKTE + "/";
-			
+
 			final XMLEncoder encoder = new XMLEncoder(temp);
 			encoder.writeObject(kf);
 			encoder.close();
+
 			
 			String erg = Helper.excutePost(url, temp.toString(charset));
 

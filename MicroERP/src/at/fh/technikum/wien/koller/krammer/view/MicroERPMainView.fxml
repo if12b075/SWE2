@@ -109,7 +109,7 @@
                   <center>
                     <AnchorPane prefHeight="410.0" prefWidth="656.0">
                       <children>
-                        <ListView fx:id="rechnungslist" layoutX="25.0" layoutY="25.0" orientation="VERTICAL" pickOnBounds="false" prefHeight="399.0" prefWidth="696.0" />
+                        <ListView fx:id="rechnungslist" layoutX="25.0" layoutY="25.0" onMouseClicked="#onRechnungListClick" orientation="VERTICAL" pickOnBounds="false" prefHeight="399.0" prefWidth="696.0" />
                         <Label font="$x1" layoutX="25.0" layoutY="2.0" text="Auswahl:" textFill="BLACK" />
                       </children>
                     </AnchorPane>
@@ -117,7 +117,7 @@
                   <right>
                     <AnchorPane prefHeight="410.0" prefWidth="79.0">
                       <children>
-                        <ImageView fx:id="rechnunghinzufuegen" fitHeight="32.0" fitWidth="32.0" layoutX="27.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="rechnunghinzufuegen" fitHeight="32.0" fitWidth="32.0" layoutX="27.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" visible="false">
                           <image>
                             <Image url="@../../../../../../../images/add.png" />
                           </image>
@@ -147,9 +147,9 @@
                           <content>
                             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="181.0" prefWidth="771.0">
                               <children>
-                                <RadioButton font="$x2" layoutX="243.0" layoutY="106.0" mnemonicParsing="false" text="Person" textFill="BLACK" />
-                                <RadioButton font="$x2" layoutX="171.0" layoutY="103.0" mnemonicParsing="false" prefHeight="21.0" text="Firma" textFill="BLACK" />
-                                <TextField layoutX="171.0" layoutY="74.0" prefWidth="492.0000999999975" />
+                                <RadioButton fx:id="rechnungpersonradio" font="$x2" layoutX="243.0" layoutY="106.0" mnemonicParsing="false" text="Person" textFill="BLACK" />
+                                <RadioButton fx:id="rechnungfirmaradio" font="$x2" layoutX="171.0" layoutY="103.0" mnemonicParsing="false" prefHeight="21.0" text="Firma" textFill="BLACK" />
+                                <TextField fx:id="rechnungname" layoutX="171.0" layoutY="74.0" prefWidth="492.0000999999975" />
                                 <ImageView fitHeight="20.000099999997474" fitWidth="20.000099999997474" layoutX="644.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
                                   <image>
                                     <Image url="@../../../../../../../images/search.png" />
@@ -162,84 +162,22 @@
                                     <Font name="Arial Bold" size="24.0" fx:id="x6" />
                                   </font>
                                 </Label>
-                                <TextField layoutX="171.0" layoutY="42.0" prefWidth="109.0001220703125" />
+                                <TextField fx:id="betrageurovon" layoutX="170.0" layoutY="42.0" prefWidth="109.0001220703125" />
                                 <Label font="$x4" layoutX="14.0" layoutY="14.0" text="Datum:" textFill="BLACK" />
                                 <Label font="$x4" layoutX="121.0" layoutY="14.0" text="von:" textFill="BLACK" />
-                                <ComboBox layoutX="170.0" layoutY="13.0" minHeight="19.0" minWidth="37.0" prefHeight="19.0" prefWidth="50.0" promptText="">
-                                  <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Item 1" />
-                                      <String fx:value="Item 2" />
-                                      <String fx:value="Item 3" />
-                                    </FXCollections>
-                                  </items>
-                                </ComboBox>
-                                <ComboBox layoutX="286.0" layoutY="13.0" minHeight="19.0" prefHeight="19.0" prefWidth="63.0" promptText="">
-                                  <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Item 1" />
-                                      <String fx:value="Item 2" />
-                                      <String fx:value="Item 3" />
-                                    </FXCollections>
-                                  </items>
-                                </ComboBox>
-                                <ComboBox layoutX="227.0" layoutY="13.0" minHeight="19.0" minWidth="37.0" prefHeight="19.0" prefWidth="50.0" promptText="">
-                                  <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Item 1" />
-                                      <String fx:value="Item 2" />
-                                      <String fx:value="Item 3" />
-                                    </FXCollections>
-                                  </items>
-                                </ComboBox>
-                                <Label layoutX="187.0" layoutY="2.0" text="Tag" textFill="BLACK">
-                                  <font>
-                                    <Font name="Arial Bold" size="10.0" fx:id="x5" />
-                                  </font>
-                                </Label>
-                                <Label font="$x5" layoutX="236.0" layoutY="2.0" text="Monat" textFill="BLACK" />
-                                <Label font="$x5" layoutX="303.0" layoutY="-1.0" prefHeight="17.0" text="Jahr" textFill="BLACK" />
                                 <Label font="$x4" layoutX="436.0" layoutY="14.0" text="bis:" textFill="BLACK" />
-                                <ComboBox layoutX="485.0" layoutY="13.0" minHeight="19.0" minWidth="37.0" prefHeight="19.0" prefWidth="50.0" promptText="">
-                                  <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Item 1" />
-                                      <String fx:value="Item 2" />
-                                      <String fx:value="Item 3" />
-                                    </FXCollections>
-                                  </items>
-                                </ComboBox>
-                                <ComboBox layoutX="601.0" layoutY="13.0" minHeight="19.0" prefHeight="19.0" prefWidth="63.0" promptText="">
-                                  <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Item 1" />
-                                      <String fx:value="Item 2" />
-                                      <String fx:value="Item 3" />
-                                    </FXCollections>
-                                  </items>
-                                </ComboBox>
-                                <ComboBox layoutX="542.0" layoutY="13.0" minHeight="19.0" minWidth="37.0" prefHeight="19.0" prefWidth="50.0" promptText="">
-                                  <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Item 1" />
-                                      <String fx:value="Item 2" />
-                                      <String fx:value="Item 3" />
-                                    </FXCollections>
-                                  </items>
-                                </ComboBox>
-                                <Label font="$x5" layoutX="502.0" layoutY="2.0" text="Tag" textFill="BLACK" />
-                                <Label font="$x5" layoutX="551.0" layoutY="2.0" text="Monat" textFill="BLACK" />
-                                <Label font="$x5" layoutX="618.0" layoutY="-1.0" prefHeight="17.0" text="Jahr" textFill="BLACK" />
                                 <Label font="$x4" layoutX="14.0" layoutY="45.0" text="Betrag:" textFill="BLACK" />
                                 <Label font="$x4" layoutX="121.0" layoutY="45.0" text="von:" textFill="BLACK" />
-                                <TextField layoutX="287.0" layoutY="42.0" prefWidth="39.0" text="" />
+                                <TextField fx:id="betragcentvon" layoutX="287.0" layoutY="42.0" prefWidth="39.0" text="" />
                                 <Label font="$x1" layoutX="652.0" layoutY="40.0" text="€" textFill="BLACK" />
                                 <Label font="$x6" layoutX="595.0" layoutY="37.0" prefWidth="8.9998779296875" text="," textFill="BLACK" />
-                                <TextField layoutX="482.0" layoutY="41.0" prefWidth="112.99990000000253" />
+                                <TextField fx:id="betrageurobis" layoutX="482.0" layoutY="41.0" prefWidth="112.99990000000253" />
                                 <Label font="$x4" layoutX="436.0" layoutY="44.0" text="bis:" textFill="BLACK" />
-                                <TextField layoutX="602.0" layoutY="41.0" prefWidth="39.0" text="" />
+                                <TextField fx:id="betragcentbis" layoutX="602.0" layoutY="41.0" prefWidth="39.0" text="" />
                                 <Label font="$x4" layoutX="14.0" layoutY="77.0" text="Kontakt:" textFill="BLACK" />
-                                <Button cancelButton="false" defaultButton="false" font="$x2" layoutX="585.0" layoutY="107.0" mnemonicParsing="false" prefWidth="84.0" rotate="0.0" text="Suche" textFill="BLACK" underline="false" />
+                                <Button cancelButton="false" defaultButton="false" font="$x2" layoutX="585.0" layoutY="107.0" mnemonicParsing="false" onMouseClicked="#onRechnungSearchClick" prefWidth="84.0" rotate="0.0" text="Suche" textFill="BLACK" underline="false" />
+                                <TextField fx:id="rechnungvon" layoutX="170.0" layoutY="14.0" prefWidth="178.0" promptText="dd/MM/yyyy" />
+                                <TextField fx:id="rechnungbis" layoutX="482.0" layoutY="11.0" prefWidth="178.0" promptText="dd/MM/yyyy" />
                               </children>
                             </AnchorPane>
                           </content>

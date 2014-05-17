@@ -348,6 +348,14 @@ public class KontaktModel {
 		this.id = id;
 	}
 
+	public long getFirmaid() {
+		return firmaid;
+	}
+
+	public void setFirmaid(long firmaid) {
+		this.firmaid = firmaid;
+	}
+
 	public long getWohnadrid() {
 		return wohnadrid;
 	}
@@ -394,28 +402,35 @@ public class KontaktModel {
 			Firma f = MERPProxyFactory.getFirmaById(k.getId());
 
 			if (f != null) {
-				this.setLieferadrid(f.getLieferadresse().getId());
-				this.setRechadrid(f.getRechnungsadresse().getId());
-				this.setWohnadrid(f.getWohnadresse().getId());
+				if(f.getLieferadresse() != null) {
+					this.setLieferadrid(f.getLieferadresse().getId());
+					this.setLieferadress1(f.getLieferadresse().getAdrrow1());
+					this.setLieferadress2(f.getLieferadresse().getAdrrow2());
+					this.setLieferort(f.getLieferadresse().getOrt());
+					this.setLieferplz(String.valueOf(f.getLieferadresse().getPlz()));
+				}
+					
+				if(f.getRechnungsadresse() != null) {
+					this.setRechadrid(f.getRechnungsadresse().getId());
+					this.setRechnungadress1(f.getRechnungsadresse().getAdrrow1());
+					this.setRechnungadress2(f.getRechnungsadresse().getAdrrow2());
+					this.setRechnungort(f.getRechnungsadresse().getOrt());
+					this.setRechnungplz(String.valueOf(f.getRechnungsadresse()
+							.getPlz()));
+				}
+					
+				if(f.getWohnadresse() != null) {
+					this.setWohnadrid(f.getWohnadresse().getId());
+					this.setWohnadress1(f.getWohnadresse().getAdrrow1());
+					this.setWohnadress2(f.getWohnadresse().getAdrrow2());
+					this.setWohnort(f.getWohnadresse().getOrt());
+					this.setWohnplz(String.valueOf(f.getWohnadresse().getPlz()));
+				}
 
 				this.setFirmenname(f.getName());
 				this.setUID(f.getUid());
 
-				this.setWohnadress1(f.getWohnadresse().getAdrrow1());
-				this.setWohnadress2(f.getWohnadresse().getAdrrow2());
-				this.setWohnort(f.getWohnadresse().getOrt());
-				this.setWohnplz(String.valueOf(f.getWohnadresse().getPlz()));
-
-				this.setLieferadress1(f.getLieferadresse().getAdrrow1());
-				this.setLieferadress2(f.getLieferadresse().getAdrrow2());
-				this.setLieferort(f.getLieferadresse().getOrt());
-				this.setLieferplz(String.valueOf(f.getLieferadresse().getPlz()));
-
-				this.setRechnungadress1(f.getRechnungsadresse().getAdrrow1());
-				this.setRechnungadress2(f.getRechnungsadresse().getAdrrow2());
-				this.setRechnungort(f.getRechnungsadresse().getOrt());
-				this.setRechnungplz(String.valueOf(f.getRechnungsadresse()
-						.getPlz()));
+				
 			} else
 				System.out.println("Model konnte nicht gesetzt werden!");
 
@@ -427,40 +442,50 @@ public class KontaktModel {
 
 				if (firmaid != 0) {
 					Firma f = MERPProxyFactory.getFirmaById(firmaid);
-
+					this.ccm.setKontaktid(firmaid);
 					this.ccm.setTextField(f.getName());
 					this.ccm.setOk(true);
 				} else {
 					this.ccm.setOk(false);
 				}
 
-				this.setLieferadrid(p.getLieferadresse().getId());
-				this.setRechadrid(p.getRechnungsadresse().getId());
-				this.setWohnadrid(p.getWohnadresse().getId());
+				if(p.getLieferadresse() != null) {
+					this.setLieferadrid(p.getLieferadresse().getId());
+					this.setLieferadress1(p.getLieferadresse().getAdrrow1());
+					this.setLieferadress2(p.getLieferadresse().getAdrrow2());
+					this.setLieferort(p.getLieferadresse().getOrt());
+					this.setLieferplz(String.valueOf(p.getLieferadresse().getPlz()));
+				}
+					
+				if(p.getRechnungsadresse() != null) {
+					this.setRechadrid(p.getRechnungsadresse().getId());
+					this.setRechnungadress1(p.getRechnungsadresse().getAdrrow1());
+					this.setRechnungadress2(p.getRechnungsadresse().getAdrrow2());
+					this.setRechnungort(p.getRechnungsadresse().getOrt());
+					this.setRechnungplz(String.valueOf(p.getRechnungsadresse()
+							.getPlz()));
+				}
+					
+				if(p.getWohnadresse() != null) {
+					this.setWohnadrid(p.getWohnadresse().getId());
+					this.setWohnadress1(p.getWohnadresse().getAdrrow1());
+					this.setWohnadress2(p.getWohnadresse().getAdrrow2());
+					this.setWohnort(p.getWohnadresse().getOrt());
+					this.setWohnplz(String.valueOf(p.getWohnadresse().getPlz()));
+				}
 
 				this.setVorname(p.getVorname());
 				this.setNachname(p.getNachname());
 				this.setSuffix(p.getSuffix());
 				this.setTitel(p.getTitel());
 				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-				String formattedDate = formatter.format(p.getGeburtstag());
-				this.setGeburtstag(formattedDate);
+				
+				if(p.getGeburtstag() != null) {
+					String formattedDate = formatter.format(p.getGeburtstag());
+					this.setGeburtstag(formattedDate);
+				}
+				
 
-				this.setWohnadress1(p.getWohnadresse().getAdrrow1());
-				this.setWohnadress2(p.getWohnadresse().getAdrrow2());
-				this.setWohnort(p.getWohnadresse().getOrt());
-				this.setWohnplz(String.valueOf(p.getWohnadresse().getPlz()));
-
-				this.setLieferadress1(p.getLieferadresse().getAdrrow1());
-				this.setLieferadress2(p.getLieferadresse().getAdrrow2());
-				this.setLieferort(p.getLieferadresse().getOrt());
-				this.setLieferplz(String.valueOf(p.getLieferadresse().getPlz()));
-
-				this.setRechnungadress1(p.getRechnungsadresse().getAdrrow1());
-				this.setRechnungadress2(p.getRechnungsadresse().getAdrrow2());
-				this.setRechnungort(p.getRechnungsadresse().getOrt());
-				this.setRechnungplz(String.valueOf(p.getRechnungsadresse()
-						.getPlz()));
 			} else
 				System.out.println("Model konnte nicht gesetzt werden!");
 		}
@@ -472,6 +497,7 @@ public class KontaktModel {
 			this.setUpdate(km.isUpdate());
 			this.setId(km.getId());
 			this.ccm.setModel(km.getCcm());
+		    this.setFirmaid(km.getFirmaid());
 			this.setLieferadrid(km.getLieferadrid());
 			this.setRechadrid(km.getRechadrid());
 			this.setWohnadrid(km.getWohnadrid());
@@ -506,7 +532,7 @@ public class KontaktModel {
 
 		Person p = new Person();
 		p.setId(this.getId());
-		System.out.println(this.getCcm().getKontaktid());
+
 		p.setFirmaid(this.getCcm().getKontaktid());
 		p.setVorname(this.getVorname());
 		p.setNachname(this.getNachname());
@@ -517,26 +543,38 @@ public class KontaktModel {
 				SimpleDateFormat sdfToDate = new SimpleDateFormat("dd/MM/yyyy");
 				p.setGeburtstag(sdfToDate.parse(this.getGeburtstag()));
 			} catch (ParseException e) {
-				System.out.println("Datum falsches Format");
 				e.printStackTrace();
 			}
 		} else {
 			p.setGeburtstag(null);
 		}
 
-		p.setWohnadresse(new Adresse(AdresseEnums.WOHNADRESSE, this
-				.getWohnadress1(), this.getWohnadress2(), Integer.parseInt(this
-				.getWohnplz()), this.getWohnort(), this.getWohnadrid()));
-
-		p.setRechnungsadresse(new Adresse(AdresseEnums.RECHNUNGSADRESSE, this
-				.getRechnungadress1(), this.getRechnungadress2(), Integer
-				.parseInt(this.getRechnungplz()), this.getRechnungort(), this
-				.getRechadrid()));
-
-		p.setLieferadresse(new Adresse(AdresseEnums.LIEFERADRESSE, this
-				.getLieferadress1(), this.getLieferadress2(), Integer
-				.parseInt(this.getLieferplz()), this.getLieferort(), this
-				.getLieferadrid()));
+		if(Helper.isNullOrEmpty(this.getWohnadress1())) {
+			p.setWohnadresse(null);
+		} else {
+			p.setWohnadresse(new Adresse(AdresseEnums.WOHNADRESSE, this
+					.getWohnadress1(), this.getWohnadress2(), Integer.parseInt(this
+					.getWohnplz()), this.getWohnort(), this.getWohnadrid()));
+		}
+		
+		if(Helper.isNullOrEmpty(this.getRechnungadress1())) {
+			p.setRechnungsadresse(null);
+		} else {
+			p.setRechnungsadresse(new Adresse(AdresseEnums.RECHNUNGSADRESSE, this
+					.getRechnungadress1(), this.getRechnungadress2(), Integer
+					.parseInt(this.getRechnungplz()), this.getRechnungort(), this
+					.getRechadrid()));
+		}
+		
+		if(Helper.isNullOrEmpty(this.getLieferadress1())) {
+			p.setLieferadresse(null);
+		} else {
+			p.setLieferadresse(new Adresse(AdresseEnums.LIEFERADRESSE, this
+					.getLieferadress1(), this.getLieferadress2(), Integer
+					.parseInt(this.getLieferplz()), this.getLieferort(), this
+					.getLieferadrid()));
+		}
+		
 
 		return p;
 	}
@@ -548,19 +586,31 @@ public class KontaktModel {
 		f.setName(this.getFirmenname());
 		f.setUid(this.getUID());
 
-		f.setWohnadresse(new Adresse(AdresseEnums.WOHNADRESSE, this
-				.getWohnadress1(), this.getWohnadress2(), Integer.parseInt(this
-				.getWohnplz()), this.getWohnort(), this.getWohnadrid()));
-
-		f.setRechnungsadresse(new Adresse(AdresseEnums.RECHNUNGSADRESSE, this
-				.getRechnungadress1(), this.getRechnungadress2(), Integer
-				.parseInt(this.getRechnungplz()), this.getRechnungort(), this
-				.getRechadrid()));
-
-		f.setLieferadresse(new Adresse(AdresseEnums.LIEFERADRESSE, this
-				.getLieferadress1(), this.getLieferadress2(), Integer
-				.parseInt(this.getLieferplz()), this.getLieferort(), this
-				.getLieferadrid()));
+		if(Helper.isNullOrEmpty(this.getWohnadress1())) {
+			f.setWohnadresse(null);
+		} else {
+			f.setWohnadresse(new Adresse(AdresseEnums.WOHNADRESSE, this
+					.getWohnadress1(), this.getWohnadress2(), Integer.parseInt(this
+					.getWohnplz()), this.getWohnort(), this.getWohnadrid()));
+		}
+		
+		if(Helper.isNullOrEmpty(this.getRechnungadress1())) {
+			f.setRechnungsadresse(null);
+		} else {
+			f.setRechnungsadresse(new Adresse(AdresseEnums.RECHNUNGSADRESSE, this
+					.getRechnungadress1(), this.getRechnungadress2(), Integer
+					.parseInt(this.getRechnungplz()), this.getRechnungort(), this
+					.getRechadrid()));
+		}
+		
+		if(Helper.isNullOrEmpty(this.getLieferadress1())) {
+			f.setLieferadresse(null);
+		} else {
+			f.setLieferadresse(new Adresse(AdresseEnums.LIEFERADRESSE, this
+					.getLieferadress1(), this.getLieferadress2(), Integer
+					.parseInt(this.getLieferplz()), this.getLieferort(), this
+					.getLieferadrid()));
+		}
 
 		return f;
 	}
@@ -575,10 +625,37 @@ public class KontaktModel {
 			if(Helper.isNullOrEmpty(this.getUID())) {
 				valid = false;
 				this.setUID("Bitte geben Sie eine UID ein");
-			} 
-			
+			} 	
 				
 		} else {
+			if(Helper.isNullOrEmpty(this.getNachname())) {
+				valid = false;
+				this.setNachname("Bitte geben Sie einen Nachnamen ein");
+			}
+			if(Helper.isNullOrEmpty(this.getVorname())) {
+				valid = false;
+				this.setVorname("Bitte geben Sie einen Vorname ein");
+			}
+			if(Helper.isNullOrEmpty(this.getSuffix())) {
+				valid = false;
+				this.setSuffix("Bitte geben Sie einen Suffix ein");
+			}
+			if(Helper.isNullOrEmpty(this.getTitel())) {
+				this.setSuffix("");
+			}
+			if(Helper.isNullOrEmpty(this.getGeburtstag())) {
+				this.setSuffix("");
+			} else {
+				try {
+					SimpleDateFormat sdfToDate = new SimpleDateFormat("dd/MM/yyyy");
+					sdfToDate.parse(this.getGeburtstag());
+				} catch (ParseException e) {
+					this.setGeburtstag("Bitte Datum im Format dd/MM/yyyy");
+					valid=false;
+				}
+			}
+			if(Helper.isNullOrEmpty(this.getCcm().getTextField()))
+				this.firmaid = 0;
 			
 		}
 		

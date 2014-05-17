@@ -27,23 +27,17 @@ public class CustomControlModel {
 	private Boolean ok = false;
 
 	public CustomControlModel() {
-		ChangeListener<Boolean> canEditListener = new ChangeListener<Boolean>() {
-
+		ChangeListener<String> canEditListener = new ChangeListener<String>() {
 			@Override
-			public void changed(ObservableValue<? extends Boolean> observable,
-					Boolean oldValue, Boolean newValue) {
-				if(ok)
-					success.set(new Image("/images/ok.png"));
-				else
-					success.set(new Image("/images/attention.png"));
-				
+			public void changed(ObservableValue<? extends String> observable,
+					String oldValue, String newValue) {
+				setOk(false);
 			}
-		
 		};
 		labeltext.set("Firma: ");
 		success.set(new Image("/images/attention.png"));
-		isOk.addListener(canEditListener);
 		isChangeable = false;
+		searchtext.addListener(canEditListener);
 	}
 
 	public final BooleanBinding isOkBinding() {
@@ -95,8 +89,10 @@ public class CustomControlModel {
 	}
 
 	public void setOk(boolean ok) {
-		this.ok = ok;
-		success.set(new Image("/images/ok.png"));
+		if(ok)
+			success.set(new Image("/images/ok.png"));
+		else
+			success.set(new Image("/images/attention.png"));
 	}
 	
 	public Boolean getIsChangeable() {
