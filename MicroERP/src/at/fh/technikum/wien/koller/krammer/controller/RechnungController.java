@@ -1,11 +1,13 @@
 package at.fh.technikum.wien.koller.krammer.controller;
 
+import java.io.IOException;
 import java.net.URL;
-
 import java.util.ResourceBundle;
 
+import at.fh.technikum.wien.koller.krammer.models.Rechnungszeile;
 import at.fh.technikum.wien.koller.krammer.presentationmodel.RechnungModel;
-
+import at.fh.technikum.wien.koller.krammer.presentationmodel.RechnungZeileModel;
+import at.fh.technikum.wien.koller.krammer.view.CustomControl;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -13,10 +15,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
-
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-
 import javafx.scene.image.ImageView;
 
 public class RechnungController extends AbstractController {
@@ -42,13 +42,17 @@ public class RechnungController extends AbstractController {
 	private ImageView rzloeschen;
 	@FXML
 	private ImageView rzbearbeiten;
+	@FXML
+	private CustomControl customcontrol;
 
 	private RechnungModel rechnungModel;
+	private RechnungZeileModel rechnungZeileModel;
 	private ObservableList<String> data;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
 		rechnungModel = new RechnungModel();
+		rechnungZeileModel = new RechnungZeileModel();
 
 		bezahlt.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
@@ -81,8 +85,7 @@ public class RechnungController extends AbstractController {
 		if (rechnungModel.isBezahlt())
 			bezahlt.setSelected(true);
 
-		data = FXCollections.observableArrayList(rechnungModel
-				.getRechnungszeilen().values());
+		data = FXCollections.observableArrayList(rechnungModel.getRechnungszeilen());
 
 		rechnungzeilen.setItems(data);
 	}
@@ -109,7 +112,14 @@ public class RechnungController extends AbstractController {
 	}
 
 	@FXML
-	public void onRzChange() {
+	public void onRzChange() throws IOException {
+		int auswahl = rechnungzeilen.getSelectionModel().getSelectedIndex();
+		
+		Rechnungszeile rz = rechnungModel.getRechnungszeilen2().get(auswahl);
+		rechnungZeileModel.setModel(rz);
+		showDialog(
+				"/at/fh/technikum/wien/koller/krammer/view/MicroERPRechnungszeileView.fxml",rechnungZeileModel,
+				"Rechnungszeile bearbeiten");
 	}
 
 	@FXML
@@ -118,8 +128,10 @@ public class RechnungController extends AbstractController {
 	}
 
 	@FXML
-	public void onRzAdd() {
-
+	public void onRzAdd() throws IOException {
+		showDialog(
+				"/at/fh/technikum/wien/koller/krammer/view/MicroERPRechnungszeileView.fxml",
+				"Rechnungszeile hinzufuegen");
 	}
 
 }

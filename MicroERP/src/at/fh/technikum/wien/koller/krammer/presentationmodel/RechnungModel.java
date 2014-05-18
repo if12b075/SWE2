@@ -1,10 +1,12 @@
 package at.fh.technikum.wien.koller.krammer.presentationmodel;
 
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import at.fh.technikum.wien.koller.krammer.models.Rechnung;
+import at.fh.technikum.wien.koller.krammer.models.Rechnungszeile;
+import at.fh.technikum.wien.koller.krammer.proxy.MERPProxyFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -18,11 +20,18 @@ public class RechnungModel {
 	private StringProperty bezahltam = new SimpleStringProperty();
 	private boolean bezahlt;
 	private boolean isUpdate;
-	private Map<Long, String> rechnungszeilen;
+	private List<String> rechnungszeilen;
+	private List<Rechnungszeile> rechnungszeilen2;
+	
+	private CustomControlModel ccm;
+	private long kontaktid;
 	
 	public RechnungModel() {
-		rechnungszeilen = new HashMap<Long, String>();
+		rechnungszeilen = new ArrayList<String>();
+		rechnungszeilen2 = new ArrayList<Rechnungszeile>();
 		bezahlt = false;
+		
+		ccm = new CustomControlModel();
 	}
 	
 	public long getId() {
@@ -31,6 +40,22 @@ public class RechnungModel {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public long getKontaktid() {
+		return kontaktid;
+	}
+
+	public void setKontaktid(long kontaktid) {
+		this.kontaktid = kontaktid;
+	}
+
+	public CustomControlModel getCcm() {
+		return ccm;
+	}
+
+	public void setCcm(CustomControlModel ccm) {
+		this.ccm = ccm;
 	}
 
 	public final StringProperty datumProperty() {
@@ -122,14 +147,20 @@ public class RechnungModel {
 	public void setUpdate(boolean isUpdate) {
 		this.isUpdate = isUpdate;
 	}
+	
+	public List<Rechnungszeile> getRechnungszeilen2() {
+		return rechnungszeilen2;
+	}
 
+	public void setRechnungszeilen2(List<Rechnungszeile> rechnungszeilen2) {
+		this.rechnungszeilen2 = rechnungszeilen2;
+	}
 
-
-	public Map<Long, String> getRechnungszeilen() {
+	public List<String> getRechnungszeilen() {
 		return rechnungszeilen;
 	}
 
-	public void setRechnungszeilen(Map<Long, String> rechnungszeilen) {
+	public void setRechnungszeilen(List<String> rechnungszeilen) {
 		this.rechnungszeilen = rechnungszeilen;
 	}
 
@@ -165,20 +196,49 @@ public class RechnungModel {
 		this.setRechnungnr(String.valueOf(r.getRechnungsnummer()));
 		this.setNachricht(r.getNachricht());
 		
-		for(int i=0; i < r.getRechnungszeilen().size(); i++)
-			this.rechnungszeilen.put(r.getRechnungszeilen().get(i).getId(), r.getRechnungszeilen().get(i).toString());
+		
+		
+		for(int i=0; i < r.getRechnungszeilen().size(); i++) {
+			this.rechnungszeilen.add(r.getRechnungszeilen().get(i).toString());
+			this.rechnungszeilen2.add(r.getRechnungszeilen().get(i));
+		}
+		
+		this.ccm.setIsChangeable(true);
+		
+		this.ccm.setLabelText("Kontakt");
+		this.ccm.setOk(true);
+		
+		if(r.getKontaktid() != 0) {
+			this.ccm.setKontaktid(r.getKontaktid());
+			this.setKontaktid(r.getKontaktid());
+		}
+				
 			
 	}
 	
 	public void setModel(RechnungModel rm) {
-		this.setId(rm.getId());
-		this.setBezahlt(rm.isBezahlt());
-		this.setBezahltam(rm.getBezahltam());
-		this.setDatum(rm.getDatum());
-		this.setFaelligkeit(rm.getFaelligkeit());
-		this.setKommentar(rm.getKommentar());
-		this.setNachricht(rm.getNachricht());
-		this.setRechnungnr(rm.getRechnungnr());
-		this.setRechnungszeilen(rm.getRechnungszeilen());
+		if(rm != null) {
+			this.setId(rm.getId());
+			this.setBezahlt(rm.isBezahlt());
+			this.setBezahltam(rm.getBezahltam());
+			this.setDatum(rm.getDatum());
+			this.setFaelligkeit(rm.getFaelligkeit());
+			this.setKommentar(rm.getKommentar());
+			this.setNachricht(rm.getNachricht());
+			this.setRechnungnr(rm.getRechnungnr());
+			this.setRechnungszeilen(rm.getRechnungszeilen());
+			this.setRechnungszeilen2(rm.getRechnungszeilen2());
+			this.setCcm(rm.getCcm());
+		}
+		
+	}
+	
+	public Rechnungszeile getRechnungsZeileById(long id) {
+		for(int i=0; i< rechnungszeilen2.size();i++) {
+			if(rechnungszeilen2.get(i).getId() == id)
+				return rechnungszeilen2.get(i);
+		}
+		
+		return null;
 	}
 }

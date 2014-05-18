@@ -68,8 +68,13 @@ public class CustomControlController extends AbstractController {
 	
 	@FXML
 	public void onDeleteClick() {
-		System.out.println("delete");
+		ccm.setKontaktid(-1);
+		ccm.setTextField("");
 		ccm.setOk(false);
-	}	
+	}
+	
+	public void setTextFieldWidth(double width) {
+		this.searchtextfield.setPrefWidth(width);
+	}
 
 }

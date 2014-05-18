@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import at.fh.technikum.wien.koller.krammer.view.CustomControl?>
 <?import java.lang.*?>
 <?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
@@ -66,7 +67,8 @@
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="224.0" prefWidth="567.0">
                   <children>
-                    <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="125.0" layoutY="72.0" pickOnBounds="true" preserveRatio="true">
+                    <CustomControl fx:id="customcontrol" layoutX="14.0" layoutY="73.0" />
+              <!--       <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="125.0" layoutY="72.0" pickOnBounds="true" preserveRatio="true">
                       <image>
                         <Image url="@../../../../../../../images/attention.png" />
                       </image>
@@ -86,9 +88,13 @@
                       <font>
                         <Font name="Arial Bold" size="14.0" fx:id="x1" />
                       </font>
-                    </Label>
+                    </Label>--> 
                     <TextArea fx:id="nachricht" layoutX="125.0" layoutY="124.0" prefHeight="69.0" prefWidth="428.0" promptText="Bitte geben Sie den Nachrichttext ein" wrapText="true" />
-                    <Label font="$x1" layoutX="14.0" layoutY="125.0" text="Nachricht:" textFill="BLACK" />
+                    <Label font="$x1" layoutX="14.0" layoutY="125.0" text="Nachricht:" textFill="BLACK">
+	                    <font>
+	                        <Font name="Arial Bold" size="14.0" fx:id="x1" />
+	                    </font>
+                    </Label>
                     <TextField fx:id="kommentar" layoutX="125.0" layoutY="98.0" prefWidth="428.0" promptText="Kommentar ist optional" />
                     <Label font="$x1" layoutX="14.0" layoutY="98.0" styleClass="label-blue" text="Kommentar:" textFill="BLACK" />
                     <TextField fx:id="rechnungnr" layoutX="125.0" layoutY="44.0" prefWidth="428.0" promptText="Bitte geben Sie die Rechnungsnummer ein" />

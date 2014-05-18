@@ -1,27 +1,20 @@
 package at.fh.technikum.wien.koller.krammer.presentationmodel;
 
 import at.fh.technikum.wien.koller.krammer.models.Rechnungszeile;
-import javafx.beans.property.FloatProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleFloatProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class RechnungZeileModel {
 	private long id;
 	private StringProperty bezeichnung = new SimpleStringProperty();
-	private FloatProperty stkpreis = new SimpleFloatProperty();
-	private IntegerProperty menge = new SimpleIntegerProperty();
-	private IntegerProperty ust = new SimpleIntegerProperty();
-	private FloatProperty brutto = new SimpleFloatProperty();
-	private FloatProperty netto = new SimpleFloatProperty();
-	
-	
+	private StringProperty stkpreis = new SimpleStringProperty();
+	private StringProperty menge = new SimpleStringProperty();
+	private StringProperty ust = new SimpleStringProperty();
+
 	public RechnungZeileModel() {
-		
+
 	}
-	
+
 	public long getId() {
 		return id;
 	}
@@ -33,74 +26,68 @@ public class RechnungZeileModel {
 	public final StringProperty bezeichnungProperty() {
 		return bezeichnung;
 	}
+
 	public final void setBezeichnung(String bezeichnung) {
 		this.bezeichnung.set(bezeichnung);
 	}
+
 	public final String getBezeichnung() {
 		return this.bezeichnung.get();
 	}
-	
-	
-	public final FloatProperty stkpreisProperty() {
+
+	public final StringProperty stkpreisProperty() {
 		return stkpreis;
 	}
-	public final void setStkpreis(Float stkpreis) {
+
+	public final void setStkpreis(String stkpreis) {
 		this.stkpreis.set(stkpreis);
 	}
-	public final Float getStkpreis() {
+
+	public final String getStkpreis() {
 		return this.stkpreis.get();
 	}
-	
-	public final IntegerProperty mengeProperty() {
+
+	public final StringProperty mengeProperty() {
 		return menge;
 	}
-	public final void setMenge(Integer menge) {
+
+	public final void setMenge(String menge) {
 		this.menge.set(menge);
 	}
-	public final Integer getMenge() {
+
+	public final String getMenge() {
 		return this.menge.get();
 	}
-	
-	public final IntegerProperty ustProperty() {
+
+	public final StringProperty ustProperty() {
 		return ust;
 	}
-	public final void setUst(Integer ust) {
-		this.ust.set(ust);;
+
+	public final void setUst(String ust) {
+		this.ust.set(ust);
 	}
-	public final Integer getUst() {
+
+	public final String getUst() {
 		return this.ust.get();
-	}
-
-	public final FloatProperty bruttoProperty() {
-		return brutto;
-	}
-	public final void setBrutto(Float brutto) {
-		this.brutto.set(brutto);
-	}
-	public final Float getBrutto() {
-		return this.brutto.get();
-	}
-
-	public final FloatProperty nettoProperty() {
-		return netto;
-	}
-	public final void setNetto(Float netto) {
-		this.netto.set(netto);
-	}
-	public final Float getNetto() {
-		return this.netto.get();
 	}
 
 	public void setModel(Rechnungszeile rz) {
 		this.setBezeichnung(rz.getBezeichnung());
 		this.setId(rz.getId());
-		this.setMenge(rz.getMenge());
-		this.setStkpreis(rz.getStueckpreis());
-		this.setUst(rz.getUst());
-		float netto = rz.getMenge() * rz.getStueckpreis();
-		this.setNetto(netto);
-		float brutto = this.getNetto() + (this.getNetto() * rz.getUst() / 100);
-		this.setBrutto(brutto);
+		this.setMenge(String.valueOf(rz.getMenge()));
+		this.setStkpreis(String.valueOf(rz.getStueckpreis()));
+		this.setUst(String.valueOf(rz.getUst()));
 	}
-	
+
+	public void setModel(RechnungZeileModel rzm) {
+		if(rzm != null) {
+			this.setBezeichnung(rzm.getBezeichnung());
+			this.setId(rzm.getId());
+			this.setMenge(rzm.getMenge());
+			this.setStkpreis(rzm.getStkpreis());
+			this.setUst(rzm.getUst());
+		}
+		
+	}
+
 }
