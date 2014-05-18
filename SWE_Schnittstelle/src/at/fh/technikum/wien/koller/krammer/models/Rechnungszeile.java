@@ -28,7 +28,7 @@ public class Rechnungszeile extends AbstractDatabaseObject {
 	public void setRechnungid(long rechnungid) {
 		this.rechnungid = rechnungid;
 	}
-	
+
 	public String getBezeichnung() {
 		return bezeichnung;
 	}
@@ -60,4 +60,24 @@ public class Rechnungszeile extends AbstractDatabaseObject {
 	public void setUst(int ust) {
 		this.ust = ust;
 	}
+
+	@Override
+	public String toString() {
+		return this.bezeichnung
+				+ "    "
+				+ " Menge: "
+				+ this.menge
+				+ "     StkPreis: "
+				+ this.stueckpreis
+				+ " €     "
+				+ this.ust
+				+ "% Ust "
+				+ "    Netto: "
+				+ (this.menge)
+				* (this.stueckpreis)
+				+ "     Brutto: "
+				+ ((this.menge) * (this.stueckpreis) + ((this.menge)
+						* (this.stueckpreis) * this.ust / 100));
+	}
+
 }

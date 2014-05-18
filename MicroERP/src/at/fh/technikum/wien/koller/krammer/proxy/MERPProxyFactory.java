@@ -16,6 +16,7 @@ import at.fh.technikum.wien.koller.krammer.proxy.request.GetAlleRechnungenReques
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetFirmaByIdRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetKontaktFilterRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetPersonByIdRequest;
+import at.fh.technikum.wien.koller.krammer.proxy.request.GetRechnungByIdRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.UpdateFirmaRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.UpdatePersonRequest;
 
@@ -29,6 +30,7 @@ public class MERPProxyFactory {
 	private static final boolean MOCK_UPDATE_FIRMA = false;
 	private static final boolean MOCK_CREATE_FIRMA = false;
 	private static final boolean MOCK_CREATE_PERSON = false;
+	private static final boolean MOCK_GET_RECHNUNG_BY_ID = false;
 
 	@SuppressWarnings("static-access")
 	public static List<Kontakt> getAlleKontakte() {
@@ -67,6 +69,14 @@ public class MERPProxyFactory {
 			return null;
 		else
 			return (new GetFirmaByIdRequest().getFirmaById(id));
+	}
+	
+	@SuppressWarnings("static-access")
+	public static Rechnung getRechnungById(long id) {
+		if (MOCK_GET_RECHNUNG_BY_ID)
+			return null;
+		else
+			return (new GetRechnungByIdRequest().getRechnungById(id));
 	}
 	
 	@SuppressWarnings("static-access")

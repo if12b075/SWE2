@@ -117,7 +117,7 @@
                   <right>
                     <AnchorPane prefHeight="410.0" prefWidth="79.0">
                       <children>
-                        <ImageView fx:id="rechnunghinzufuegen" fitHeight="32.0" fitWidth="32.0" layoutX="27.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <ImageView fx:id="rechnunghinzufuegen" fitHeight="32.0" fitWidth="32.0" layoutX="27.0" layoutY="29.0" onMouseClicked="#onRechnunghinzufuegenClick" pickOnBounds="true" preserveRatio="true" visible="false">
                           <image>
                             <Image url="@../../../../../../../images/add.png" />
                           </image>
@@ -132,7 +132,7 @@
                             <Image url="@../../../../../../../images/print.png" />
                           </image>
                         </ImageView>
-                        <ImageView fx:id="rechnungbearbeiten" fitHeight="32.0" fitWidth="32.0" layoutX="27.0" layoutY="202.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <ImageView fx:id="rechnungbearbeiten" fitHeight="32.0" fitWidth="32.0" layoutX="27.0" layoutY="202.0" onMouseClicked="#onRechnungChange" pickOnBounds="true" preserveRatio="true" visible="false">
                           <image>
                             <Image url="@../../../../../../../images/edit.png" />
                           </image>

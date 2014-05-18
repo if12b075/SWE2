@@ -13,7 +13,9 @@ import at.fh.technikum.wien.koller.krammer.commons.Helper;
 import at.fh.technikum.wien.koller.krammer.filter.KontaktFilter;
 import at.fh.technikum.wien.koller.krammer.filter.RechnungFilter;
 import at.fh.technikum.wien.koller.krammer.models.Kontakt;
+import at.fh.technikum.wien.koller.krammer.models.Rechnung;
 import at.fh.technikum.wien.koller.krammer.presentationmodel.KontaktModel;
+import at.fh.technikum.wien.koller.krammer.presentationmodel.RechnungModel;
 import at.fh.technikum.wien.koller.krammer.proxy.MERPProxyFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -74,13 +76,22 @@ public class MainController extends AbstractController {
 	private ImageView rechnungdrucken;
 
 	private KontaktModel km;
+	private RechnungModel rm;
 	private List<Kontakt> kl;
+	private List<Rechnung> rl;
 
 	@FXML
 	public void onKontaktHinzufuegen() throws IOException {
 		showDialog(
 				"/at/fh/technikum/wien/koller/krammer/view/MicroERPKontaktView.fxml",
 				"Kontakt hinzufuegen");
+	}
+	
+	@FXML
+	public void onRechnunghinzufuegenClick() throws IOException {
+		showDialog(
+				"/at/fh/technikum/wien/koller/krammer/view/MicroERPRechnungView.fxml",
+				"Rechnung hinzufuegen");
 	}
 
 	public void onKontaktBearbeitenClick() throws IOException {
@@ -93,7 +104,7 @@ public class MainController extends AbstractController {
 
 		showDialog(
 				"/at/fh/technikum/wien/koller/krammer/view/MicroERPKontaktView.fxml",
-				km, "Kontakt hinzufuegen");
+				km, "Kontakt bearbeiten");
 	}
 
 	@FXML
@@ -178,7 +189,24 @@ public class MainController extends AbstractController {
 			rf.setVonDatum(rechvon);
 			rf.setKontaktFilter(kf);
 			
-			System.out.println(rf.getBisBetrag() + " " +rf.getVonBetrag() + " " + rf.getBisDatum() + " " + rf.getVonDatum() + " " + rf.getKontaktFilter());
+			////////////////////////////////////////////////////////////////////////
+			//						TODO                                          //
+			///////////////////////////////////////////////////////////////////////
+			
+			rl = MERPProxyFactory.getAlleRechnungen();
+			List<String> rechnungen = new ArrayList<String>();
+			if (rl != null) {
+				for (int i = 0; i < rl.size(); i++) {
+					rechnungen.add(rl.get(i).toString());
+
+					ObservableList<String> items = FXCollections
+							.observableArrayList(rechnungen);
+					rechnungslist.setItems(items);
+				}
+			} else
+				System.out
+						.println("Tut uns leid die Kontakte konnten nicht geladen werden, bitte überprüfen Sie ob der Server gestartet wurde");
+
 			
 			rechnunghinzufuegen.setVisible(true);
 			
@@ -210,10 +238,26 @@ public class MainController extends AbstractController {
 			rechnungdrucken.setVisible(false);
 		}
 	}
+	
+	@FXML
+	public void onRechnungChange() throws IOException {
+		if (rechnungslist.getSelectionModel().getSelectedItem() != null) {
+			Rechnung r = MERPProxyFactory.getRechnungById(rl.get(rechnungslist.getSelectionModel()
+					.getSelectedIndex()).getId());
+			
+			rm.setModel(r);
+			rm.setUpdate(true);
+		}
+	
+		showDialog(
+				"/at/fh/technikum/wien/koller/krammer/view/MicroERPRechnungView.fxml",
+				rm, "Rechnung bearbeiten");
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
 		km = new KontaktModel();
+		rm = new RechnungModel();
 		kontaktname.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent ke) {

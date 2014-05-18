@@ -44,6 +44,7 @@ public class AbstractController implements Initializable {
 		
 
 		newStage.setScene(scene);
+		newStage.setTitle(title);
 		newStage.show();
 	}
 
