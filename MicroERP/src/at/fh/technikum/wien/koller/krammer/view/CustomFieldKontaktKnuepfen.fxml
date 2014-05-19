@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.*?>
 
-<fx:root type="HBox" prefHeight="28.0" prefWidth="725.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<fx:root type="HBox" prefHeight="28.0" prefWidth="725.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.fh.technikum.wien.koller.krammer.controller.CustomControlController">
   <!-- TODO Add Nodes -->
   <children>
     <Label fx:id="labeltext" prefWidth="75.00009999999747" text="Firma:" textFill="BLACK">

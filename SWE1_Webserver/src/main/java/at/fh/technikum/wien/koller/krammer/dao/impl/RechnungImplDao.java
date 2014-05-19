@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class RechnungImplDao implements IRechnungDao {
 				+ "VALUES (seq_rechnung.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
 		
 		try {
+			// Rechnung erstellen
 			PreparedStatement createRechnungStatement = c.prepareStatement(createRechnung);
 					
 			createRechnungStatement.setLong(1, r.getKontaktid());
@@ -38,6 +40,24 @@ public class RechnungImplDao implements IRechnungDao {
 			
 			createRechnungStatement.executeUpdate();
 			createRechnungStatement.close();
+			
+			// Rechnung ID ermitteln
+			Statement getRechnungIdStatement = c.createStatement();
+			ResultSet rsGetRechnungId = getRechnungIdStatement.executeQuery("SELECT seq_rechnung.CURRVAL FROM TB_RECHNUNG");
+			rsGetRechnungId.next();
+			
+			long rechnungId = rsGetRechnungId.getLong(1);
+			getRechnungIdStatement.close();
+			
+			// Rechnungszeilen erstellen
+			IRechnungszeileDao rid = DaoFactory.createRechnungszeileDao();
+			
+			if(r.getRechnungszeilen() != null) {
+				for(int i = 0; i < r.getRechnungszeilen().size(); i++) {
+					r.getRechnungszeilen().get(i).setRechnungid(rechnungId);
+					rid.create(r.getRechnungszeilen().get(i));
+				}
+			}
 			
 		} catch(SQLException e) {
 			e.printStackTrace();

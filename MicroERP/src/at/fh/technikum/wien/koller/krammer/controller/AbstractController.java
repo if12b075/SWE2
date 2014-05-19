@@ -44,6 +44,7 @@ public class AbstractController implements Initializable {
 		
 
 		newStage.setScene(scene);
+		newStage.setTitle(title);
 		newStage.show();
 	}
 
@@ -71,6 +72,10 @@ public class AbstractController implements Initializable {
 	
 	public Object getModel() {
 		return this.model;
+	}
+	
+	public void close() {
+		stage.close();
 	}
 
 }

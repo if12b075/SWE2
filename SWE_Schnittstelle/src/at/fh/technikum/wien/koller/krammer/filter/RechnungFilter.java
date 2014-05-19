@@ -5,39 +5,65 @@ import java.util.Date;
 public class RechnungFilter {
 	private Date vonDatum;
 	private Date bisDatum;
-	private long vonBetrag;
-	private long bisBetrag;
+	private double vonBetrag;
+	private double bisBetrag;
 	private KontaktFilter kontaktFilter;
-	
-	public Date getVonDatum() {
-		return vonDatum;
-	}
-	public void setVonDatum(Date vonDatum) {
+
+	public RechnungFilter(Date vonDatum, Date bisDatum, long vonBetrag,
+			long bisBetrag, KontaktFilter kontaktFilter) {
 		this.vonDatum = vonDatum;
-	}
-	public Date getBisDatum() {
-		return bisDatum;
-	}
-	public void setBisDatum(Date bisDatum) {
 		this.bisDatum = bisDatum;
-	}
-	public long getVonBetrag() {
-		return vonBetrag;
-	}
-	public void setVonBetrag(long vonBetrag) {
 		this.vonBetrag = vonBetrag;
-	}
-	public long getBisBetrag() {
-		return bisBetrag;
-	}
-	public void setBisBetrag(long bisBetrag) {
 		this.bisBetrag = bisBetrag;
-	}
-	public KontaktFilter getKontaktFilter() {
-		return kontaktFilter;
-	}
-	public void setKontaktFilter(KontaktFilter kontaktFilter) {
 		this.kontaktFilter = kontaktFilter;
 	}
 	
+	public RechnungFilter() {
+		this.vonDatum = null;
+		this.bisDatum = null;
+		this.vonBetrag = 0;
+		this.bisBetrag = 0;
+		this.kontaktFilter = null;
+	}
+
+	public Date getVonDatum() {
+		return vonDatum;
+	}
+
+	public void setVonDatum(Date vonDatum) {
+		this.vonDatum = vonDatum;
+	}
+
+	public Date getBisDatum() {
+		return bisDatum;
+	}
+
+	public void setBisDatum(Date bisDatum) {
+		this.bisDatum = bisDatum;
+	}
+
+	public double getVonBetrag() {
+		return vonBetrag;
+	}
+
+	public void setVonBetrag(double vonBetrag) {
+		this.vonBetrag = vonBetrag;
+	}
+
+	public double getBisBetrag() {
+		return bisBetrag;
+	}
+
+	public void setBisBetrag(double bisBetrag) {
+		this.bisBetrag = bisBetrag;
+	}
+
+	public KontaktFilter getKontaktFilter() {
+		return kontaktFilter;
+	}
+
+	public void setKontaktFilter(KontaktFilter kontaktFilter) {
+		this.kontaktFilter = kontaktFilter;
+	}
+
 }

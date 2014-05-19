@@ -9,11 +9,15 @@ import at.fh.technikum.wien.koller.krammer.models.Person;
 import at.fh.technikum.wien.koller.krammer.models.Rechnung;
 import at.fh.technikum.wien.koller.krammer.proxy.mock.GetAlleKontakteMock;
 import at.fh.technikum.wien.koller.krammer.proxy.mock.GetPersonByIdMock;
+import at.fh.technikum.wien.koller.krammer.proxy.request.CreateFirmaRequest;
+import at.fh.technikum.wien.koller.krammer.proxy.request.CreatePersonRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetAlleKontakteRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetAlleRechnungenRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetFirmaByIdRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetKontaktFilterRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetPersonByIdRequest;
+import at.fh.technikum.wien.koller.krammer.proxy.request.GetRechnungByIdRequest;
+import at.fh.technikum.wien.koller.krammer.proxy.request.UpdateFirmaRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.UpdatePersonRequest;
 
 public class MERPProxyFactory {
@@ -23,7 +27,10 @@ public class MERPProxyFactory {
 	private static final boolean MOCK_GET_PERSON_BY_ID = false;
 	private static final boolean MOCK_GET_FIRMA_BY_ID = false;
 	private static final boolean MOCK_UPDATE_PERSON = false;
-	//private static final boolean MOCK_UPDATE_FIRMA = false;
+	private static final boolean MOCK_UPDATE_FIRMA = false;
+	private static final boolean MOCK_CREATE_FIRMA = false;
+	private static final boolean MOCK_CREATE_PERSON = false;
+	private static final boolean MOCK_GET_RECHNUNG_BY_ID = false;
 
 	@SuppressWarnings("static-access")
 	public static List<Kontakt> getAlleKontakte() {
@@ -65,10 +72,42 @@ public class MERPProxyFactory {
 	}
 	
 	@SuppressWarnings("static-access")
+	public static Rechnung getRechnungById(long id) {
+		if (MOCK_GET_RECHNUNG_BY_ID)
+			return null;
+		else
+			return (new GetRechnungByIdRequest().getRechnungById(id));
+	}
+	
+	@SuppressWarnings("static-access")
 	public static boolean updatePerson(Person p) {
 		if (MOCK_UPDATE_PERSON)
 			return false;
 		else
 			return (new UpdatePersonRequest()).updatePerson(p);
+	}
+	
+	@SuppressWarnings("static-access")
+	public static boolean updateFirma(Firma f) {
+		if (MOCK_UPDATE_FIRMA)
+			return false;
+		else
+			return (new UpdateFirmaRequest()).updateFirma(f);
+	}
+	
+	@SuppressWarnings("static-access")
+	public static boolean createFirma(Firma f) {
+		if (MOCK_CREATE_FIRMA)
+			return false;
+		else
+			return (new CreateFirmaRequest().createFirma(f));
+	}
+	
+	@SuppressWarnings("static-access")
+	public static boolean createPerson(Person p) {
+		if (MOCK_CREATE_PERSON)
+			return false;
+		else
+			return (new CreatePersonRequest().createPerson(p));
 	}
 }

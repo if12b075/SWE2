@@ -42,6 +42,9 @@ public class CommandFactory {
 		case commons.CommandRequestTitel.CREATE_FIRMA:
 			c = new CreateFirmaCommand();
 			break;
+		case commons.CommandRequestTitel.CREATE_RECHNUNG:
+			c = new CreateRechnungCommand();
+			break;
 		}
 		
 		return c;	

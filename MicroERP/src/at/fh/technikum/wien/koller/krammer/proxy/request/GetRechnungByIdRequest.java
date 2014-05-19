@@ -7,48 +7,44 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
-import commons.CommandRequestTitel;
-import commons.Globals;
 import at.fh.technikum.wien.koller.krammer.commons.Helper;
 import at.fh.technikum.wien.koller.krammer.commons.MERPConstants;
-import at.fh.technikum.wien.koller.krammer.filter.KontaktFilter;
-import at.fh.technikum.wien.koller.krammer.models.Kontakt;
+import at.fh.technikum.wien.koller.krammer.models.Rechnung;
 
-public class GetKontaktFilterRequest {
+import commons.Globals;
 
-	@SuppressWarnings("unchecked")
-	public List<Kontakt> getResponse(KontaktFilter kf) {
+public class GetRechnungByIdRequest {
+private static final String REQUEST_STRING = MERPConstants.HTTP_PLUGIN_URL + commons.CommandRequestTitel.GET_RECHNUNG_BY_ID + "/";
+	
+	public static Rechnung getRechnungById(long id) {
 		try {
 			
 			ByteArrayOutputStream temp = new ByteArrayOutputStream();
 			String charset = "UTF-8";
-			String url = MERPConstants.HTTP_PLUGIN_URL
-					+ CommandRequestTitel.GET_FILTER_KONTAKTE + "/";
-
-			final XMLEncoder encoder = new XMLEncoder(temp);
-			encoder.writeObject(kf);
-			encoder.close();
-
+			Rechnung getById = new Rechnung();
+			getById.setId(id);
 			
-			String erg = Helper.excutePost(url, temp.toString(charset));
+			final XMLEncoder encoder = new XMLEncoder(temp);
+			encoder.writeObject(getById);
+			encoder.close();
+			
+			String erg = Helper.excutePost(REQUEST_STRING, temp.toString(charset));
 
 			InputStream is = new DataInputStream(new ByteArrayInputStream(
 					erg.getBytes(Globals.CHARSET)));
 
 			XMLDecoder decoder = new XMLDecoder(is);
-			List<Kontakt> kontaktliste = (List<Kontakt>) decoder.readObject();
+			Rechnung r = (Rechnung) decoder.readObject();
 			decoder.close();
 			
 			temp.close();
 			
-			return kontaktliste;
+			return r;
 			
 		} catch (IOException e) {
 			System.out.println("Encoding failed!");
 			return null;
 		}
 	}
-
 }

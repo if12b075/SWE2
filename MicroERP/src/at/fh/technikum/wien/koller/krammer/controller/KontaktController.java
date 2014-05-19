@@ -10,7 +10,6 @@ import at.fh.technikum.wien.koller.krammer.view.CustomControl;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.image.Image;
 
 public class KontaktController extends AbstractController{
 	@FXML
@@ -59,18 +58,11 @@ public class KontaktController extends AbstractController{
 	private CustomControl customcontrol;
 	
 	private KontaktModel kontaktModel;
-	private CustomControlModel ccm;
-	
 	
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
 		kontaktModel = new KontaktModel();
-		ccm = new CustomControlModel();
 		
-		ccm.setLabelText("Penis:");
-		ccm.setTextField("penis");
-		ccm.setSuccessImage(new Image("/images/attention.png"));
-		customcontrol.setModel(ccm);
 		
 		personpane.disableProperty().bind(kontaktModel.disableEditPersonBinding());
 		firmapane.disableProperty().bind(kontaktModel.disableEditFirmaBinding());
@@ -103,16 +95,43 @@ public class KontaktController extends AbstractController{
 	@Override
 	public void setModel(Object model) {
 		kontaktModel.setModel((KontaktModel) model);
+		
+		customcontrol.getAc().setModel(kontaktModel.getCcm());
 	}
 	
 	@FXML
 	public void onKontaktSaveClick() {
-		if(kontaktModel.isFirma()) {
+		if(kontaktModel.validate()) {
+			if(kontaktModel.isUpdate()) {
+				if(kontaktModel.isFirma()) {
+					if(MERPProxyFactory.updateFirma(kontaktModel.getFirmaToSave()))
+						System.out.println("Erfolgreich");
+				} else {
+					kontaktModel.setCcm((CustomControlModel)customcontrol.getAc().getModel());
+					if(MERPProxyFactory.updatePerson(kontaktModel.getPersonToSave()))
+						System.out.println("Erfolgreich");
+				}
+			} else {
+				if(kontaktModel.isFirma()) {
+					if(MERPProxyFactory.createFirma(kontaktModel.getFirmaToSave()))
+						System.out.println("Erfolgreich");
+				} else {
+					kontaktModel.setCcm((CustomControlModel)customcontrol.getAc().getModel());
+					if(MERPProxyFactory.createPerson(kontaktModel.getPersonToSave()))
+						System.out.println("Erfolgreich");
+				}
+			}
 			
+			this.close();
 		} else {
-			if(MERPProxyFactory.updatePerson(kontaktModel.getPersonToSave()))
-				System.out.println("Erfolgreich");
+			System.out.println("Bitte alle Felder korrekt ausfuellen!");
 		}
+		
+	}
+	
+	@FXML
+	public void onKontaktCancelClick() {
+		this.close();
 	}
 
 }
