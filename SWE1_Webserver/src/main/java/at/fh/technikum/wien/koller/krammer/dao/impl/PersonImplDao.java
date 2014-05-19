@@ -39,8 +39,16 @@ public class PersonImplDao implements IPersonDao {
 			PreparedStatement createPersonStatement = c.prepareStatement(createPerson);
 			
 			createPersonStatement.setLong(1, p.getId());
-			createPersonStatement.setLong(2, p.getFirmaid());
-			createPersonStatement.setString(3, p.getTitel());
+			if(p.getFirmaid() != 0) {
+				createPersonStatement.setLong(2, p.getFirmaid());
+			} else {
+				createPersonStatement.setString(2, null);
+			}
+			if(p.getTitel() != null) {
+				createPersonStatement.setString(3, p.getTitel());
+			} else {
+				createPersonStatement.setString(3, null);
+			}
 			createPersonStatement.setString(4, p.getVorname());
 			createPersonStatement.setString(5, p.getNachname());
 			createPersonStatement.setString(6, p.getSuffix());
@@ -76,7 +84,11 @@ public class PersonImplDao implements IPersonDao {
 	}
 
 	@Override
-	public void update(Person p) {		
+	public void update(Person p) {
+		long wohnadresseId = 0;
+		long rechnungsadresseId = 0;
+		long lieferadresseId = 0;
+		
 		String udpatePerson = "UPDATE TB_PERSON SET TB_FIRMA_ID = ?, TITEL = ?, VORNAME = ?, "
 				+ "NACHNAME = ?, SUFFIX = ?, GEB_DATUM = ? WHERE ID_PERSON = ?";
 		
@@ -84,8 +96,16 @@ public class PersonImplDao implements IPersonDao {
 			// Persönliche Daten
 			PreparedStatement updatePersonStatement = c.prepareStatement(udpatePerson);
 			
-			updatePersonStatement.setLong(1, p.getFirmaid());
-			updatePersonStatement.setString(2, p.getTitel());
+			if(p.getFirmaid() != 0) {
+				updatePersonStatement.setLong(1, p.getFirmaid());
+			} else {
+				updatePersonStatement.setString(1, null);
+			}
+			if(p.getTitel() != null) {
+				updatePersonStatement.setString(2, p.getTitel());
+			} else {
+				updatePersonStatement.setString(2, null);
+			}
 			updatePersonStatement.setString(3, p.getVorname());
 			updatePersonStatement.setString(4, p.getNachname());
 			updatePersonStatement.setString(5, p.getSuffix());
@@ -95,13 +115,40 @@ public class PersonImplDao implements IPersonDao {
 			updatePersonStatement.executeUpdate();
 			updatePersonStatement.close();
 			
-			// Adressen
+			// Adressen updaten/anlegen
 			IAdresseDao aid = DaoFactory.createAdresseDao();
 			
-			aid.update(p.getWohnadresse());
-			aid.update(p.getRechnungsadresse());
-			aid.update(p.getLieferadresse());
+			if(p.getWohnadresse() != null) {
+				if(p.getWohnadresse().getId() != 0) {
+					aid.update(p.getWohnadresse());
+					wohnadresseId = p.getWohnadresse().getId();
+				} else {
+					wohnadresseId = aid.create(p.getWohnadresse());
+				}
+			}
 			
+			if(p.getRechnungsadresse() != null) {
+				if(p.getRechnungsadresse().getId() != 0) {
+					aid.update(p.getRechnungsadresse());
+					rechnungsadresseId = p.getRechnungsadresse().getId();
+				} else {
+					rechnungsadresseId = aid.create(p.getRechnungsadresse());
+				}
+			}
+			
+			if(p.getLieferadresse() != null) {
+				if(p.getLieferadresse().getId() != 0) {
+					aid.update(p.getLieferadresse());
+					lieferadresseId = p.getLieferadresse().getId();
+				} else {
+					lieferadresseId = aid.create(p.getLieferadresse());
+				}
+			}
+			
+			// Kontakt mit Adressen updaten
+			IKontaktDao ikd = DaoFactory.createKontaktDao();
+			ikd.update(p.getId(), wohnadresseId, rechnungsadresseId, lieferadresseId);
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -111,8 +158,19 @@ public class PersonImplDao implements IPersonDao {
 
 	@Override
 	public void delete(long id) {
-		// TODO Auto-generated method stub
+		String deletePerson = "DELETE FROM TB_PERSON WHERE ID_PERSON = ?";
 		
+		try {
+			PreparedStatement deletePersonStatement = c.prepareStatement(deletePerson);
+			
+			deletePersonStatement.setLong(1, id);
+			
+			deletePersonStatement.executeUpdate();
+			deletePersonStatement.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

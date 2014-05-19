@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,13 +33,26 @@ public class RechnungImplDao implements IRechnungDao {
 			createRechnungStatement.setLong(2, r.getRechnungsnummer());
 			createRechnungStatement.setDate(3, new Date (r.getDatum().getTime()));
 			createRechnungStatement.setDate(4, new Date (r.getFaelligkeitsdatum().getTime()));
-			createRechnungStatement.setDate(5, new Date (r.getBezahltAm().getTime()));
-			createRechnungStatement.setString(6, r.getKommentar());
-			createRechnungStatement.setString(7, r.getNachricht());
+			if(r.getBezahltAm() != null) {
+				createRechnungStatement.setDate(5, new Date (r.getBezahltAm().getTime()));
+			} else {
+				createRechnungStatement.setString(5, null);
+			}
+			if(r.getKommentar() != null) {
+				createRechnungStatement.setString(6, r.getKommentar());
+			} else {
+				createRechnungStatement.setString(6, null);
+			}
+			if(r.getNachricht() != null) {
+				createRechnungStatement.setString(7, r.getNachricht());
+			} else {
+				createRechnungStatement.setString(7, null);
+			}
 			
 			createRechnungStatement.executeUpdate();
 			createRechnungStatement.close();
 			
+			/*
 			// Rechnung ID ermitteln
 			Statement getRechnungIdStatement = c.createStatement();
 			ResultSet rsGetRechnungId = getRechnungIdStatement.executeQuery("SELECT seq_rechnung.CURRVAL FROM TB_RECHNUNG");
@@ -58,7 +70,7 @@ public class RechnungImplDao implements IRechnungDao {
 					rid.create(r.getRechnungszeilen().get(i));
 				}
 			}
-			
+			*/
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -74,20 +86,32 @@ public class RechnungImplDao implements IRechnungDao {
 			PreparedStatement updateRechnungStatement = c.prepareStatement(updateRechnung);
 			
 			updateRechnungStatement.setLong(1, r.getKontaktid());
-			updateRechnungStatement.setString(2, r.getKommentar());
-			updateRechnungStatement.setDate(3, new Date (r.getBezahltAm().getTime()));
+			if(r.getKommentar() != null) {
+				updateRechnungStatement.setString(2, r.getKommentar());
+			} else {
+				updateRechnungStatement.setString(2, null);
+			}
+			if(r.getBezahltAm() != null) {
+				updateRechnungStatement.setDate(3, new Date (r.getBezahltAm().getTime()));
+			} else {
+				updateRechnungStatement.setString(3, null);
+			}
 			updateRechnungStatement.setDate(4, new Date (r.getFaelligkeitsdatum().getTime()));
-			updateRechnungStatement.setString(5, r.getNachricht());
-			updateRechnungStatement.setLong(6, r.getId());
+			if(r.getNachricht() != null) {
+				updateRechnungStatement.setString(5, r.getNachricht());
+			} else {
+				updateRechnungStatement.setString(5, null);
+			}
+			updateRechnungStatement.setLong(6, r.getId());	
 			
 			updateRechnungStatement.executeUpdate();
 			updateRechnungStatement.close();
 			
 			// Rechnungszeilen
-			IRechnungszeileDao rid = DaoFactory.createRechnungszeileDao();
+			IRechnungszeileDao rzd = DaoFactory.createRechnungszeileDao();
 			
 			for(int i = 0; i < r.getRechnungszeilen().size(); i++) {
-				rid.update(r.getRechnungszeilen().get(i));
+				rzd.update(r.getRechnungszeilen().get(i));
 			}
 			
 		} catch (SQLException e) {
@@ -99,7 +123,28 @@ public class RechnungImplDao implements IRechnungDao {
 
 	@Override
 	public void delete(long id) {
-		// TODO Auto-generated method stub
+		
+		String deleteRechnung = "DELETE FROM TB_RECHNUNG WHERE ID_RECHNUNG = ?";
+		
+		try {
+			PreparedStatement deleteRechnungStatement = c.prepareStatement(deleteRechnung);
+			
+			deleteRechnungStatement.setLong(1, id);
+			
+			deleteRechnungStatement.executeUpdate();
+			deleteRechnungStatement.close();
+			
+			// Rechnungszeilen von Rechnung löschen
+			IRechnungszeileDao rzd = DaoFactory.createRechnungszeileDao();
+			ArrayList<Rechnungszeile> rzList = rzd.getAlleRechnungszeilenZuRechnung(id);
+			
+			for(int i = 0; i < rzList.size(); i++) {
+				rzd.delete(rzList.get(i).getId());
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

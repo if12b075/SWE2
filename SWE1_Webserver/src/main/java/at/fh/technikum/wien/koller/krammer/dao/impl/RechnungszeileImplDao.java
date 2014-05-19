@@ -63,7 +63,19 @@ public class RechnungszeileImplDao implements IRechnungszeileDao {
 
 	@Override
 	public void delete(long id) {
-		// TODO Auto-generated method stub
+		String deleteRechnungszeile = "DELETE FROM TB_RECHNUNGSZEILE WHERE ID_RECHNUNGSZEILE = ?";
+		
+		try {
+			PreparedStatement deleteRechnungszeileStatement = c.prepareStatement(deleteRechnungszeile);
+			
+			deleteRechnungszeileStatement.setLong(1, id);
+			
+			deleteRechnungszeileStatement.executeUpdate();
+			deleteRechnungszeileStatement.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

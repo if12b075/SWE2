@@ -45,4 +45,22 @@ public class KontaktMockDao implements IKontaktDao{
 		
 	}
 
+	@Override
+	public void delete(long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Kontakt getKontaktById(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public type getKontaktType(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

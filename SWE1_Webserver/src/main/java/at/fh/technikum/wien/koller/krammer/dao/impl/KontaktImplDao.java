@@ -8,10 +8,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import at.fh.technikum.wien.koller.krammer.dao.DaoFactory;
+import at.fh.technikum.wien.koller.krammer.dao.IAdresseDao;
+import at.fh.technikum.wien.koller.krammer.dao.IFirmaDao;
 import at.fh.technikum.wien.koller.krammer.dao.IKontaktDao;
+import at.fh.technikum.wien.koller.krammer.dao.IPersonDao;
 import at.fh.technikum.wien.koller.krammer.database.DatabaseConnection;
 import at.fh.technikum.wien.koller.krammer.filter.KontaktFilter;
 import at.fh.technikum.wien.koller.krammer.merp.constants.MicroERPConstants;
+import at.fh.technikum.wien.koller.krammer.models.Adresse;
 import at.fh.technikum.wien.koller.krammer.models.Firma;
 import at.fh.technikum.wien.koller.krammer.models.Kontakt;
 import at.fh.technikum.wien.koller.krammer.models.Person;
@@ -236,6 +241,90 @@ public class KontaktImplDao implements IKontaktDao {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public Kontakt getKontaktById(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(long id) {
+		String deleteKontakt = "DELETE FROM TB_KONTAKT WHERE ID_KONTAKT = ?";
+		
+		try {	
+			// Firma/Person löschen
+			switch(getKontaktType(id)) {
+			case FIRMA: 
+				IFirmaDao fd = DaoFactory.createFirmaDao();
+				fd.delete(id);
+				break;
+			case PERSON:
+				IPersonDao pd = DaoFactory.createPersonDao();
+				pd.delete(id);
+				break;
+			}
+			
+			// Adressen löschen
+			IAdresseDao ad = DaoFactory.createAdresseDao();
+			List<Adresse> adList = ad.getAlleAdressenVonKontakt(id);
+			
+			for(int i = 0; i < adList.size(); i++) {
+				ad.delete(adList.get(i).getId());
+			}
+
+			// Kontakt löschen
+			PreparedStatement deleteKontaktStatement = c.prepareStatement(deleteKontakt);
+			
+			deleteKontaktStatement.setLong(1, id);
+			
+			deleteKontaktStatement.executeUpdate();
+			deleteKontaktStatement.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public type getKontaktType(long id) {
+		type kontaktType = null;
+		
+		String selectPerson = "SELECT ID_PERSON FROM TB_PERSON WHERE ID_PERSON = ?";
+		String selectFirma = "SELECT ID_FIRMA FROM TB_FIRMA WHERE ID_FIRMA = ?";
+		
+		try {
+			// Kontakt = Person
+			PreparedStatement selectPersonStatement = c.prepareStatement(selectPerson);
+			selectPersonStatement.setLong(1, id);
+			
+			ResultSet rs = selectPersonStatement.executeQuery();
+			
+			if(rs.next()) {				
+				kontaktType = type.PERSON;
+			}
+			
+			selectPersonStatement.close();
+			
+			// Kontakt = Firma
+			PreparedStatement selectFirmaStatement = c.prepareStatement(selectFirma);
+			selectFirmaStatement.setLong(1, id);
+			
+			rs = selectFirmaStatement.executeQuery();
+			
+			if(rs.next()) {				
+				kontaktType = type.FIRMA;
+			}
+			
+			selectFirmaStatement.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return kontaktType;
 	}
 
 }

@@ -26,7 +26,11 @@ public class AdresseImplDao implements IAdresseDao {
 			PreparedStatement createAdresseStatement = c.prepareStatement(createAdresse);
 			
 			createAdresseStatement.setString(1, a.getAdrrow1());
-			createAdresseStatement.setString(2, a.getAdrrow2());
+			if(a.getAdrrow2() != null) {
+				createAdresseStatement.setString(2, a.getAdrrow2());
+			} else {
+				createAdresseStatement.setString(2, null);
+			}
 			createAdresseStatement.setInt(3, a.getPlz());
 			createAdresseStatement.setString(4, a.getOrt());
 			
@@ -61,7 +65,11 @@ public class AdresseImplDao implements IAdresseDao {
 				PreparedStatement updatePersonAdresseStatement = c.prepareStatement(updatePersonAdresse);
 				
 				updatePersonAdresseStatement.setString(1, a.getAdrrow1());
-				updatePersonAdresseStatement.setString(2, a.getAdrrow2());
+				if(a.getAdrrow2() != null) {
+					updatePersonAdresseStatement.setString(2, a.getAdrrow2());
+				} else {
+					updatePersonAdresseStatement.setString(2, null);
+				}
 				updatePersonAdresseStatement.setInt(3, a.getPlz());
 				updatePersonAdresseStatement.setString(4, a.getOrt());
 				updatePersonAdresseStatement.setLong(5, a.getId());
@@ -80,7 +88,11 @@ public class AdresseImplDao implements IAdresseDao {
 				PreparedStatement updatePersonRGAdresseStatement = c.prepareStatement(updatePersonRGAdresse);
 				
 				updatePersonRGAdresseStatement.setString(1, a.getAdrrow1());
-				updatePersonRGAdresseStatement.setString(2, a.getAdrrow2());
+				if(a.getAdrrow2() != null) {
+					updatePersonRGAdresseStatement.setString(2, a.getAdrrow2());
+				} else {
+					updatePersonRGAdresseStatement.setString(2, null);
+				}
 				updatePersonRGAdresseStatement.setInt(3, a.getPlz());
 				updatePersonRGAdresseStatement.setString(4, a.getOrt());
 				updatePersonRGAdresseStatement.setLong(5, a.getId());
@@ -99,7 +111,11 @@ public class AdresseImplDao implements IAdresseDao {
 				PreparedStatement updatePersonLFAdresseStatement = c.prepareStatement(updatePersonLFAdresse);
 				
 				updatePersonLFAdresseStatement.setString(1, a.getAdrrow1());
-				updatePersonLFAdresseStatement.setString(2, a.getAdrrow2());
+				if(a.getAdrrow2() != null) {
+					updatePersonLFAdresseStatement.setString(2, a.getAdrrow2());
+				} else {
+					updatePersonLFAdresseStatement.setString(2, null);
+				}
 				updatePersonLFAdresseStatement.setInt(3, a.getPlz());
 				updatePersonLFAdresseStatement.setString(4, a.getOrt());
 				updatePersonLFAdresseStatement.setLong(5, a.getId());
@@ -116,7 +132,19 @@ public class AdresseImplDao implements IAdresseDao {
 
 	@Override
 	public void delete(long id) {
-		// TODO Auto-generated method stub
+		String deleteAdresse = "DELETE FROM TB_ADRESSE WHERE ID_ADRESSE = ?";
+		
+		try {
+			PreparedStatement deleteAdresseStatement = c.prepareStatement(deleteAdresse);
+			
+			deleteAdresseStatement.setLong(1, id);
+			
+			deleteAdresseStatement.executeUpdate();
+			deleteAdresseStatement.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -195,7 +223,6 @@ public class AdresseImplDao implements IAdresseDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		
 		return addressList;
 	}

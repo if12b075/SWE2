@@ -37,7 +37,11 @@ public class FirmaImplDao implements IFirmaDao {
 			
 			createFirmaStatement.setLong(1, f.getId());
 			createFirmaStatement.setString(2, f.getName());
-			createFirmaStatement.setString(3, f.getUid());
+			if(f.getUid() != null) {
+				createFirmaStatement.setString(3, f.getUid());
+			} else {
+				createFirmaStatement.setString(3, null);
+			}
 			
 			createFirmaStatement.executeUpdate();
 			createFirmaStatement.close();
@@ -68,6 +72,10 @@ public class FirmaImplDao implements IFirmaDao {
 
 	@Override
 	public void update(Firma f) {
+		long wohnadresseId = 0;
+		long rechnungsadresseId = 0;
+		long lieferadresseId = 0;
+		
 		String udpateFirma = "UPDATE TB_FIRMA SET NAME = ?, UID_NR = ? WHERE ID_FIRMA = ?";
 		
 		try {
@@ -75,18 +83,49 @@ public class FirmaImplDao implements IFirmaDao {
 			PreparedStatement updateFirmaStatement = c.prepareStatement(udpateFirma);
 			
 			updateFirmaStatement.setString(1, f.getName());
-			updateFirmaStatement.setString(2, f.getUid());
+			if(f.getUid() != null) {
+				updateFirmaStatement.setString(2, f.getUid());
+			} else {
+				updateFirmaStatement.setString(2, null);
+			}
 			updateFirmaStatement.setLong(3, f.getId());
 			
 			updateFirmaStatement.executeUpdate();
 			updateFirmaStatement.close();
 			
-			// Adressen
-			AdresseImplDao aid = new AdresseImplDao();
+			// Adressen updaten/anlegen
+			IAdresseDao aid = DaoFactory.createAdresseDao();
 			
-			aid.update(f.getWohnadresse());
-			aid.update(f.getRechnungsadresse());
-			aid.update(f.getLieferadresse());
+			if(f.getWohnadresse() != null) {
+				if(f.getWohnadresse().getId() != 0) {
+					aid.update(f.getWohnadresse());
+					wohnadresseId = f.getWohnadresse().getId();
+				} else {
+					wohnadresseId = aid.create(f.getWohnadresse());
+				}
+			}
+			
+			if(f.getRechnungsadresse() != null) {
+				if(f.getRechnungsadresse().getId() != 0) {
+					aid.update(f.getRechnungsadresse());
+					rechnungsadresseId = f.getRechnungsadresse().getId();
+				} else {
+					rechnungsadresseId = aid.create(f.getRechnungsadresse());
+				}
+			}
+			
+			if(f.getLieferadresse() != null) {
+				if(f.getLieferadresse().getId() != 0) {
+					aid.update(f.getLieferadresse());
+					lieferadresseId = f.getLieferadresse().getId();
+				} else {
+					lieferadresseId = aid.create(f.getLieferadresse());
+				}
+			}
+			
+			// Kontakt mit Adressen updaten
+			IKontaktDao ikd = DaoFactory.createKontaktDao();
+			ikd.update(f.getId(), wohnadresseId, rechnungsadresseId, lieferadresseId);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -95,7 +134,19 @@ public class FirmaImplDao implements IFirmaDao {
 
 	@Override
 	public void delete(long id) {
-		// TODO Auto-generated method stub
+		String deleteFirma = "DELETE FROM TB_FIRMA WHERE ID_FIRMA = ?";
+		
+		try {
+			PreparedStatement deleteFirmaStatement = c.prepareStatement(deleteFirma);
+			
+			deleteFirmaStatement.setLong(1, id);
+			
+			deleteFirmaStatement.executeUpdate();
+			deleteFirmaStatement.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
