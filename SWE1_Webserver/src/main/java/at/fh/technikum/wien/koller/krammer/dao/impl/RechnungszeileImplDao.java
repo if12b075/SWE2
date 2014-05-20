@@ -17,8 +17,8 @@ public class RechnungszeileImplDao implements IRechnungszeileDao {
 	@Override
 	public void create(Rechnungszeile r) {
 		String createRechnungszeile = "INSERT INTO TB_RECHNUNGSZEILE (ID_RECHNUNGSZEILE, "
-				+ "TB_RECHNUNG_ID, BEZEICHNUNG, STUECKPREIS, UST, MENGE)"
-				+ "VALUES (seq_rechnungszeile.NEXTVAL, ?, ?, ?, ?, ?)";
+				+ "TB_RECHNUNG_ID, BEZEICHNUNG, STUECKPREIS, UST, MENGE, GELOESCHT)"
+				+ "VALUES (seq_rechnungszeile.NEXTVAL, ?, ?, ?, ?, ?, ?)";
 		try {
 			
 			PreparedStatement createRechnungszeileStatement = c.prepareStatement(createRechnungszeile);
@@ -28,6 +28,7 @@ public class RechnungszeileImplDao implements IRechnungszeileDao {
 			createRechnungszeileStatement.setFloat(3, r.getStueckpreis());
 			createRechnungszeileStatement.setInt(4, r.getUst());
 			createRechnungszeileStatement.setInt(5, r.getMenge());
+			createRechnungszeileStatement.setInt(6, 0);
 			
 			createRechnungszeileStatement.executeUpdate();
 			createRechnungszeileStatement.close();
@@ -63,12 +64,13 @@ public class RechnungszeileImplDao implements IRechnungszeileDao {
 
 	@Override
 	public void delete(long id) {
-		String deleteRechnungszeile = "DELETE FROM TB_RECHNUNGSZEILE WHERE ID_RECHNUNGSZEILE = ?";
+		String deleteRechnungszeile = "UPDATE TB_RECHNUNGSZEILE SET GELOESCHT = ? WHERE ID_RECHNUNGSZEILE = ?";
 		
 		try {
 			PreparedStatement deleteRechnungszeileStatement = c.prepareStatement(deleteRechnungszeile);
 			
-			deleteRechnungszeileStatement.setLong(1, id);
+			deleteRechnungszeileStatement.setLong(1, 1);
+			deleteRechnungszeileStatement.setLong(2, id);
 			
 			deleteRechnungszeileStatement.executeUpdate();
 			deleteRechnungszeileStatement.close();
@@ -101,8 +103,11 @@ public class RechnungszeileImplDao implements IRechnungszeileDao {
 				rz.setMenge(rs.getInt("MENGE"));
 				rz.setStueckpreis(rs.getFloat("STUECKPREIS"));
 				rz.setUst(rs.getInt("UST"));
+				rz.setGeloescht(rs.getInt("GELOESCHT"));
 				
-				rechnungszeilenListe.add(rz);
+				if(rz.getGeloescht() == 0) {
+					rechnungszeilenListe.add(rz);
+				}
 			}
 			
 			selectRechnungszeilenByIdStatement.close();

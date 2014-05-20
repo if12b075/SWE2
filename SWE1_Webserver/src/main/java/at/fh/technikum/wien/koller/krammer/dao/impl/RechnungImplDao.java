@@ -22,8 +22,8 @@ public class RechnungImplDao implements IRechnungDao {
 	@Override
 	public void create(Rechnung r) {
 		String createRechnung = "INSERT INTO TB_RECHNUNG (ID_RECHNUNG, TB_KONTAKT_ID, "
-				+ "RG_NUMMER, DATUM, FAELLIGKEIT, BEZAHLT, KOMMENTAR, NACHRICHT) "
-				+ "VALUES (seq_rechnung.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
+				+ "RG_NUMMER, DATUM, FAELLIGKEIT, BEZAHLT, KOMMENTAR, NACHRICHT, GELOESCHT) "
+				+ "VALUES (seq_rechnung.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		try {
 			// Rechnung erstellen
@@ -48,6 +48,7 @@ public class RechnungImplDao implements IRechnungDao {
 			} else {
 				createRechnungStatement.setString(7, null);
 			}
+			createRechnungStatement.setInt(8, 0);
 			
 			createRechnungStatement.executeUpdate();
 			createRechnungStatement.close();
@@ -124,12 +125,13 @@ public class RechnungImplDao implements IRechnungDao {
 	@Override
 	public void delete(long id) {
 		
-		String deleteRechnung = "DELETE FROM TB_RECHNUNG WHERE ID_RECHNUNG = ?";
+		String deleteRechnung = "UPDATE TB_RECHNUNG SET GELOESCHT = ? WHERE ID_RECHNUNG = ?";
 		
 		try {
 			PreparedStatement deleteRechnungStatement = c.prepareStatement(deleteRechnung);
 			
-			deleteRechnungStatement.setLong(1, id);
+			deleteRechnungStatement.setLong(1, 1);
+			deleteRechnungStatement.setLong(2, id);
 			
 			deleteRechnungStatement.executeUpdate();
 			deleteRechnungStatement.close();
@@ -169,8 +171,11 @@ public class RechnungImplDao implements IRechnungDao {
 					rg.setFaelligkeitsdatum(rs.getDate("FAELLIGKEIT"));
 					rg.setNachricht(rs.getString("NACHRICHT"));
 					rg.setRechnungsnummer(rs.getLong("RG_NUMMER"));
+					rg.setGeloescht(rs.getInt("GELOESCHT"));
 					
-					rechnungsListe.add(rg);	
+					if(rg.getGeloescht() == 0) {
+						rechnungsListe.add(rg);	
+					}
 				}
 				
 				selectRechnungStatement.close();
@@ -204,6 +209,7 @@ public class RechnungImplDao implements IRechnungDao {
 				rg.setFaelligkeitsdatum(rs.getDate("FAELLIGKEIT"));
 				rg.setNachricht(rs.getString("NACHRICHT"));
 				rg.setRechnungsnummer(rs.getLong("RG_NUMMER"));
+				rg.setGeloescht(rs.getInt("GELOESCHT"));
 			}
 			
 			selectRechnungByIdStatement.close();

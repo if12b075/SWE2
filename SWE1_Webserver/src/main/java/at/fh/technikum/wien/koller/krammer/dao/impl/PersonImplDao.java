@@ -27,8 +27,8 @@ public class PersonImplDao implements IPersonDao {
 		long lieferadresseId = 0;
 		
 		String createPerson = "INSERT INTO TB_PERSON (ID_PERSON, TB_FIRMA_ID, "
-				+ "TITEL, VORNAME, NACHNAME, SUFFIX, GEB_DATUM) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+				+ "TITEL, VORNAME, NACHNAME, SUFFIX, GEB_DATUM, GELOESCHT) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		try {
 			// Kontakt anlegen
@@ -52,7 +52,8 @@ public class PersonImplDao implements IPersonDao {
 			createPersonStatement.setString(4, p.getVorname());
 			createPersonStatement.setString(5, p.getNachname());
 			createPersonStatement.setString(6, p.getSuffix());
-			createPersonStatement.setDate(7, new Date(p.getGeburtstag().getTime()));  
+			createPersonStatement.setDate(7, new Date(p.getGeburtstag().getTime()));
+			createPersonStatement.setInt(8, 0);
 			
 			createPersonStatement.executeUpdate();
 			createPersonStatement.close();
@@ -158,12 +159,13 @@ public class PersonImplDao implements IPersonDao {
 
 	@Override
 	public void delete(long id) {
-		String deletePerson = "DELETE FROM TB_PERSON WHERE ID_PERSON = ?";
+		String deletePerson = "UPDATE TB_PERSON SET GELOESCHT = ? WHERE ID_PERSON = ?";
 		
 		try {
 			PreparedStatement deletePersonStatement = c.prepareStatement(deletePerson);
 			
-			deletePersonStatement.setLong(1, id);
+			deletePersonStatement.setLong(1, 1);
+			deletePersonStatement.setLong(2, id);
 			
 			deletePersonStatement.executeUpdate();
 			deletePersonStatement.close();
@@ -194,6 +196,7 @@ public class PersonImplDao implements IPersonDao {
 				person.setSuffix(rs.getString("SUFFIX"));
 				person.setGeburtstag(rs.getDate("GEB_DATUM"));
 				person.setFirmaid(rs.getLong("TB_FIRMA_ID"));
+				person.setGeloescht(rs.getInt("GELOESCHT"));
 			}
 			
 			selectPersonByIdStatement.close();

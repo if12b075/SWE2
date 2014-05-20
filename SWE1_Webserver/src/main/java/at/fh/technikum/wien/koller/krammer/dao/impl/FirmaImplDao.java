@@ -25,7 +25,7 @@ public class FirmaImplDao implements IFirmaDao {
 		long rechnungsadresseId = 0;
 		long lieferadresseId = 0;
 		
-		String createFirma = "INSERT INTO TB_FIRMA (ID_FIRMA, NAME, UID_NR) VALUES (?, ?, ?)";
+		String createFirma = "INSERT INTO TB_FIRMA (ID_FIRMA, NAME, UID_NR, GELOESCHT) VALUES (?, ?, ?, ?)";
 		
 		try {
 			// Kontakt anlegen
@@ -42,6 +42,7 @@ public class FirmaImplDao implements IFirmaDao {
 			} else {
 				createFirmaStatement.setString(3, null);
 			}
+			createFirmaStatement.setInt(4, 0);
 			
 			createFirmaStatement.executeUpdate();
 			createFirmaStatement.close();
@@ -134,12 +135,13 @@ public class FirmaImplDao implements IFirmaDao {
 
 	@Override
 	public void delete(long id) {
-		String deleteFirma = "DELETE FROM TB_FIRMA WHERE ID_FIRMA = ?";
+		String deleteFirma = "UPDATE TB_FIRMA SET GELOESCHT = ? WHERE ID_FIRMA = ?";
 		
 		try {
 			PreparedStatement deleteFirmaStatement = c.prepareStatement(deleteFirma);
 			
-			deleteFirmaStatement.setLong(1, id);
+			deleteFirmaStatement.setLong(1, 1);
+			deleteFirmaStatement.setLong(2, id);
 			
 			deleteFirmaStatement.executeUpdate();
 			deleteFirmaStatement.close();
@@ -167,6 +169,7 @@ public class FirmaImplDao implements IFirmaDao {
 				firma.setId(rs.getLong("ID_FIRMA"));
 				firma.setName(rs.getString("NAME"));
 				firma.setUid(rs.getString("UID_NR"));
+				firma.setGeloescht(rs.getInt("GELOESCHT"));
 			}
 			
 			selectFirmaByIdStatement.close();

@@ -26,11 +26,13 @@ public class KontaktImplDao implements IKontaktDao {
 	
 	@Override
 	public long create() {
-		String createKontakt = "INSERT INTO TB_KONTAKT (ID_KONTAKT) "
-				+ "VALUES (seq_kontakt.NEXTVAL)";
+		String createKontakt = "INSERT INTO TB_KONTAKT (ID_KONTAKT, GELOESCHT) "
+				+ "VALUES (seq_kontakt.NEXTVAL, ?)";
 		
 		try {
 			PreparedStatement createKontaktStatement = c.prepareStatement(createKontakt);
+			
+			createKontaktStatement.setInt(1, 0);
 			
 			createKontaktStatement.executeUpdate();
 			createKontaktStatement.close();
@@ -102,17 +104,19 @@ public class KontaktImplDao implements IKontaktDao {
 				ResultSet rs = selectPersonStatement.executeQuery();
 				
 				while(rs.next()) {
-					Person per = new Person();
-					per.setId(rs.getLong("ID_PERSON"));
-					per.setTitel(rs.getString("TITEL"));
-					per.setVorname(rs.getString("VORNAME"));
-					per.setNachname(rs.getString("NACHNAME"));
-					per.setSuffix(rs.getString("SUFFIX"));
-					per.setGeburtstag(rs.getDate("GEB_DATUM"));
-					per.setFirmaid(rs.getLong("TB_FIRMA_ID"));
+					Person p = new Person();
+					p.setId(rs.getLong("ID_PERSON"));
+					p.setTitel(rs.getString("TITEL"));
+					p.setVorname(rs.getString("VORNAME"));
+					p.setNachname(rs.getString("NACHNAME"));
+					p.setSuffix(rs.getString("SUFFIX"));
+					p.setGeburtstag(rs.getDate("GEB_DATUM"));
+					p.setFirmaid(rs.getLong("TB_FIRMA_ID"));
+					p.setGeloescht(rs.getInt("GELOESCHT"));
 					
-					kontaktListe.add(per);
-					
+					if(p.getGeloescht() == 0) {
+						kontaktListe.add(p);
+					}
 				}
 				
 				selectPersonStatement.close();
@@ -124,9 +128,11 @@ public class KontaktImplDao implements IKontaktDao {
 					f.setId(rs.getLong("ID_FIRMA"));
 					f.setName(rs.getString("NAME"));
 					f.setUid(rs.getString("UID_NR"));
+					f.setGeloescht(rs.getInt("GELOESCHT"));
 					
-					kontaktListe.add(f);
-					
+					if(f.getGeloescht() == 0) {
+						kontaktListe.add(f);
+					}
 				}
 				
 				selectFirmaStatement.close();
@@ -158,9 +164,11 @@ public class KontaktImplDao implements IKontaktDao {
 						f.setId(rs.getLong("ID_FIRMA"));
 						f.setName(rs.getString("NAME"));
 						f.setUid(rs.getString("UID_NR"));
+						f.setGeloescht(rs.getInt("GELOESCHT"));
 						
-						kontaktListe.add(f);
-						
+						if(f.getGeloescht() == 0) {
+							kontaktListe.add(f);
+						}
 					}
 					
 					selectStatement.close();
@@ -174,16 +182,19 @@ public class KontaktImplDao implements IKontaktDao {
 					ResultSet rs = selectStatement.executeQuery();
 					
 					while(rs.next()) {
-						Person per = new Person();
-						per.setId(rs.getLong("ID_PERSON"));
-						per.setTitel(rs.getString("TITEL"));
-						per.setVorname(rs.getString("VORNAME"));
-						per.setNachname(rs.getString("NACHNAME"));
-						per.setSuffix(rs.getString("SUFFIX"));
-						per.setGeburtstag(rs.getDate("GEB_DATUM"));
-						per.setFirmaid(rs.getLong("TB_FIRMA_ID"));
+						Person p = new Person();
+						p.setId(rs.getLong("ID_PERSON"));
+						p.setTitel(rs.getString("TITEL"));
+						p.setVorname(rs.getString("VORNAME"));
+						p.setNachname(rs.getString("NACHNAME"));
+						p.setSuffix(rs.getString("SUFFIX"));
+						p.setGeburtstag(rs.getDate("GEB_DATUM"));
+						p.setFirmaid(rs.getLong("TB_FIRMA_ID"));
+						p.setGeloescht(rs.getInt("GELOESCHT"));
 						
-						kontaktListe.add(per);
+						if(p.getGeloescht() == 0) {
+							kontaktListe.add(p);
+						}
 						
 					}
 					
@@ -204,17 +215,19 @@ public class KontaktImplDao implements IKontaktDao {
 				ResultSet rs = selectPersonStatement.executeQuery();
 				
 				while(rs.next()) {
-					Person per = new Person();
-					per.setId(rs.getLong("ID_PERSON"));
-					per.setTitel(rs.getString("TITEL"));
-					per.setVorname(rs.getString("VORNAME"));
-					per.setNachname(rs.getString("NACHNAME"));
-					per.setSuffix(rs.getString("SUFFIX"));
-					per.setGeburtstag(rs.getDate("GEB_DATUM"));
-					per.setFirmaid(rs.getLong("TB_FIRMA_ID"));
+					Person p = new Person();
+					p.setId(rs.getLong("ID_PERSON"));
+					p.setTitel(rs.getString("TITEL"));
+					p.setVorname(rs.getString("VORNAME"));
+					p.setNachname(rs.getString("NACHNAME"));
+					p.setSuffix(rs.getString("SUFFIX"));
+					p.setGeburtstag(rs.getDate("GEB_DATUM"));
+					p.setFirmaid(rs.getLong("TB_FIRMA_ID"));
+					p.setGeloescht(rs.getInt("GELOESCHT"));
 					
-					kontaktListe.add(per);
-					
+					if(p.getGeloescht() == 0) {
+						kontaktListe.add(p);
+					}
 				}
 				
 				selectPersonStatement.close();
@@ -226,9 +239,11 @@ public class KontaktImplDao implements IKontaktDao {
 					f.setId(rs.getLong("ID_FIRMA"));
 					f.setName(rs.getString("NAME"));
 					f.setUid(rs.getString("UID_NR"));
+					f.setGeloescht(rs.getInt("GELOESCHT"));
 					
-					kontaktListe.add(f);
-					
+					if(f.getGeloescht() == 0) {
+						kontaktListe.add(f);
+					}					
 				}
 				
 				selectFirmaStatement.close();
@@ -251,7 +266,7 @@ public class KontaktImplDao implements IKontaktDao {
 
 	@Override
 	public void delete(long id) {
-		String deleteKontakt = "DELETE FROM TB_KONTAKT WHERE ID_KONTAKT = ?";
+		String deleteKontakt = "UPDATE TB_KONTAKT SET GELOESCHT = ? WHERE ID_KONTAKT = ?";
 		
 		try {	
 			// Firma/Person löschen
@@ -277,7 +292,8 @@ public class KontaktImplDao implements IKontaktDao {
 			// Kontakt löschen
 			PreparedStatement deleteKontaktStatement = c.prepareStatement(deleteKontakt);
 			
-			deleteKontaktStatement.setLong(1, id);
+			deleteKontaktStatement.setLong(1, 1);
+			deleteKontaktStatement.setLong(2, id);
 			
 			deleteKontaktStatement.executeUpdate();
 			deleteKontaktStatement.close();

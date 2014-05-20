@@ -20,7 +20,7 @@ public class AdresseImplDao implements IAdresseDao {
 	@Override
 	public long create(Adresse a) {
 		String createAdresse = "INSERT INTO TB_ADRESSE (ID_ADRESSE, ADRESSE_Z1, "
-				+ "ADRESSE_Z2, PLZ, ORT) VALUES (seq_adresse.NEXTVAL, ?, ?, ?, ?)";
+				+ "ADRESSE_Z2, PLZ, ORT, GELOESCHT) VALUES (seq_adresse.NEXTVAL, ?, ?, ?, ?, ?)";
 		
 		try {
 			PreparedStatement createAdresseStatement = c.prepareStatement(createAdresse);
@@ -33,6 +33,7 @@ public class AdresseImplDao implements IAdresseDao {
 			}
 			createAdresseStatement.setInt(3, a.getPlz());
 			createAdresseStatement.setString(4, a.getOrt());
+			createAdresseStatement.setInt(5, 0);
 			
 			createAdresseStatement.executeUpdate();
 			createAdresseStatement.close();
@@ -132,12 +133,13 @@ public class AdresseImplDao implements IAdresseDao {
 
 	@Override
 	public void delete(long id) {
-		String deleteAdresse = "DELETE FROM TB_ADRESSE WHERE ID_ADRESSE = ?";
+		String deleteAdresse = "UPDATE TB_ADRESSE SET GELOESCHT = ? WHERE ID_ADRESSE = ?";
 		
 		try {
 			PreparedStatement deleteAdresseStatement = c.prepareStatement(deleteAdresse);
 			
-			deleteAdresseStatement.setLong(1, id);
+			deleteAdresseStatement.setLong(1, 1);
+			deleteAdresseStatement.setLong(2, id);
 			
 			deleteAdresseStatement.executeUpdate();
 			deleteAdresseStatement.close();
@@ -174,8 +176,11 @@ public class AdresseImplDao implements IAdresseDao {
 				ad.setAdrrow2(rs.getString("ADRESSE_Z2"));
 				ad.setPlz(rs.getInt("PLZ"));
 				ad.setOrt(rs.getString("ORT"));
+				ad.setGeloescht(rs.getInt("GELOESCHT"));
 				
-				addressList.add(ad);
+				if(ad.getGeloescht() == 0) {
+					addressList.add(ad);
+				}
 			}
 			
 			selectPersonAdresseStatement.close();
@@ -194,8 +199,11 @@ public class AdresseImplDao implements IAdresseDao {
 				ad.setAdrrow2(rs.getString("ADRESSE_Z2"));
 				ad.setPlz(rs.getInt("PLZ"));
 				ad.setOrt(rs.getString("ORT"));
+				ad.setGeloescht(rs.getInt("GELOESCHT"));
 				
-				addressList.add(ad);
+				if(ad.getGeloescht() == 0) {
+					addressList.add(ad);
+				}
 			}
 			
 			selectPersonRGAdresseStatement.close();
@@ -214,8 +222,11 @@ public class AdresseImplDao implements IAdresseDao {
 				ad.setAdrrow2(rs.getString("ADRESSE_Z2"));
 				ad.setPlz(rs.getInt("PLZ"));
 				ad.setOrt(rs.getString("ORT"));
+				ad.setGeloescht(rs.getInt("GELOESCHT"));
 				
-				addressList.add(ad);
+				if(ad.getGeloescht() == 0) {
+					addressList.add(ad);
+				}
 			}
 			
 			selectPersonLFAdresseStatement.close();
