@@ -12,6 +12,7 @@ import at.fh.technikum.wien.koller.krammer.dao.DaoFactory;
 import at.fh.technikum.wien.koller.krammer.dao.IRechnungDao;
 import at.fh.technikum.wien.koller.krammer.dao.IRechnungszeileDao;
 import at.fh.technikum.wien.koller.krammer.database.DatabaseConnection;
+import at.fh.technikum.wien.koller.krammer.filter.RechnungFilter;
 import at.fh.technikum.wien.koller.krammer.merp.constants.MicroERPConstants;
 import at.fh.technikum.wien.koller.krammer.models.Rechnung;
 import at.fh.technikum.wien.koller.krammer.models.Rechnungszeile;
@@ -226,6 +227,12 @@ public class RechnungImplDao implements IRechnungDao {
 		}
 		
 		return rg;
+	}
+
+	@Override
+	public List<Rechnung> getFilterRechnung(RechnungFilter rf) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

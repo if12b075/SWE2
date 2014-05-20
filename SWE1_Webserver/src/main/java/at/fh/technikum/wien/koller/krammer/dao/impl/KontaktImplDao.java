@@ -260,8 +260,20 @@ public class KontaktImplDao implements IKontaktDao {
 
 	@Override
 	public Kontakt getKontaktById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Kontakt k = null;
+		
+		switch(getKontaktType(id)) {
+		case FIRMA:
+			IFirmaDao fd = DaoFactory.createFirmaDao();
+			k = fd.getFirmaById(id);
+			break;
+		case PERSON:
+			IPersonDao pd = DaoFactory.createPersonDao();
+			k = pd.getPersonById(id);
+			break;
+		}
+		
+		return k;
 	}
 
 	@Override
