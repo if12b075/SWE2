@@ -16,8 +16,10 @@ public class CommandFactory {
 			break;
 		case commons.CommandRequestTitel.GET_FILTER_KONTAKTE:
 			c = new GetKontaktFilterCommand();
-			default:
-				break;
+			break;
+		case commons.CommandRequestTitel.GET_FILTER_RECHNUNG:
+			c = new GetRechnungFilterCommand();
+			break;
 		case commons.CommandRequestTitel.GET_PERSON_BY_ID:
 			c = new GetPersonByIdCommand();
 			break;
@@ -26,6 +28,9 @@ public class CommandFactory {
 			break;
 		case commons.CommandRequestTitel.GET_RECHNUNG_BY_ID:
 			c = new GetRechnungByIdCommand();
+			break;
+		case commons.CommandRequestTitel.GET_KONTAKT_BY_ID:
+			c = new GetKontaktByIdCommand();
 			break;
 		case commons.CommandRequestTitel.UPDATE_PERSON:
 			c = new UpdatePersonCommand();
@@ -36,6 +41,9 @@ public class CommandFactory {
 		case commons.CommandRequestTitel.UPDATE_RECHNUNG:
 			c = new UpdateRechnungCommand();
 			break;
+		case commons.CommandRequestTitel.UPDATE_RECHNUNGSZEILE:
+			c = new UpdateRechnungszeileCommand();
+			break;
 		case commons.CommandRequestTitel.CREATE_PERSON:
 			c = new CreatePersonCommand();
 			break;
@@ -45,9 +53,22 @@ public class CommandFactory {
 		case commons.CommandRequestTitel.CREATE_RECHNUNG:
 			c = new CreateRechnungCommand();
 			break;
-			
+		case commons.CommandRequestTitel.CREATE_RECHNUNGSZEILE:
+			c = new CreateRechnungszeileCommand();
+			break;
 		case commons.CommandRequestTitel.DELETE_KONTAKT:
 			c = new DeleteKontaktCommand();
+			break;
+		case commons.CommandRequestTitel.DELETE_ADRESSE:
+			c = new DeleteAdresseCommand();
+			break;
+		case commons.CommandRequestTitel.DELETE_RECHNUNG:
+			c = new DeleteRechnungCommand();
+			break;
+		case commons.CommandRequestTitel.DELETE_RECHNUNGSZEILE:
+			c = new DeleteRechnungszeileCommand();
+			break;
+		default:
 			break;
 		}
 		
