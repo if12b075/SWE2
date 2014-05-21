@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.fh.technikum.wien.koller.krammer.dao.DaoFactory;
+import at.fh.technikum.wien.koller.krammer.dao.IKontaktDao;
 import at.fh.technikum.wien.koller.krammer.dao.IRechnungDao;
 import at.fh.technikum.wien.koller.krammer.dao.IRechnungszeileDao;
 import at.fh.technikum.wien.koller.krammer.database.DatabaseConnection;
 import at.fh.technikum.wien.koller.krammer.filter.RechnungFilter;
 import at.fh.technikum.wien.koller.krammer.merp.constants.MicroERPConstants;
+import at.fh.technikum.wien.koller.krammer.models.Kontakt;
 import at.fh.technikum.wien.koller.krammer.models.Rechnung;
 import at.fh.technikum.wien.koller.krammer.models.Rechnungszeile;
 
@@ -231,8 +233,307 @@ public class RechnungImplDao implements IRechnungDao {
 
 	@Override
 	public List<Rechnung> getFilterRechnung(RechnungFilter rf) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		List<Rechnung> rechnungListe = new ArrayList<Rechnung>();
+		
+		try {	
+			if(rf.getKontaktFilter() != null && rf.getVonBetrag() != 0 && rf.getBisBetrag() != 0 && rf.getVonDatum() != null && rf.getBisDatum() != null) {
+				// suche nach Kontakt, Betrag von/bis, Datum von/bis (Implementierung fehlt)
+				
+				List<Kontakt> kontaktListe = new ArrayList<Kontakt>();
+				IKontaktDao kd = DaoFactory.createKontaktDao();
+				kontaktListe = kd.getFilterKontakte(rf.getKontaktFilter());
+				
+				List<Rechnungszeile> rechnungszeileListe = new ArrayList<Rechnungszeile>();
+				IRechnungszeileDao rd = DaoFactory.createRechnungszeileDao();
+				float gesamtBetrag = 0;
+				
+				String select = "SELECT * FROM TB_RECHNUNG WHERE GELOESCHT = 0 AND DATUM >= ? AND DATUM <= ?";
+				
+				PreparedStatement selectStatement = c.prepareStatement(select);
+				selectStatement.setDate(1, new Date (rf.getVonDatum().getTime()));
+				selectStatement.setDate(2, new Date (rf.getBisDatum().getTime()));
+				
+				ResultSet rs = selectStatement.executeQuery();
+				
+				while(rs.next()) {
+					Rechnung rg = new Rechnung();
+					rg.setId(rs.getLong("ID_RECHNUNG"));
+					rg.setKontaktid(rs.getLong("TB_KONTAKT_ID"));
+					rg.setKommentar(rs.getString("KOMMENTAR"));
+					rg.setBezahltAm(rs.getDate("BEZAHLT"));
+					rg.setDatum(rs.getDate("DATUM"));
+					rg.setFaelligkeitsdatum(rs.getDate("FAELLIGKEIT"));
+					rg.setNachricht(rs.getString("NACHRICHT"));
+					rg.setRechnungsnummer(rs.getLong("RG_NUMMER"));
+					rg.setGeloescht(rs.getInt("GELOESCHT"));
+					
+					for(int i = 0; i < kontaktListe.size(); i++) {
+						if(kontaktListe.get(i).getId() == rg.getKontaktid()) {
+							// Gesamtbetrag aller Rechnungszeilen
+							rechnungszeileListe = rd.getAlleRechnungszeilenZuRechnung(rg.getId());
+							
+							for(int j = 0; j < rechnungszeileListe.size(); j++) {
+								gesamtBetrag += ((rechnungszeileListe.get(j).getStueckpreis() 
+										* rechnungszeileListe.get(j).getMenge()) 
+										* ((100 + rechnungszeileListe.get(j).getUst())/100));
+							}
+							
+							// Kontrolle ob Betrag mit von/bis Betrag übereinstimmt
+							if(gesamtBetrag >= rf.getVonBetrag() && gesamtBetrag <= rf.getBisBetrag()) {
+								rechnungListe.add(rg);
+							}
+							
+							gesamtBetrag = 0;	
+						}
+					}
+				}
+				
+				selectStatement.close();
+			} else if(rf.getKontaktFilter() != null && rf.getVonBetrag() != 0 && rf.getBisBetrag() != 0 ) {
+				// suche nach Kontakt, Betrag von/bis
+				
+				List<Kontakt> kontaktListe = new ArrayList<Kontakt>();
+				IKontaktDao kd = DaoFactory.createKontaktDao();
+				kontaktListe = kd.getFilterKontakte(rf.getKontaktFilter());
+				
+				List<Rechnungszeile> rechnungszeileListe = new ArrayList<Rechnungszeile>();
+				IRechnungszeileDao rd = DaoFactory.createRechnungszeileDao();
+				float gesamtBetrag = 0;
+				
+				String select = "SELECT * FROM TB_RECHNUNG WHERE GELOESCHT = 0";
+				
+				PreparedStatement selectStatement = c.prepareStatement(select);
+				ResultSet rs = selectStatement.executeQuery();
+							
+				while(rs.next()) {
+					Rechnung rg = new Rechnung();
+					rg.setId(rs.getLong("ID_RECHNUNG"));
+					rg.setKontaktid(rs.getLong("TB_KONTAKT_ID"));
+					rg.setKommentar(rs.getString("KOMMENTAR"));
+					rg.setBezahltAm(rs.getDate("BEZAHLT"));
+					rg.setDatum(rs.getDate("DATUM"));
+					rg.setFaelligkeitsdatum(rs.getDate("FAELLIGKEIT"));
+					rg.setNachricht(rs.getString("NACHRICHT"));
+					rg.setRechnungsnummer(rs.getLong("RG_NUMMER"));
+					rg.setGeloescht(rs.getInt("GELOESCHT"));
+					
+					for(int i = 0; i < kontaktListe.size(); i++) {
+						if(kontaktListe.get(i).getId() == rg.getKontaktid()) {
+							// Gesamtbetrag aller Rechnungszeilen
+							rechnungszeileListe = rd.getAlleRechnungszeilenZuRechnung(rg.getId());
+							
+							for(int j = 0; j < rechnungszeileListe.size(); j++) {
+								gesamtBetrag += ((rechnungszeileListe.get(j).getStueckpreis() 
+										* rechnungszeileListe.get(j).getMenge()) 
+										* ((100 + rechnungszeileListe.get(j).getUst())/100));
+							}
+							
+							// Kontrolle ob Betrag mit von/bis Betrag übereinstimmt
+							if(gesamtBetrag >= rf.getVonBetrag() && gesamtBetrag <= rf.getBisBetrag()) {
+								rechnungListe.add(rg);
+							}
+							
+							gesamtBetrag = 0;	
+						}
+					}
+				
+				}
+				
+				selectStatement.close();
+			
+			} else if(rf.getKontaktFilter() != null && rf.getVonDatum() != null && rf.getBisDatum() != null) {
+				// suche nach Kontakt, Datum von/bis
+				
+				List<Kontakt> kontaktListe = new ArrayList<Kontakt>();
+				IKontaktDao kd = DaoFactory.createKontaktDao();
+				kontaktListe = kd.getFilterKontakte(rf.getKontaktFilter());
+				
+				String select = "SELECT * FROM TB_RECHNUNG WHERE GELOESCHT = 0 AND DATUM >= ? AND DATUM <= ?";
+				
+				PreparedStatement selectStatement = c.prepareStatement(select);
+				selectStatement.setDate(1, new Date (rf.getVonDatum().getTime()));
+				selectStatement.setDate(2, new Date (rf.getBisDatum().getTime()));
+				
+				ResultSet rs = selectStatement.executeQuery();
+				
+				while(rs.next()) {
+					Rechnung rg = new Rechnung();
+					rg.setId(rs.getLong("ID_RECHNUNG"));
+					rg.setKontaktid(rs.getLong("TB_KONTAKT_ID"));
+					rg.setKommentar(rs.getString("KOMMENTAR"));
+					rg.setBezahltAm(rs.getDate("BEZAHLT"));
+					rg.setDatum(rs.getDate("DATUM"));
+					rg.setFaelligkeitsdatum(rs.getDate("FAELLIGKEIT"));
+					rg.setNachricht(rs.getString("NACHRICHT"));
+					rg.setRechnungsnummer(rs.getLong("RG_NUMMER"));
+					rg.setGeloescht(rs.getInt("GELOESCHT"));
+					
+					for(int i = 0; i < kontaktListe.size(); i++) {
+						if(kontaktListe.get(i).getId() == rg.getKontaktid()) {
+							rechnungListe.add(rg);
+						}
+					}
+				}
+				
+				selectStatement.close();
+			
+			} else if(rf.getKontaktFilter() != null) {
+				// suche nach Kontakt
+				
+				List<Kontakt> kontaktListe = new ArrayList<Kontakt>();
+				IKontaktDao kd = DaoFactory.createKontaktDao();
+				kontaktListe = kd.getFilterKontakte(rf.getKontaktFilter());
+				
+				String select = "SELECT * FROM TB_RECHNUNG WHERE GELOESCHT = 0";
+				
+				PreparedStatement selectStatement = c.prepareStatement(select);
+				ResultSet rs = selectStatement.executeQuery();
+				
+				while(rs.next()) {
+					Rechnung rg = new Rechnung();
+					rg.setId(rs.getLong("ID_RECHNUNG"));
+					rg.setKontaktid(rs.getLong("TB_KONTAKT_ID"));
+					rg.setKommentar(rs.getString("KOMMENTAR"));
+					rg.setBezahltAm(rs.getDate("BEZAHLT"));
+					rg.setDatum(rs.getDate("DATUM"));
+					rg.setFaelligkeitsdatum(rs.getDate("FAELLIGKEIT"));
+					rg.setNachricht(rs.getString("NACHRICHT"));
+					rg.setRechnungsnummer(rs.getLong("RG_NUMMER"));
+					rg.setGeloescht(rs.getInt("GELOESCHT"));
+					
+					for(int i = 0; i < kontaktListe.size(); i++) {
+						if(kontaktListe.get(i).getId() == rg.getKontaktid()) {
+							rechnungListe.add(rg);
+						}
+					}
+				}
+				
+				selectStatement.close();
+			
+			} else if(rf.getVonBetrag() != 0 && rf.getBisBetrag() != 0 && rf.getVonDatum() != null && rf.getBisDatum() != null) {
+				// suche nach Betrag von/bis, Datum von/bis
+				
+				List<Rechnungszeile> rechnungszeileListe = new ArrayList<Rechnungszeile>();
+				IRechnungszeileDao rd = DaoFactory.createRechnungszeileDao();
+				float gesamtBetrag = 0;
 
+				String select = "SELECT * FROM TB_RECHNUNG WHERE GELOESCHT = 0 AND DATUM >= ? AND DATUM <= ?";
+				
+				PreparedStatement selectStatement = c.prepareStatement(select);
+				selectStatement.setDate(1, new Date (rf.getVonDatum().getTime()));
+				selectStatement.setDate(2, new Date (rf.getBisDatum().getTime()));
+				
+				ResultSet rs = selectStatement.executeQuery();
+				
+				while(rs.next()) {
+					Rechnung rg = new Rechnung();
+					rg.setId(rs.getLong("ID_RECHNUNG"));
+					rg.setKontaktid(rs.getLong("TB_KONTAKT_ID"));
+					rg.setKommentar(rs.getString("KOMMENTAR"));
+					rg.setBezahltAm(rs.getDate("BEZAHLT"));
+					rg.setDatum(rs.getDate("DATUM"));
+					rg.setFaelligkeitsdatum(rs.getDate("FAELLIGKEIT"));
+					rg.setNachricht(rs.getString("NACHRICHT"));
+					rg.setRechnungsnummer(rs.getLong("RG_NUMMER"));
+					rg.setGeloescht(rs.getInt("GELOESCHT"));
+					
+					// Gesamtbetrag aller Rechnungszeilen
+					rechnungszeileListe = rd.getAlleRechnungszeilenZuRechnung(rg.getId());
+					
+					for(int i = 0; i < rechnungszeileListe.size(); i++) {
+						gesamtBetrag += ((rechnungszeileListe.get(i).getStueckpreis() 
+								* rechnungszeileListe.get(i).getMenge()) 
+								* ((100 + rechnungszeileListe.get(i).getUst())/100));
+					}
+					
+					// Kontrolle ob Betrag mit von/bis Betrag übereinstimmt
+					if(gesamtBetrag >= rf.getVonBetrag() && gesamtBetrag <= rf.getBisBetrag()) {
+						rechnungListe.add(rg);
+					}
+					
+					gesamtBetrag = 0;	
+				}
+				
+				selectStatement.close();
+				
+			} else if(rf.getVonBetrag() != 0 && rf.getBisBetrag() != 0) {
+				// suche nach Betrag von/bis
+				
+				List<Rechnungszeile> rechnungszeileListe = new ArrayList<Rechnungszeile>();
+				IRechnungszeileDao rd = DaoFactory.createRechnungszeileDao();
+				float gesamtBetrag = 0;
+				
+				String select = "SELECT * FROM TB_RECHNUNG WHERE GELOESCHT = 0";
+				
+				PreparedStatement selectStatement = c.prepareStatement(select);
+				ResultSet rs = selectStatement.executeQuery();
+				
+				while(rs.next()) {
+					Rechnung rg = new Rechnung();
+					rg.setId(rs.getLong("ID_RECHNUNG"));
+					rg.setKontaktid(rs.getLong("TB_KONTAKT_ID"));
+					rg.setKommentar(rs.getString("KOMMENTAR"));
+					rg.setBezahltAm(rs.getDate("BEZAHLT"));
+					rg.setDatum(rs.getDate("DATUM"));
+					rg.setFaelligkeitsdatum(rs.getDate("FAELLIGKEIT"));
+					rg.setNachricht(rs.getString("NACHRICHT"));
+					rg.setRechnungsnummer(rs.getLong("RG_NUMMER"));
+					rg.setGeloescht(rs.getInt("GELOESCHT"));
+					
+					// Gesamtbetrag aller Rechnungszeilen
+					rechnungszeileListe = rd.getAlleRechnungszeilenZuRechnung(rg.getId());
+					
+					for(int i = 0; i < rechnungszeileListe.size(); i++) {
+						gesamtBetrag += ((rechnungszeileListe.get(i).getStueckpreis() 
+								* rechnungszeileListe.get(i).getMenge()) 
+								* ((100 + rechnungszeileListe.get(i).getUst())/100));
+					}
+					
+					// Kontrolle ob Betrag mit von/bis Betrag übereinstimmt
+					if(gesamtBetrag >= rf.getVonBetrag() && gesamtBetrag <= rf.getBisBetrag()) {
+						rechnungListe.add(rg);
+					}
+					
+					gesamtBetrag = 0;	
+				}
+				
+				selectStatement.close();
+			
+			} else if(rf.getVonDatum() != null && rf.getBisDatum() != null) {
+				// suche nach Datum von/bis
+				
+				String select = "SELECT * FROM TB_RECHNUNG WHERE GELOESCHT = 0 AND DATUM >= ? AND DATUM <= ?";
+				
+				PreparedStatement selectStatement = c.prepareStatement(select);
+				selectStatement.setDate(1, new Date (rf.getVonDatum().getTime()));
+				selectStatement.setDate(2, new Date (rf.getBisDatum().getTime()));
+				
+				ResultSet rs = selectStatement.executeQuery();
+				
+				while(rs.next()) {
+					Rechnung rg = new Rechnung();
+					rg.setId(rs.getLong("ID_RECHNUNG"));
+					rg.setKontaktid(rs.getLong("TB_KONTAKT_ID"));
+					rg.setKommentar(rs.getString("KOMMENTAR"));
+					rg.setBezahltAm(rs.getDate("BEZAHLT"));
+					rg.setDatum(rs.getDate("DATUM"));
+					rg.setFaelligkeitsdatum(rs.getDate("FAELLIGKEIT"));
+					rg.setNachricht(rs.getString("NACHRICHT"));
+					rg.setRechnungsnummer(rs.getLong("RG_NUMMER"));
+					rg.setGeloescht(rs.getInt("GELOESCHT"));
+					
+					rechnungListe.add(rg);
+				}
+				
+				selectStatement.close();
+			} else {
+				rechnungListe = null;
+			}
+			
+			return rechnungListe;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
