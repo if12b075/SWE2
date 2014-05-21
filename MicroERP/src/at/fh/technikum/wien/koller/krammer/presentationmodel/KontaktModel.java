@@ -641,10 +641,10 @@ public class KontaktModel {
 				this.setSuffix("Bitte geben Sie einen Suffix ein");
 			}
 			if(Helper.isNullOrEmpty(this.getTitel())) {
-				this.setSuffix("");
+				this.setTitel("");
 			}
 			if(Helper.isNullOrEmpty(this.getGeburtstag())) {
-				this.setSuffix("");
+				this.setGeburtstag("");
 			} else {
 				try {
 					SimpleDateFormat sdfToDate = new SimpleDateFormat("dd/MM/yyyy");

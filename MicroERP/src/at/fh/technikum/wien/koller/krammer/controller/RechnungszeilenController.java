@@ -23,14 +23,19 @@ public class RechnungszeilenController extends AbstractController {
 	public void initialize(URL url, ResourceBundle resource) {
 		rechnungZeileModel = new RechnungZeileModel();
 		
+	}
+	@Override
+	public void setModel(Object model) {
+		
+		if(((RechnungZeileModel)model)!=null)
+			rechnungZeileModel = (RechnungZeileModel)model;
+		else
+			System.out.println("null");
+		
 		bezeichnung.textProperty().bindBidirectional(rechnungZeileModel.bezeichnungProperty());
 		menge.textProperty().bindBidirectional(rechnungZeileModel.mengeProperty());
 		stkpreis.textProperty().bindBidirectional(rechnungZeileModel.stkpreisProperty());
 		ust.textProperty().bindBidirectional(rechnungZeileModel.ustProperty());
-	}
-	@Override
-	public void setModel(Object model) {
-		rechnungZeileModel.setModel((RechnungZeileModel) model);
 	}
 	
 	@FXML

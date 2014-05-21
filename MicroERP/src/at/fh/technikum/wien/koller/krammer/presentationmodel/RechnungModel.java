@@ -6,7 +6,6 @@ import java.util.List;
 
 import at.fh.technikum.wien.koller.krammer.models.Rechnung;
 import at.fh.technikum.wien.koller.krammer.models.Rechnungszeile;
-import at.fh.technikum.wien.koller.krammer.proxy.MERPProxyFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
