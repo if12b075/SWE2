@@ -253,6 +253,30 @@ public class MainController extends AbstractController {
 				"/at/fh/technikum/wien/koller/krammer/view/MicroERPRechnungView.fxml",
 				rm, "Rechnung bearbeiten");
 	}
+	
+	@FXML
+	public void onKontaktLoeschen() {
+		if (kontaktlist.getSelectionModel().getSelectedItem() != null) {
+			Kontakt k = kl.get(kontaktlist.getSelectionModel()
+					.getSelectedIndex());
+
+			if(MERPProxyFactory.deleteKontakt(k)) {
+				kl.remove(kontaktlist.getSelectionModel()
+					.getSelectedIndex());
+				List<String> kontakte = new ArrayList<String>();
+				if (kl != null) {
+					for (int i = 0; i < kl.size(); i++) {
+						kontakte.add(kl.get(i).toString());
+
+						ObservableList<String> items = FXCollections
+								.observableArrayList(kontakte);
+						kontaktlist.setItems(items);
+					}
+				
+				}
+			}
+		}
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {

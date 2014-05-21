@@ -11,6 +11,7 @@ import at.fh.technikum.wien.koller.krammer.proxy.mock.GetAlleKontakteMock;
 import at.fh.technikum.wien.koller.krammer.proxy.mock.GetPersonByIdMock;
 import at.fh.technikum.wien.koller.krammer.proxy.request.CreateFirmaRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.CreatePersonRequest;
+import at.fh.technikum.wien.koller.krammer.proxy.request.DeleteKontaktRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetAlleKontakteRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetAlleRechnungenRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetFirmaByIdRequest;
@@ -31,6 +32,7 @@ public class MERPProxyFactory {
 	private static final boolean MOCK_CREATE_FIRMA = false;
 	private static final boolean MOCK_CREATE_PERSON = false;
 	private static final boolean MOCK_GET_RECHNUNG_BY_ID = false;
+	private static final boolean MOCK_DELETE_KONTAKT = false;
 
 	@SuppressWarnings("static-access")
 	public static List<Kontakt> getAlleKontakte() {
@@ -109,5 +111,13 @@ public class MERPProxyFactory {
 			return false;
 		else
 			return (new CreatePersonRequest().createPerson(p));
+	}
+	
+	@SuppressWarnings("static-access")
+	public static boolean deleteKontakt(Kontakt k) {
+		if (MOCK_DELETE_KONTAKT)
+			return false;
+		else
+			return (new DeleteKontaktRequest().deleteKontakt(k));
 	}
 }

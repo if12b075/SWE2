@@ -41,7 +41,7 @@
                             <Image url="@../../../../../../../images/add.png" />
                           </image>
                         </ImageView>
-                        <ImageView fx:id="kontaktloeschen" disable="false" fitHeight="32.0" fitWidth="32.0" layoutX="12.0" layoutY="106.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <ImageView fx:id="kontaktloeschen" disable="false" fitHeight="32.0" fitWidth="32.0" layoutX="12.0" layoutY="106.0" onMouseClicked="#onKontaktLoeschen" pickOnBounds="true" preserveRatio="true" visible="false">
                           <image>
                             <Image url="@../../../../../../../images/delete.png" />
                           </image>

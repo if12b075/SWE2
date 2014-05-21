@@ -45,6 +45,10 @@ public class CommandFactory {
 		case commons.CommandRequestTitel.CREATE_RECHNUNG:
 			c = new CreateRechnungCommand();
 			break;
+			
+		case commons.CommandRequestTitel.DELETE_KONTAKT:
+			c = new DeleteKontaktCommand();
+			break;
 		}
 		
 		return c;	
