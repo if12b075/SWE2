@@ -52,7 +52,10 @@ public class PersonImplDao implements IPersonDao {
 			createPersonStatement.setString(4, p.getVorname());
 			createPersonStatement.setString(5, p.getNachname());
 			createPersonStatement.setString(6, p.getSuffix());
-			createPersonStatement.setDate(7, new Date(p.getGeburtstag().getTime()));
+			if(p.getGeburtstag()!=null)
+				createPersonStatement.setDate(7, new Date(p.getGeburtstag().getTime()));
+			else
+				createPersonStatement.setDate(7, null);
 			createPersonStatement.setInt(8, 0);
 			
 			createPersonStatement.executeUpdate();
@@ -110,7 +113,10 @@ public class PersonImplDao implements IPersonDao {
 			updatePersonStatement.setString(3, p.getVorname());
 			updatePersonStatement.setString(4, p.getNachname());
 			updatePersonStatement.setString(5, p.getSuffix());
-			updatePersonStatement.setDate(6, new Date(p.getGeburtstag().getTime()));
+			if(p.getGeburtstag() != null)
+				updatePersonStatement.setDate(6, new Date(p.getGeburtstag().getTime()));
+			else
+				updatePersonStatement.setDate(6, null);
 			updatePersonStatement.setLong(7, p.getId());
 			
 			updatePersonStatement.executeUpdate();

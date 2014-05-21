@@ -68,7 +68,7 @@ public class SearchModel {
 	
 	public KontaktFilter getKontaktFilter() {
 		KontaktFilter kf = new KontaktFilter();
-		
+
 		kf.setName(getSearchname());
 		kf.setIsFirma(isFirma);
 		
