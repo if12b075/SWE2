@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,6 @@ public class RechnungImplDao implements IRechnungDao {
 			createRechnungStatement.executeUpdate();
 			createRechnungStatement.close();
 			
-			/*
 			// Rechnung ID ermitteln
 			Statement getRechnungIdStatement = c.createStatement();
 			ResultSet rsGetRechnungId = getRechnungIdStatement.executeQuery("SELECT seq_rechnung.CURRVAL FROM TB_RECHNUNG");
@@ -74,7 +74,6 @@ public class RechnungImplDao implements IRechnungDao {
 					rid.create(r.getRechnungszeilen().get(i));
 				}
 			}
-			*/
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
