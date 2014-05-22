@@ -27,9 +27,6 @@ public class CustomControlController extends AbstractController {
 	@Override
 	public void initialize(URL url, ResourceBundle resource) {
 		  ccm = new CustomControlModel();
-          labeltext.textProperty().bindBidirectional(ccm.labelTextProperty());
-          searchtextfield.textProperty().bindBidirectional(ccm.textFieldProperty());
-          successpicture.imageProperty().bindBidirectional(ccm.successImageProperty());
           
           searchtextfield.setOnKeyPressed(new EventHandler<KeyEvent>()
   				{
@@ -48,6 +45,10 @@ public class CustomControlController extends AbstractController {
 	@Override
 	public void setModel(Object model) {
 		ccm.setModel((CustomControlModel)model);
+		
+		  labeltext.textProperty().bindBidirectional(ccm.labelTextProperty());
+          searchtextfield.textProperty().bindBidirectional(ccm.textFieldProperty());
+          successpicture.imageProperty().bindBidirectional(ccm.successImageProperty());
 	}
 	
 	public CustomControlModel getModel() {

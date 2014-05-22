@@ -9,7 +9,6 @@
 <?import javafx.scene.text.*?>
 
 <fx:root type="HBox" prefHeight="28.0" prefWidth="725.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="at.fh.technikum.wien.koller.krammer.controller.CustomControlController">
-  <!-- TODO Add Nodes -->
   <children>
     <Label fx:id="labeltext" prefWidth="75.00009999999747" text="Firma:" textFill="BLACK">
       <font>
@@ -24,8 +23,8 @@
         <Image url="@/images/attention.png" />
       </image>
     </ImageView>
-    <Pane prefHeight="56.0" prefWidth="10.0" />
-    <TextField id="pfirma" fx:id="searchtextfield" prefWidth="448.0" promptText="Verknüpfung zu einer Firma" HBox.margin="$x1" />
+    <Pane prefHeight="28.0" prefWidth="16.28875732421875" />
+    <TextField id="pfirma" fx:id="searchtextfield" prefWidth="265.0" promptText="Verknüpfung zu einer Firma" HBox.margin="$x1" />
     <ImageView fitHeight="20.000099999997474" fitWidth="20.000099999997474" pickOnBounds="true" preserveRatio="true" HBox.margin="$x1">
       <image>
         <Image url="@/images/search.png" />

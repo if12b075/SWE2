@@ -241,6 +241,7 @@ public class MainController extends AbstractController {
 	
 	@FXML
 	public void onRechnungChange() throws IOException {
+		rm = new RechnungModel();
 		if (rechnungslist.getSelectionModel().getSelectedItem() != null) {
 			Rechnung r = MERPProxyFactory.getRechnungById(rl.get(rechnungslist.getSelectionModel()
 					.getSelectedIndex()).getId());

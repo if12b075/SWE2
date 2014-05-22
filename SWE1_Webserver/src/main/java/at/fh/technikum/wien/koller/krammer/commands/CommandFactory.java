@@ -17,9 +17,9 @@ public class CommandFactory {
 		case commons.CommandRequestTitel.GET_FILTER_KONTAKTE:
 			c = new GetKontaktFilterCommand();
 			break;
-		case commons.CommandRequestTitel.GET_FILTER_RECHNUNG:
+		/*case commons.CommandRequestTitel.GET_FILTER_RECHNUNG:
 			c = new GetRechnungFilterCommand();
-			break;
+			break;*/
 		case commons.CommandRequestTitel.GET_PERSON_BY_ID:
 			c = new GetPersonByIdCommand();
 			break;

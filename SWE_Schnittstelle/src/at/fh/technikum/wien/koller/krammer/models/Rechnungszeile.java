@@ -75,9 +75,9 @@ public class Rechnungszeile extends AbstractDatabaseObject {
 				+ "    Netto: "
 				+ (this.menge)
 				* (this.stueckpreis)
-				+ "     Brutto: "
+				+ "€     Brutto: "
 				+ ((this.menge) * (this.stueckpreis) + ((this.menge)
-						* (this.stueckpreis) * this.ust / 100));
+						* (this.stueckpreis) * this.ust / 100)) + "€";
 	}
 
 }

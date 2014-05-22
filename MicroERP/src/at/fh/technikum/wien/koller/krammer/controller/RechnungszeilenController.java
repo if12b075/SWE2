@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import at.fh.technikum.wien.koller.krammer.presentationmodel.RechnungZeileModel;
+import at.fh.technikum.wien.koller.krammer.proxy.MERPProxyFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -27,10 +28,9 @@ public class RechnungszeilenController extends AbstractController {
 	@Override
 	public void setModel(Object model) {
 		
-		if(((RechnungZeileModel)model)!=null)
-			rechnungZeileModel = (RechnungZeileModel)model;
-		else
-			System.out.println("null");
+		
+		rechnungZeileModel = (RechnungZeileModel)model;
+		
 		
 		bezeichnung.textProperty().bindBidirectional(rechnungZeileModel.bezeichnungProperty());
 		menge.textProperty().bindBidirectional(rechnungZeileModel.mengeProperty());
@@ -40,7 +40,23 @@ public class RechnungszeilenController extends AbstractController {
 	
 	@FXML
 	public void onSave() {
-		this.close();
+		if(rechnungZeileModel.validate()) {
+			if(rechnungZeileModel.isUpdate()) {
+				if(MERPProxyFactory.updateRechnungszeile(rechnungZeileModel.getRechnungszeileToSave()))
+					System.out.println("Erfolgreich");
+				else
+					System.out.println("Error");
+			} else {
+				if(MERPProxyFactory.createRechnungszeile(rechnungZeileModel.getRechnungszeileToSave()))
+					System.out.println("Erfolgreich");
+				else
+					System.out.println("Error");
+			}
+			rechnungZeileModel.Benachrichtige();
+			rechnungZeileModel.clear();
+			this.close();
+		}
+		
 	}
 	
 	@FXML

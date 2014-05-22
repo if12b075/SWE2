@@ -4,12 +4,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.fh.technikum.wien.koller.krammer.models.Firma;
+import at.fh.technikum.wien.koller.krammer.models.Kontakt;
+import at.fh.technikum.wien.koller.krammer.models.Person;
 import at.fh.technikum.wien.koller.krammer.models.Rechnung;
 import at.fh.technikum.wien.koller.krammer.models.Rechnungszeile;
+import at.fh.technikum.wien.koller.krammer.observer.RechnungszeilenObserver;
+import at.fh.technikum.wien.koller.krammer.proxy.MERPProxyFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class RechnungModel {
+public class RechnungModel implements RechnungszeilenObserver{
 	private long id;
 	private StringProperty datum = new SimpleStringProperty();
 	private StringProperty faelligkeit = new SimpleStringProperty();
@@ -54,7 +59,7 @@ public class RechnungModel {
 	}
 
 	public void setCcm(CustomControlModel ccm) {
-		this.ccm = ccm;
+		this.ccm.setModel(ccm);;
 	}
 
 	public final StringProperty datumProperty() {
@@ -164,6 +169,7 @@ public class RechnungModel {
 	}
 
 	public void setModel(Rechnung r) {
+	
 		this.setId(r.getId());
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -204,12 +210,27 @@ public class RechnungModel {
 		
 		this.ccm.setIsChangeable(true);
 		
-		this.ccm.setLabelText("Kontakt");
-		this.ccm.setOk(true);
+		this.ccm.setLabelText("Kontakt:");
+		
 		
 		if(r.getKontaktid() != 0) {
 			this.ccm.setKontaktid(r.getKontaktid());
 			this.setKontaktid(r.getKontaktid());
+			this.ccm.setOk(true);
+			
+			Kontakt search = new Person();
+			search.setId(r.getKontaktid());
+			Kontakt k = MERPProxyFactory.getKontaktById(search);
+			
+			if(k.isFirma()) {
+				Firma f = MERPProxyFactory.getFirmaById(k.getId());
+				
+				this.ccm.setTextField(f.getName());
+			} else {
+				Person p = MERPProxyFactory.getPersonById(k.getId());
+				this.ccm.setTextField(p.getNachname());
+			}
+			
 		}
 				
 			
@@ -227,7 +248,7 @@ public class RechnungModel {
 			this.setRechnungnr(rm.getRechnungnr());
 			this.setRechnungszeilen(rm.getRechnungszeilen());
 			this.setRechnungszeilen2(rm.getRechnungszeilen2());
-			this.setCcm(rm.getCcm());
+			this.getCcm().setModel(rm.getCcm());
 		}
 		
 	}
@@ -239,5 +260,28 @@ public class RechnungModel {
 		}
 		
 		return null;
+	}
+
+	@Override
+	public void Update(RechnungZeileModel rz) {
+		if(rz.isUpdate()) {
+			Rechnungszeile r = getRechnungsZeileById(rz.getId());
+			Rechnungszeile r2 = rz.getRechnungszeileToSave();
+			
+			r.setBezeichnung(r2.getBezeichnung());
+			r.setMenge(r2.getMenge());
+			r.setUst(r2.getUst());
+			r.setStueckpreis(r2.getStueckpreis());
+			
+			rechnungszeilen.clear();
+			for(int i=0; i < rechnungszeilen2.size(); i++) {
+				this.rechnungszeilen.add(rechnungszeilen2.get(i).toString());
+			}
+
+		} else {
+			rechnungszeilen.add(rz.getRechnungszeileToSave().toString());
+			
+		}
+		
 	}
 }

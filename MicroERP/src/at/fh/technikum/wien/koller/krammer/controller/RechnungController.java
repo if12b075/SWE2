@@ -2,11 +2,16 @@ package at.fh.technikum.wien.koller.krammer.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import at.fh.technikum.wien.koller.krammer.models.Kontakt;
 import at.fh.technikum.wien.koller.krammer.models.Rechnungszeile;
+import at.fh.technikum.wien.koller.krammer.observer.RechnungszeilenObserver;
 import at.fh.technikum.wien.koller.krammer.presentationmodel.RechnungModel;
 import at.fh.technikum.wien.koller.krammer.presentationmodel.RechnungZeileModel;
+import at.fh.technikum.wien.koller.krammer.proxy.MERPProxyFactory;
 import at.fh.technikum.wien.koller.krammer.view.CustomControl;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -19,7 +24,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
-public class RechnungController extends AbstractController {
+public class RechnungController extends AbstractController implements RechnungszeilenObserver{
 	@FXML
 	private TextField datum;
 	@FXML
@@ -65,6 +70,22 @@ public class RechnungController extends AbstractController {
 			}
 		});
 
+	}
+
+	@Override
+	public void setModel(Object model) {
+		rechnungModel = new RechnungModel();
+		rechnungModel.setModel((RechnungModel) model);
+		if (rechnungModel.isBezahlt())
+			bezahlt.setSelected(true);
+
+		data = FXCollections.observableArrayList(rechnungModel
+				.getRechnungszeilen());
+
+		rechnungzeilen.getItems().clear();
+
+		rechnungzeilen.setItems(data);
+
 		datum.textProperty().bindBidirectional(rechnungModel.datumProperty());
 		faelligkeit.textProperty().bindBidirectional(
 				rechnungModel.faelligkeitProperty());
@@ -77,19 +98,10 @@ public class RechnungController extends AbstractController {
 		rechnungnr.textProperty().bindBidirectional(
 				rechnungModel.rechnungnrProperty());
 
+		customcontrol.getAc().setModel(rechnungModel.getCcm());
+
 	}
 
-	@Override
-	public void setModel(Object model) {
-		rechnungModel.setModel((RechnungModel) model);
-		if (rechnungModel.isBezahlt())
-			bezahlt.setSelected(true);
-
-		data = FXCollections.observableArrayList(rechnungModel.getRechnungszeilen());
-
-		rechnungzeilen.setItems(data);
-	}
-	
 	@FXML
 	public void onRechnungszeileClick() {
 		if (rechnungzeilen.getSelectionModel().getSelectedItem() != null) {
@@ -114,24 +126,58 @@ public class RechnungController extends AbstractController {
 	@FXML
 	public void onRzChange() throws IOException {
 		int auswahl = rechnungzeilen.getSelectionModel().getSelectedIndex();
-		
+
 		Rechnungszeile rz = rechnungModel.getRechnungszeilen2().get(auswahl);
 		rechnungZeileModel.setModel(rz);
+		rechnungZeileModel.setUpdate(true);
+		rechnungZeileModel.MeldeAn(rechnungModel);
+		rechnungZeileModel.MeldeAn(this);
 		showDialog(
-				"/at/fh/technikum/wien/koller/krammer/view/MicroERPRechnungszeileView.fxml",rechnungZeileModel,
-				"Rechnungszeile bearbeiten");
+				"/at/fh/technikum/wien/koller/krammer/view/MicroERPRechnungszeileView.fxml",
+				rechnungZeileModel, "Rechnungszeile bearbeiten");
 	}
 
 	@FXML
 	public void onRzDelete() {
+		int auswahl = rechnungzeilen.getSelectionModel().getSelectedIndex();
+
+		Rechnungszeile rz = rechnungModel.getRechnungszeilen2().get(auswahl);
+
+		if (MERPProxyFactory.deleteRechnungszeile(rz)) {
+			
+			rechnungModel.getRechnungszeilen2().remove(auswahl);
+			rechnungModel.getRechnungszeilen().remove(auswahl);
+			
+			data = FXCollections.observableArrayList(rechnungModel
+					.getRechnungszeilen());
+
+			rechnungzeilen.getItems().clear();
+
+			rechnungzeilen.setItems(data);
+		}
 
 	}
 
 	@FXML
 	public void onRzAdd() throws IOException {
+		rechnungZeileModel = new RechnungZeileModel();
+		rechnungZeileModel.setRechnungsId(rechnungModel.getId());
+		rechnungZeileModel.setUpdate(false);
+		rechnungZeileModel.MeldeAn(rechnungModel);
+		rechnungZeileModel.MeldeAn(this);
 		showDialog(
 				"/at/fh/technikum/wien/koller/krammer/view/MicroERPRechnungszeileView.fxml",
-				"Rechnungszeile hinzufuegen");
+				rechnungZeileModel, "Rechnungszeile hinzufuegen");
+	}
+
+	@Override
+	public void Update(RechnungZeileModel rz) {
+		data = FXCollections.observableArrayList(rechnungModel
+				.getRechnungszeilen());
+
+		rechnungzeilen.getItems().clear();
+
+		rechnungzeilen.setItems(data);	
 	}
 
 }
