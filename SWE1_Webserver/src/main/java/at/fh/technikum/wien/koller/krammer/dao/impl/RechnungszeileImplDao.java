@@ -45,16 +45,20 @@ public class RechnungszeileImplDao implements IRechnungszeileDao {
 				+ "UST = ?, MENGE = ? WHERE ID_RECHNUNGSZEILE = ?";
 		
 		try {
-			PreparedStatement updateRechnungszeileStatement = c.prepareStatement(updateRechnungszeile);
-			
-			updateRechnungszeileStatement.setString(1, r.getBezeichnung());
-			updateRechnungszeileStatement.setFloat(2, r.getStueckpreis());
-			updateRechnungszeileStatement.setInt(3, r.getUst());
-			updateRechnungszeileStatement.setInt(4, r.getMenge());
-			updateRechnungszeileStatement.setLong(5, r.getId());
-					
-			updateRechnungszeileStatement.executeUpdate();
-			updateRechnungszeileStatement.close();
+			if(r.getId() == 0) {
+				create(r);
+			} else {
+				PreparedStatement updateRechnungszeileStatement = c.prepareStatement(updateRechnungszeile);
+				
+				updateRechnungszeileStatement.setString(1, r.getBezeichnung());
+				updateRechnungszeileStatement.setFloat(2, r.getStueckpreis());
+				updateRechnungszeileStatement.setInt(3, r.getUst());
+				updateRechnungszeileStatement.setInt(4, r.getMenge());
+				updateRechnungszeileStatement.setLong(5, r.getId());
+						
+				updateRechnungszeileStatement.executeUpdate();
+				updateRechnungszeileStatement.close();
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

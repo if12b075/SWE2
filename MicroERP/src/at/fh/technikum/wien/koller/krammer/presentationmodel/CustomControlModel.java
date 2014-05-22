@@ -1,6 +1,5 @@
 package at.fh.technikum.wien.koller.krammer.presentationmodel;
 
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,12 +16,6 @@ public class CustomControlModel {
 	private long kontaktid;
 	private SearchModel sm;
 	
-	private BooleanBinding isOk = new BooleanBinding() {
-		@Override
-		protected boolean computeValue() {
-			return ok;
-		}
-	};
 
 	private Boolean ok = false;
 
@@ -38,14 +31,6 @@ public class CustomControlModel {
 		success.set(new Image("/images/attention.png"));
 		isChangeable = false;
 		searchtext.addListener(canEditListener);
-	}
-
-	public final BooleanBinding isOkBinding() {
-		return isOk;
-	}
-
-	public boolean changeOkPicture() {
-		return isOk.get();
 	}
 	
 	public Image getSuccessImage() {
@@ -89,6 +74,7 @@ public class CustomControlModel {
 	}
 
 	public void setOk(boolean ok) {
+		this.ok = ok;
 		if(ok)
 			success.set(new Image("/images/ok.png"));
 		else
@@ -113,18 +99,19 @@ public class CustomControlModel {
 
 	public void setModel(CustomControlModel cm) {
 		this.setLabelText(cm.getLabelText());
-		this.setOk(cm.isOk());
+		
 		this.setSuccessImage(cm.getSuccessImage());
 		this.setTextField(cm.getTextField());
 		this.isChangeable = cm.getIsChangeable();
 		this.kontaktid = cm.getKontaktid();
+		this.setOk(cm.isOk());
 	}
 	
 	public SearchModel getSearchModel() {
 		sm = new SearchModel();
 		
 		sm.setSearchname(getTextField());
-		sm.setIsChangeable(isChangeable);
+		sm.setIsChangeable(this.getIsChangeable());
 		sm.setKontaktid(this.kontaktid);
 		if(isChangeable)
 			sm.setIsFirma(null);

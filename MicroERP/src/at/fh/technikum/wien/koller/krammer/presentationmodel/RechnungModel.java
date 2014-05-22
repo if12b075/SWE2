@@ -1,9 +1,10 @@
 package at.fh.technikum.wien.koller.krammer.presentationmodel;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
+import at.fh.technikum.wien.koller.krammer.commons.Helper;
 import at.fh.technikum.wien.koller.krammer.models.Firma;
 import at.fh.technikum.wien.koller.krammer.models.Kontakt;
 import at.fh.technikum.wien.koller.krammer.models.Person;
@@ -24,8 +25,8 @@ public class RechnungModel implements RechnungszeilenObserver{
 	private StringProperty bezahltam = new SimpleStringProperty();
 	private boolean bezahlt;
 	private boolean isUpdate;
-	private List<String> rechnungszeilen;
-	private List<Rechnungszeile> rechnungszeilen2;
+	private ArrayList<String> rechnungszeilen;
+	private ArrayList<Rechnungszeile> rechnungszeilen2;
 	
 	private CustomControlModel ccm;
 	private long kontaktid;
@@ -34,8 +35,11 @@ public class RechnungModel implements RechnungszeilenObserver{
 		rechnungszeilen = new ArrayList<String>();
 		rechnungszeilen2 = new ArrayList<Rechnungszeile>();
 		bezahlt = false;
+		id = 0;
 		
 		ccm = new CustomControlModel();
+		ccm.setIsChangeable(true);
+		ccm.setOk(false);
 	}
 	
 	public long getId() {
@@ -59,7 +63,7 @@ public class RechnungModel implements RechnungszeilenObserver{
 	}
 
 	public void setCcm(CustomControlModel ccm) {
-		this.ccm.setModel(ccm);;
+		this.ccm = ccm;
 	}
 
 	public final StringProperty datumProperty() {
@@ -152,19 +156,19 @@ public class RechnungModel implements RechnungszeilenObserver{
 		this.isUpdate = isUpdate;
 	}
 	
-	public List<Rechnungszeile> getRechnungszeilen2() {
+	public ArrayList<Rechnungszeile> getRechnungszeilen2() {
 		return rechnungszeilen2;
 	}
 
-	public void setRechnungszeilen2(List<Rechnungszeile> rechnungszeilen2) {
+	public void setRechnungszeilen2(ArrayList<Rechnungszeile> rechnungszeilen2) {
 		this.rechnungszeilen2 = rechnungszeilen2;
 	}
 
-	public List<String> getRechnungszeilen() {
+	public ArrayList<String> getRechnungszeilen() {
 		return rechnungszeilen;
 	}
 
-	public void setRechnungszeilen(List<String> rechnungszeilen) {
+	public void setRechnungszeilen(ArrayList<String> rechnungszeilen) {
 		this.rechnungszeilen = rechnungszeilen;
 	}
 
@@ -208,15 +212,15 @@ public class RechnungModel implements RechnungszeilenObserver{
 			this.rechnungszeilen2.add(r.getRechnungszeilen().get(i));
 		}
 		
-		this.ccm.setIsChangeable(true);
+		this.getCcm().setIsChangeable(true);
 		
-		this.ccm.setLabelText("Kontakt:");
+		this.getCcm().setLabelText("Kontakt:");
 		
 		
 		if(r.getKontaktid() != 0) {
-			this.ccm.setKontaktid(r.getKontaktid());
+			this.getCcm().setKontaktid(r.getKontaktid());
 			this.setKontaktid(r.getKontaktid());
-			this.ccm.setOk(true);
+			
 			
 			Kontakt search = new Person();
 			search.setId(r.getKontaktid());
@@ -225,11 +229,14 @@ public class RechnungModel implements RechnungszeilenObserver{
 			if(k.isFirma()) {
 				Firma f = MERPProxyFactory.getFirmaById(k.getId());
 				
-				this.ccm.setTextField(f.getName());
+				this.getCcm().setTextField(f.getName());
+				
+				
 			} else {
 				Person p = MERPProxyFactory.getPersonById(k.getId());
-				this.ccm.setTextField(p.getNachname());
+				this.getCcm().setTextField(p.getNachname() + " "+ p.getVorname());
 			}
+			this.getCcm().setOk(true);
 			
 		}
 				
@@ -248,9 +255,45 @@ public class RechnungModel implements RechnungszeilenObserver{
 			this.setRechnungnr(rm.getRechnungnr());
 			this.setRechnungszeilen(rm.getRechnungszeilen());
 			this.setRechnungszeilen2(rm.getRechnungszeilen2());
-			this.getCcm().setModel(rm.getCcm());
+			this.setCcm(rm.getCcm());
+			this.setUpdate(rm.isUpdate());
 		}
 		
+	}
+	
+	public Rechnung getRechnungToSave() {
+		Rechnung r = new Rechnung();
+		
+		r.setId(this.getId());
+		r.setKontaktid(this.getCcm().getKontaktid());
+		
+		SimpleDateFormat sdfToDate = new SimpleDateFormat("dd/MM/yyyy");
+		
+		try {
+			r.setDatum(sdfToDate.parse(this.getDatum()));
+			r.setFaelligkeitsdatum(sdfToDate.parse(this.getFaelligkeit()));
+			
+			if(isBezahlt())
+				r.setBezahltAm(sdfToDate.parse(this.getBezahltam()));
+			else
+				r.setBezahltAm(null);
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(Helper.isNullOrEmpty(getKommentar()))
+			r.setKommentar(null);
+		else
+			r.setKommentar(this.getKommentar());
+
+		r.setNachricht(this.getNachricht());
+		r.setRechnungsnummer(Long.parseLong(this.getRechnungnr()));
+		
+		r.setRechnungszeilen(this.getRechnungszeilen2());
+		
+		return r;
 	}
 	
 	public Rechnungszeile getRechnungsZeileById(long id) {
@@ -280,8 +323,84 @@ public class RechnungModel implements RechnungszeilenObserver{
 
 		} else {
 			rechnungszeilen.add(rz.getRechnungszeileToSave().toString());
+			rechnungszeilen2.add(rz.getRechnungszeileToSave());
 			
 		}
 		
+	}
+	
+	public boolean validate() {
+		boolean isValid = true;
+
+		if(rechnungszeilen2.size()< 1) {
+			isValid = false;
+			System.out.println("Bitte geben Sie mindestens eine Rechnungszeile an");
+		}
+
+		System.out.println(ccm.getKontaktid());
+		if(ccm.getKontaktid() < 1) {
+			isValid = false;
+			ccm.setTextField("Bitte ordnen Sie die Rechnung einem Kontakt zu");
+		}
+
+		if(Helper.isNullOrEmpty(getRechnungnr())) {
+			isValid = false;
+			this.setRechnungnr("Bitte geben Sie eine Rechnungsnummer an");
+		} else {
+			try {
+				Long.parseLong(getRechnungnr());
+			} catch (Exception e) {
+				isValid = false;
+				setRechnungnr("Bitte eine Nummer eingeben");
+			}
+		}
+
+		if(Helper.isNullOrEmpty(getDatum())) {
+			isValid = false;
+			this.setDatum("Bitte geben Sie ein Datum an");
+		} else {
+			try {
+				SimpleDateFormat sdfToDate = new SimpleDateFormat("dd/MM/yyyy");
+				sdfToDate.parse(getDatum());
+			} catch (ParseException e) {
+				this.setDatum("Bitte Datum im Format dd/MM/yyyy");
+				isValid=false;
+			}
+		}
+
+		if(Helper.isNullOrEmpty(getFaelligkeit())) {
+			isValid = false;
+			this.setFaelligkeit("Bitte geben Sie ein Faelligkeitsdatum an");
+		} else {
+			try {
+				SimpleDateFormat sdfToDate = new SimpleDateFormat("dd/MM/yyyy");
+				sdfToDate.parse(getFaelligkeit());
+			} catch (ParseException e) {
+				this.setFaelligkeit("Bitte Datum im Format dd/MM/yyyy");
+				isValid=false;
+			}
+		}
+
+		if(Helper.isNullOrEmpty(getNachricht())) {
+			isValid = false;
+			this.setNachricht("Bitte geben Sie eine Nachricht an");
+		}
+
+		if(isBezahlt()) {
+			if(Helper.isNullOrEmpty(getBezahltam())) {
+				isValid = false;
+				this.setBezahltam("Bitte geben Sie das Bezahlt Datum an");
+			} else {
+				try {
+					SimpleDateFormat sdfToDate = new SimpleDateFormat("dd/MM/yyyy");
+					sdfToDate.parse(getBezahltam());
+				} catch (ParseException e) {
+					this.setBezahltam("Bitte Datum im Format dd/MM/yyyy");
+					isValid=false;
+				}
+			}
+		}
+
+		return isValid;
 	}
 }

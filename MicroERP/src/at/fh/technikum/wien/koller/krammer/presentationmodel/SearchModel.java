@@ -12,7 +12,7 @@ public class SearchModel {
 	private CustomControlModel ccm;
 	
 	public SearchModel() {
-		
+		searchname.set("");;
 	}
 	
 	public final StringProperty searchnameProperty() {

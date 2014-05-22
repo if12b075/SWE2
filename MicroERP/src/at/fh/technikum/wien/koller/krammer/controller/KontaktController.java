@@ -64,6 +64,15 @@ public class KontaktController extends AbstractController{
 		kontaktModel = new KontaktModel();
 		
 		
+	}
+
+	@Override
+	public void setModel(Object model) {
+		kontaktModel.setModel((KontaktModel) model);
+
+		customcontrol.getAc().setModel(kontaktModel.getCcm());
+		
+
 		personpane.disableProperty().bind(kontaktModel.disableEditPersonBinding());
 		firmapane.disableProperty().bind(kontaktModel.disableEditFirmaBinding());
 		
@@ -90,13 +99,6 @@ public class KontaktController extends AbstractController{
 	    lieferaddr2.textProperty().bindBidirectional(kontaktModel.lieferadress2Property());
 	    lieferort.textProperty().bindBidirectional(kontaktModel.lieferortProperty());
 	    lieferplz.textProperty().bindBidirectional(kontaktModel.lieferplzProperty());
-	}
-
-	@Override
-	public void setModel(Object model) {
-		kontaktModel.setModel((KontaktModel) model);
-		
-		customcontrol.getAc().setModel(kontaktModel.getCcm());
 	}
 	
 	@FXML

@@ -12,6 +12,7 @@ import at.fh.technikum.wien.koller.krammer.proxy.mock.GetAlleKontakteMock;
 import at.fh.technikum.wien.koller.krammer.proxy.mock.GetPersonByIdMock;
 import at.fh.technikum.wien.koller.krammer.proxy.request.CreateFirmaRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.CreatePersonRequest;
+import at.fh.technikum.wien.koller.krammer.proxy.request.CreateRechnungRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.CreateRechnungszeileRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.DeleteKontaktRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.DeleteRechnungszeileRequest;
@@ -24,6 +25,7 @@ import at.fh.technikum.wien.koller.krammer.proxy.request.GetPersonByIdRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetRechnungByIdRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.UpdateFirmaRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.UpdatePersonRequest;
+import at.fh.technikum.wien.koller.krammer.proxy.request.UpdateRechnungRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.UpdateRechnungszeileRequest;
 
 public class MERPProxyFactory {
@@ -36,9 +38,11 @@ public class MERPProxyFactory {
 	private static final boolean MOCK_UPDATE_PERSON = false;
 	private static final boolean MOCK_UPDATE_FIRMA = false;
 	private static final boolean MOCK_UPDATE_RECHNUNGSZEILE = false;
+	private static final boolean MOCK_UPDATE_RECHNUNG = false;
 	private static final boolean MOCK_CREATE_FIRMA = false;
 	private static final boolean MOCK_CREATE_PERSON = false;
 	private static final boolean MOCK_CREATE_RECHNUNGSZEILE = false;
+	private static final boolean MOCK_CREATE_RECHNUNG = false;
 	private static final boolean MOCK_GET_RECHNUNG_BY_ID = false;
 	private static final boolean MOCK_DELETE_KONTAKT = false;
 	private static final boolean MOCK_DELETE_RECHNUNGSZEILE = false;
@@ -115,6 +119,14 @@ public class MERPProxyFactory {
 	}
 	
 	@SuppressWarnings("static-access")
+	public static boolean updateRechnung(Rechnung r) {
+		if (MOCK_UPDATE_RECHNUNG)
+			return false;
+		else
+			return (new UpdateRechnungRequest().updateRechnung(r));
+	}
+	
+	@SuppressWarnings("static-access")
 	public static boolean createFirma(Firma f) {
 		if (MOCK_CREATE_FIRMA)
 			return false;
@@ -136,6 +148,14 @@ public class MERPProxyFactory {
 			return false;
 		else
 			return (new CreateRechnungszeileRequest().createRechnungszeile(r));
+	}
+	
+	@SuppressWarnings("static-access")
+	public static boolean createRechnung(Rechnung r) {
+		if (MOCK_CREATE_RECHNUNG)
+			return false;
+		else
+			return (new CreateRechnungRequest().createRechnung(r));
 	}
 	
 	@SuppressWarnings("static-access")

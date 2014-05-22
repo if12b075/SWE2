@@ -65,8 +65,11 @@ public class SearchController extends AbstractController {
 				searchpersonradio.setSelected(true);
 		}
 
-		if(!sm.getIsChangeable()) {
-			this.searchpersonradio.setDisable(true);
+		if(sm.getIsChangeable()) {
+			searchfirmaradio.setDisable(false);
+			searchpersonradio.setDisable(false);
+		} else {
+			searchpersonradio.setDisable(true);
 		}
 		
 		searchname.textProperty().bindBidirectional(sm.searchnameProperty());
@@ -101,7 +104,7 @@ public class SearchController extends AbstractController {
 				} else {
 					Person p = MERPProxyFactory.getPersonById(k.getId());
 					sm.getCcm().setTextField(
-							p.getNachname());
+							p.getNachname() + " " + p.getVorname());
 				}
 
 				sm.getCcm().setOk(true);

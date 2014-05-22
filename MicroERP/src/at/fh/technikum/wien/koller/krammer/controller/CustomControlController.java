@@ -44,11 +44,12 @@ public class CustomControlController extends AbstractController {
 
 	@Override
 	public void setModel(Object model) {
-		ccm.setModel((CustomControlModel)model);
+		ccm =(CustomControlModel)model;
 		
 		  labeltext.textProperty().bindBidirectional(ccm.labelTextProperty());
           searchtextfield.textProperty().bindBidirectional(ccm.textFieldProperty());
           successpicture.imageProperty().bindBidirectional(ccm.successImageProperty());
+          
 	}
 	
 	public CustomControlModel getModel() {

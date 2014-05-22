@@ -24,7 +24,7 @@ public class KontaktModel {
 	private long firmaid;
 	private boolean isUpdate = false;
 
-	private CustomControlModel ccm;
+	private CustomControlModel ccm = new CustomControlModel();
 
 	private StringProperty vorname = new SimpleStringProperty();
 	private StringProperty nachname = new SimpleStringProperty();
@@ -82,7 +82,7 @@ public class KontaktModel {
 				disableEditFirma.invalidate();
 			}
 		};
-		ccm = new CustomControlModel();
+		ccm.setIsChangeable(false);
 		vorname.addListener(canEditListener);
 		nachname.addListener(canEditListener);
 		firmenname.addListener(canEditListener);
@@ -385,7 +385,7 @@ public class KontaktModel {
 	}
 
 	public void setCcm(CustomControlModel ccm) {
-		this.ccm.setModel(ccm);
+		this.ccm = ccm;
 	}
 
 	public boolean isUpdate() {
@@ -444,7 +444,10 @@ public class KontaktModel {
 					Firma f = MERPProxyFactory.getFirmaById(firmaid);
 					this.ccm.setKontaktid(firmaid);
 					this.ccm.setTextField(f.getName());
+					this.ccm.setIsChangeable(false);
+
 					this.ccm.setOk(true);
+
 				} else {
 					this.ccm.setOk(false);
 				}
@@ -485,7 +488,6 @@ public class KontaktModel {
 					this.setGeburtstag(formattedDate);
 				}
 				
-
 			} else
 				System.out.println("Model konnte nicht gesetzt werden!");
 		}

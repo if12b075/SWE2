@@ -2,11 +2,8 @@ package at.fh.technikum.wien.koller.krammer.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import at.fh.technikum.wien.koller.krammer.models.Kontakt;
 import at.fh.technikum.wien.koller.krammer.models.Rechnungszeile;
 import at.fh.technikum.wien.koller.krammer.observer.RechnungszeilenObserver;
 import at.fh.technikum.wien.koller.krammer.presentationmodel.RechnungModel;
@@ -74,7 +71,7 @@ public class RechnungController extends AbstractController implements Rechnungsz
 
 	@Override
 	public void setModel(Object model) {
-		rechnungModel = new RechnungModel();
+		
 		rechnungModel.setModel((RechnungModel) model);
 		if (rechnungModel.isBezahlt())
 			bezahlt.setSelected(true);
@@ -120,7 +117,27 @@ public class RechnungController extends AbstractController implements Rechnungsz
 
 	@FXML
 	public void onSaveClick() {
-		this.close();
+
+		if(rechnungModel.validate()) {
+
+			if(rechnungModel.isUpdate()) {
+
+				if(MERPProxyFactory.updateRechnung(rechnungModel.getRechnungToSave()))
+					System.out.println("Erfolgreich");
+				else
+					System.out.println("Error");
+			} else {
+				System.out.println(rechnungModel.getRechnungToSave().getRechnungszeilen().toString());
+				if(MERPProxyFactory.createRechnung(rechnungModel.getRechnungToSave()))
+					System.out.println("Erfolgreich");
+				else
+					System.out.println("Error");
+			
+			}
+			
+			
+			this.close();
+		}
 	}
 
 	@FXML
