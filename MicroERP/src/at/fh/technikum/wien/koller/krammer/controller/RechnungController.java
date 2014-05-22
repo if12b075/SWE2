@@ -60,10 +60,14 @@ public class RechnungController extends AbstractController implements Rechnungsz
 			@Override
 			public void changed(ObservableValue<? extends Boolean> arg0,
 					Boolean arg1, Boolean arg2) {
-				if (bezahlt.isSelected())
+				if (bezahlt.isSelected()) {
 					bezahltam.setDisable(false);
-				else
+					rechnungModel.setBezahlt(true);
+				} else {
 					bezahltam.setDisable(true);
+					rechnungModel.setBezahlt(false);
+				}
+					
 			}
 		});
 

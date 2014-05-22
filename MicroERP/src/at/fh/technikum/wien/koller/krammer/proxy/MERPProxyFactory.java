@@ -3,6 +3,7 @@ package at.fh.technikum.wien.koller.krammer.proxy;
 import java.util.List;
 
 import at.fh.technikum.wien.koller.krammer.filter.KontaktFilter;
+import at.fh.technikum.wien.koller.krammer.filter.RechnungFilter;
 import at.fh.technikum.wien.koller.krammer.models.Firma;
 import at.fh.technikum.wien.koller.krammer.models.Kontakt;
 import at.fh.technikum.wien.koller.krammer.models.Person;
@@ -23,6 +24,7 @@ import at.fh.technikum.wien.koller.krammer.proxy.request.GetKontaktByIdRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetKontaktFilterRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetPersonByIdRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.GetRechnungByIdRequest;
+import at.fh.technikum.wien.koller.krammer.proxy.request.GetRechnungFilterRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.UpdateFirmaRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.UpdatePersonRequest;
 import at.fh.technikum.wien.koller.krammer.proxy.request.UpdateRechnungRequest;
@@ -32,6 +34,7 @@ public class MERPProxyFactory {
 	private static final boolean MOCK_ALLE_KONTAKTE = false;
 	private static final boolean MOCK_ALLE_RECHNUNGEN = false;
 	private static final boolean MOCK_KONTAKTFILTER = false;
+	private static final boolean MOCK_RECHNUNGFILTER = false;
 	private static final boolean MOCK_GET_PERSON_BY_ID = false;
 	private static final boolean MOCK_GET_KONTAKT_BY_ID = false;
 	private static final boolean MOCK_GET_FIRMA_BY_ID = false;
@@ -68,6 +71,14 @@ public class MERPProxyFactory {
 			return null;
 		else
 			return (new GetKontaktFilterRequest()).getResponse(kf);
+	}
+	
+	@SuppressWarnings("static-access")
+	public static List<Rechnung> getRechnungFilter(RechnungFilter rf) {
+		if (MOCK_RECHNUNGFILTER)
+			return null;
+		else
+			return (new GetRechnungFilterRequest().getRechnungFilter(rf));
 	}
 	
 	@SuppressWarnings("static-access")

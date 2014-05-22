@@ -12,8 +12,10 @@ import java.util.ResourceBundle;
 import at.fh.technikum.wien.koller.krammer.commons.Helper;
 import at.fh.technikum.wien.koller.krammer.filter.KontaktFilter;
 import at.fh.technikum.wien.koller.krammer.filter.RechnungFilter;
+import at.fh.technikum.wien.koller.krammer.models.Firma;
 import at.fh.technikum.wien.koller.krammer.models.Kontakt;
 import at.fh.technikum.wien.koller.krammer.models.Rechnung;
+import at.fh.technikum.wien.koller.krammer.pdf.RechnungPDFCreator;
 import at.fh.technikum.wien.koller.krammer.presentationmodel.KontaktModel;
 import at.fh.technikum.wien.koller.krammer.presentationmodel.RechnungModel;
 import at.fh.technikum.wien.koller.krammer.proxy.MERPProxyFactory;
@@ -253,6 +255,22 @@ public class MainController extends AbstractController {
 		showDialog(
 				"/at/fh/technikum/wien/koller/krammer/view/MicroERPRechnungView.fxml",
 				rm, "Rechnung bearbeiten");
+	}
+	
+	@FXML
+	public void onRechnungDruck() {
+		if (rechnungslist.getSelectionModel().getSelectedItem() != null) {
+			Rechnung r = MERPProxyFactory.getRechnungById(rl.get(rechnungslist.getSelectionModel()
+					.getSelectedIndex()).getId());
+			
+			Kontakt k = new Firma();
+			k.setId(r.getKontaktid());
+			
+			Kontakt k2 = MERPProxyFactory.getKontaktById(k);
+			
+			RechnungPDFCreator.createPDF(r,k2);
+			
+		}
 	}
 	
 	@FXML
