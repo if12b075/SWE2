@@ -150,20 +150,26 @@ public class MainController extends AbstractController {
 			RechnungFilter rf = new RechnungFilter();
 			
 			Date rechbis = null;
-			try {
-				SimpleDateFormat sdfToDate = new SimpleDateFormat("dd/MM/yyyy");
-				rechbis = new Date(sdfToDate.parse(rechnungbis.getText()).getTime());
-			} catch (ParseException e) {
-				rechnungbis.setText("Format: dd/MM/yyyy");
+			if (rechnungbis.getText().length()>0) {
+				try {
+					SimpleDateFormat sdfToDate = new SimpleDateFormat("dd/MM/yyyy");
+					rechbis = new Date(sdfToDate.parse(rechnungbis.getText()).getTime());
+				} catch (ParseException e) {
+					rechnungbis.setText("Format: dd/MM/yyyy");
+				}
 			}
 			
+			
 			Date rechvon = null;
-			try {
-				SimpleDateFormat sdfToDate = new SimpleDateFormat("dd/MM/yyyy");
-				rechvon = new Date(sdfToDate.parse(rechnungvon.getText()).getTime());
-			} catch (ParseException e) {
-				rechnungvon.setText("Format: dd/MM/yyyy");
+			if (rechnungvon.getText().length()>0) {
+				try {
+					SimpleDateFormat sdfToDate = new SimpleDateFormat("dd/MM/yyyy");
+					rechvon = new Date(sdfToDate.parse(rechnungvon.getText()).getTime());
+				} catch (ParseException e) {
+					rechnungvon.setText("Format: dd/MM/yyyy");
+				}
 			}
+			
 
 			double betragvon = 0;
 			if (!Helper.isNullOrEmpty(betrageurovon.getText()))
@@ -195,16 +201,18 @@ public class MainController extends AbstractController {
 			//						TODO                                          //
 			///////////////////////////////////////////////////////////////////////
 			
-			rl = MERPProxyFactory.getAlleRechnungen();
+			//rl = MERPProxyFactory.getAlleRechnungen();
+			rl = MERPProxyFactory.getRechnungFilter(rf);
 			List<String> rechnungen = new ArrayList<String>();
 			if (rl != null) {
 				for (int i = 0; i < rl.size(); i++) {
 					rechnungen.add(rl.get(i).toString());
-
+				}
+					rechnungslist.getItems().clear();
 					ObservableList<String> items = FXCollections
 							.observableArrayList(rechnungen);
 					rechnungslist.setItems(items);
-				}
+				
 			} else
 				System.out
 						.println("Tut uns leid die Kontakte konnten nicht geladen werden, bitte überprüfen Sie ob der Server gestartet wurde");
@@ -310,6 +318,7 @@ public class MainController extends AbstractController {
 			}
 
 		});
+		
 		rechnungname.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent ke) {
@@ -364,7 +373,7 @@ public class MainController extends AbstractController {
 				betragcentvon.setText("Nur Zahl");
 			}
 		}
-		if (!Helper.isNullOrEmpty(rechnungvon.getText())) {
+		if (rechnungvon.getText().length()>0) {
 			try {
 				SimpleDateFormat sdfToDate = new SimpleDateFormat("dd/MM/yyyy");
 				sdfToDate.parse(rechnungvon.getText());
@@ -373,8 +382,7 @@ public class MainController extends AbstractController {
 				rechnungvon.setText("Format: dd/MM/yyyy");
 			}
 		}
-
-		if (!Helper.isNullOrEmpty(rechnungbis.getText())) {
+		if (rechnungbis.getText().length()>0) {
 			try {
 				SimpleDateFormat sdfToDate = new SimpleDateFormat("dd/MM/yyyy");
 				sdfToDate.parse(rechnungbis.getText());

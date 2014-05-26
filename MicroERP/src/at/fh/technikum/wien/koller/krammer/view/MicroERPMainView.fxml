@@ -147,8 +147,12 @@
                           <content>
                             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="181.0" prefWidth="771.0">
                               <children>
-                                <RadioButton fx:id="rechnungpersonradio" font="$x2" layoutX="243.0" layoutY="106.0" mnemonicParsing="false" text="Person" textFill="BLACK" />
-                                <RadioButton fx:id="rechnungfirmaradio" font="$x2" layoutX="171.0" layoutY="103.0" mnemonicParsing="false" prefHeight="21.0" text="Firma" textFill="BLACK" />
+                                <RadioButton fx:id="rechnungpersonradio" font="$x2" layoutX="243.0" layoutY="106.0" mnemonicParsing="false" text="Person" textFill="BLACK">
+                                  <toggleGroup>
+                                    <ToggleGroup fx:id="rechnungfilter" />
+                                  </toggleGroup>
+                                </RadioButton>
+                                <RadioButton fx:id="rechnungfirmaradio" font="$x2" layoutX="171.0" layoutY="103.0" mnemonicParsing="false" prefHeight="21.0" text="Firma" textFill="BLACK" toggleGroup="$rechnungfilter" />
                                 <TextField fx:id="rechnungname" layoutX="171.0" layoutY="74.0" prefWidth="492.0000999999975" />
                                 <ImageView fitHeight="20.000099999997474" fitWidth="20.000099999997474" layoutX="644.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
                                   <image>

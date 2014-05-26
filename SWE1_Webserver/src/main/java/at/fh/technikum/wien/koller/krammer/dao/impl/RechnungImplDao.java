@@ -275,6 +275,8 @@ public class RechnungImplDao implements IRechnungDao {
 								gesamtBetrag += ((rechnungszeileListe.get(j).getStueckpreis() 
 										* rechnungszeileListe.get(j).getMenge()) 
 										* ((100 + rechnungszeileListe.get(j).getUst())/100));
+								rg.getRechnungszeilen().add(rechnungszeileListe.get(j));
+								
 							}
 							
 							// Kontrolle ob Betrag mit von/bis Betrag übereinstimmt
@@ -325,6 +327,7 @@ public class RechnungImplDao implements IRechnungDao {
 								gesamtBetrag += ((rechnungszeileListe.get(j).getStueckpreis() 
 										* rechnungszeileListe.get(j).getMenge()) 
 										* ((100 + rechnungszeileListe.get(j).getUst())/100));
+								rg.getRechnungszeilen().add(rechnungszeileListe.get(j));
 							}
 							
 							// Kontrolle ob Betrag mit von/bis Betrag übereinstimmt
@@ -443,6 +446,8 @@ public class RechnungImplDao implements IRechnungDao {
 						gesamtBetrag += ((rechnungszeileListe.get(i).getStueckpreis() 
 								* rechnungszeileListe.get(i).getMenge()) 
 								* ((100 + rechnungszeileListe.get(i).getUst())/100));
+						
+						rg.getRechnungszeilen().add(rechnungszeileListe.get(i));
 					}
 					
 					// Kontrolle ob Betrag mit von/bis Betrag übereinstimmt
@@ -486,6 +491,8 @@ public class RechnungImplDao implements IRechnungDao {
 						gesamtBetrag += ((rechnungszeileListe.get(i).getStueckpreis() 
 								* rechnungszeileListe.get(i).getMenge()) 
 								* ((100 + rechnungszeileListe.get(i).getUst())/100));
+						
+						rg.getRechnungszeilen().add(rechnungszeileListe.get(i));
 					}
 					
 					// Kontrolle ob Betrag mit von/bis Betrag übereinstimmt

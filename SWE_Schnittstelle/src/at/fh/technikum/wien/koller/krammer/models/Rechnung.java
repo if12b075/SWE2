@@ -15,6 +15,7 @@ public class Rechnung extends AbstractDatabaseObject {
 
 	public Rechnung() {
 		super();
+		rechnungszeilen = new ArrayList<Rechnungszeile>();
 	}
 
 	public Rechnung(int rechnungsnummer, Date datum, Date faelligkeitsdatum,
@@ -97,7 +98,16 @@ public class Rechnung extends AbstractDatabaseObject {
 
 	@Override
 	public String toString() {
-		return "Rechnung: " + this.rechnungsnummer + " " + this.datum + " " + this.nachricht;
+		double gesamtBetrag = 0;
+		if(rechnungszeilen != null) {
+			for(int j = 0; j < rechnungszeilen.size(); j++) {
+				gesamtBetrag += ((rechnungszeilen.get(j).getStueckpreis() 
+						* rechnungszeilen.get(j).getMenge()) 
+						* ((100 + rechnungszeilen.get(j).getUst())/100));
+			}
+		}
+		
+		return "Rechnung: " + this.rechnungsnummer + " Vom: " + this.datum + " Betrag: " + gesamtBetrag + " Nachricht: "+ this.nachricht;
 	}
 	
 	
